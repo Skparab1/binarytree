@@ -82,6 +82,12 @@ function drawnode(node,x,y){
     div.style.marginTop = y+'px';
     div.style.position = 'absolute';
 
+    div.id = 'thenode'+String(thisnum);
+
+    div.onclick = function() {document.getElementById(div.id).style.zIndex = rnzindex; rnzindex += 1;};
+
+    rnzindex += 1;
+
     div.className = 'node';
 
     // if (addedone){
@@ -170,6 +176,9 @@ function drawtree(root, x, y, prevx){
             console.log(leftx);
         }
 
+        // leftx = leftx-(5000/window.innerWidth);
+        // rightx = rightx-(5000/window.innerWidth);
+
         const div = document.createElement('div');
     
         let wid = Math.abs(leftx-x);
@@ -211,9 +220,9 @@ function traversepreorder(node){
         return "";
     }
     let st = "";
-    st += node.getvalue;
-    st += traversepreorder(node.getleft);
-    st += traversepreorder(node.getright);
+    st += node.getvalue+" ";
+    st += traversepreorder(node.getleft)+" ";
+    st += traversepreorder(node.getright)+" ";
 
     return st;
 }
@@ -223,9 +232,9 @@ function traverseinorder(node){
         return "";
     }
     let st = "";
-    st += traverseinorder(node.getleft);
-    st += node.getvalue;
-    st += traverseinorder(node.getright);
+    st += traverseinorder(node.getleft)+" ";
+    st += node.getvalue+" ";
+    st += traverseinorder(node.getright)+" ";
 
     return st;
 }
@@ -235,9 +244,9 @@ function traversepostorder(node){
         return "";
     }
     let st = "";
-    st += traversepostorder(node.getleft);
-    st += traversepostorder(node.getright);
-    st += node.getvalue;
+    st += traversepostorder(node.getleft)+" ";
+    st += traversepostorder(node.getright)+" ";
+    st += node.getvalue+" ";
     return st;
 }
 
@@ -255,6 +264,11 @@ function checkall(){
     <h1 style='font-size: 15px'>Post order: ${postorder}</h1>
     <div class="close" onclick="closesolutions();">Close</div>
     `
+
+    preorder = preorder.replaceAll(' ','');
+    inorder = inorder.replaceAll(' ','');
+    postorder = postorder.replaceAll(' ','');
+
 
     let userpreorder = document.getElementById('preorder').value;
     userpreorder = userpreorder.replaceAll(' ','').replaceAll(',','');
@@ -283,13 +297,30 @@ function checkall(){
 
 function showsolutions(){
     checkall();
-    document.getElementById('solutions').style.display = 'block';
+    //document.getElementById('solutions').style.display = 'block';
     document.getElementById('solutions').style.opacity = 1;
+    document.getElementById('solutions').style.left = '25%';
 }
 
 function closesolutions(){
-    document.getElementById('solutions').style.display = 'none';
+    //document.getElementById('solutions').style.display = 'none';
     document.getElementById('solutions').style.opacity = 0;
+    document.getElementById('solutions').style.left = '-100%';
+}
+
+function closeinstructions(){
+    document.getElementById('instructions').style.left = '125%';
+    document.getElementById('instructions').style.opacity = 0;
+}
+
+
+// rules
+let bt1 = localStorage.getItem('binarytree');
+if (bt1 == null){
+    localStorage.setItem('binarytree','opened');
+    document.getElementById('instructions').style.display = 'block';
+    document.getElementById('instructions').style.opacity = 1;
+    document.getElementById('instructions').style.left = '25%';
 }
 
 let root = new treenode('root',null,null);
@@ -314,5 +345,8 @@ let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 // intialx
 let x = 50;
 let y = 0;
+
+let rnzindex = 10;
+let stayingup = false;
 
 drawtree(root, x, y, 50);

@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="fullwidth">
-        <h1 id='head' style="font-size: 50px; color: white;">Binary tree</h1>
+        <h1 id='head' style="font-size: 50px; color: white; margin-left: 75px;">Binary tree</h1>
     </div>
 
     <div id="treeholder">
@@ -24,8 +24,10 @@
 
     </div>
 
-    <div class="results">
-      <h1>Results</h1>
+    <div id='res' class="results">
+      <button class="exit-modal" onclick="if (!stayingup){ document.getElementById('res').style.top = '60%'; stayingup = true; document.getElementById('sb').textContent = '';}"><p id='sb'>Lock movement</p></button>
+
+      <h1>Output</h1>
 
       <div class="guesstile">
         <h3>Post order</h3>
@@ -48,7 +50,15 @@
       <h5 id="preordersol">Pre order: </h5>
       <h5 id="inordersol">In order: </h5>
       <h5 id="postordersol">Post order: </h5>
-      <div class="check" onclick="closesolutions();">Close</div>
+      <div class="close" onclick="closesolutions();">Close</div>
+    </div>
+
+    <div class="largenotif" id="instructions">
+      <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
+      <h5 style='font-size: 15px; margin: 10px;'>1. Construct a binary tree</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>2. Type in guesses for results in output box at the bottom of your screen</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>3. Press check answers or view solutions</h5>
+      <div class="close" onclick="closeinstructions();">Close</div>
     </div>
     
     <script src="index.js"></script>

@@ -190,10 +190,9 @@ nav {
 
 .largenotif{
   position: fixed;
-  display: none;
   width: 50%;
   height: 30%;
-  left: 25%;
+  left: -100%;
   top: 35%;
   background-color: rgb(8, 47, 125);
   border-radius: 25px;
@@ -202,7 +201,8 @@ nav {
   font-size: 50px;
   color: white;
   opacity: 0;
-  transition: opacity 0.25s, display 0.25s;
+  z-index: 1000;
+  transition: opacity 0.25s, display 0.25s, left 0.75s;
 }
 
 .close {
@@ -211,4 +211,20 @@ nav {
   background: black;
   border: 5px solid rgb(29, 82, 238);
   font-size: 20px;
+}
+
+.exit-modal {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  color: white;
+  top: 0;
+  right: 15px;
+  width: 2.5rem;
+  font-size: 10px;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  user-select: none;
+  font-weight: bold;
 }
