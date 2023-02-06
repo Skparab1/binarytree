@@ -160,6 +160,7 @@ nav {
   background-color: black;
   border: 7px solid rgb(7, 176, 176);
   transition: top 0.2s;
+  z-index: 1000;
 }
 
 .results:hover{
