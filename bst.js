@@ -404,7 +404,7 @@ function runtree(){
 
     let changednode = null;
 
-    if (rand < 6){
+    if (rand < 5){
         // yup were putting error
         // what kind of error
 
