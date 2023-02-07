@@ -11,7 +11,7 @@ body {
 }
 
 button {
-  pointer: cursor;
+  cursor: pointer;
 }
 
 .fullwidth{
@@ -69,6 +69,7 @@ button {
   margin-left: 12.5%;
   float: left;
   margin-top: 15px;
+  cursor: pointer;
 }
 
 .nodeadderleft{
@@ -80,6 +81,7 @@ button {
   float: left;
   background: black;
   transform: background-color 0.2s;
+  cursor: pointer;
 }
 
 .nodeadderleft:hover{
@@ -95,6 +97,7 @@ button {
   float: right;
   background: black;
   transform: background-color 0.2s;
+  cursor: pointer;
 }
 
 .nodeadderright:hover{
@@ -110,6 +113,7 @@ button {
   float: right;
   background: black;
   transform: background-color 0.2s;
+  cursor: pointer;
 }
 
 .connector{
@@ -226,6 +230,7 @@ nav {
   background: black;
   border: 5px solid rgb(29, 82, 238);
   font-size: 20px;
+  cursor: pointer;
 }
 
 .exit-modal {
@@ -260,4 +265,5 @@ nav {
   color:white;
   padding-top: 5px;
   border: 3px solid rgb(176, 27, 7);
+  cursor: pointer;
 }
