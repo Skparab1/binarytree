@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='og:viewport' content='width=device-width,initial-scale=1'>
+    <meta name="og:description" content="Skparab1 - Binary search tree">
+    <title>Skparab1 - Binary search tree</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="pacman-favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
+  </head>
+  <body>
+    <div class="fullwidth">
+        <h1 id='head' style="font-size: 50px; color: white; margin-left: 75px;">Binary search tree</h1>
+    </div>
+
+    <div id="treeholder">
+
+    </div>
+
+    <div id="connectors">
+
+    </div>
+
+    <div id='res' class="results" style="width: 33%; margin-left: 33%;">
+
+      <h1>Settings</h1>
+
+      <h3>Number of nodes (less than 50)</h3>
+      <input class="guess" id="numnodes" onchange="initnums();">
+    </div>
+
+    <div class="clickbuttons">
+      <div class="checkbutton" id='correct' onclick="iscorrect();" style="margin-left: 30%">Correct</div>
+      <div class="checkbutton" id='wrong' onclick="iswrong();" style="margin-left: 45%; margin-top: -33px;">Wrong</div>
+      <div class="checkbutton" id='next' onclick="location.reload();" style="margin-left: 60%; margin-top: -33px;">Next</div>
+    </div>
+
+    <div class="largenotif" id="solutions">
+      <h1 >Solutions</h1>
+      <h5 id="preordersol">Pre order: </h5>
+      <h5 id="inordersol">In order: </h5>
+      <h5 id="postordersol">Post order: </h5>
+      <div class="close" onclick="closesolutions();">Close</div>
+    </div>
+
+    <div class="largenotif" id="instructions">
+      <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
+      <h5 style='font-size: 15px; margin: 10px;'>1. Construct a binary tree using the left/right buttons to add nodes and delete button to remove nodes</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>2. Type in guesses for results in output box at the bottom of your screen</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>3. Press check answers or view solutions</h5>
+      <div class="close" onclick="closeinstructions();">Close</div>
+    </div>
+    
+    <script src="bst.js"></script>
+
+  </body>
+</html>

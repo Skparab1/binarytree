@@ -5,10 +5,12 @@
 // this is a treenode
 
 class treenode {
-    constructor(value, left, right) {
+    constructor(value, left, right, par, xc) {
       this.value = value;
       this.left = left;
       this.right = right;
+      this.xcoord = xc;
+      this.parent = par;
     }
 
     get getvalue() {
@@ -23,6 +25,14 @@ class treenode {
         return this.right;
     }
 
+    get getxcoord(){
+        return this.xcoord;
+    }
+
+    get getparent(){
+        return this.parent;
+    }
+
     setvalue(val){
         this.value = val;
     }
@@ -34,11 +44,23 @@ class treenode {
     setright(r){
         this.right = r;
     }
+
+    setxcoord(x){
+        this.xcoord = x;
+    }
+
+    setparent(p){
+        this.parent = p;
+    }
 }
 
 let treeholder = document.getElementById('treeholder');
 
 let nodesadded = 0;
+
+let badnode = null;
+let resl = true;
+let badid = '';
 
 function drawnode(node,x,y){
     const div = document.createElement('div');
@@ -53,36 +75,22 @@ function drawnode(node,x,y){
     let thisnum = nodearr.indexOf(node);
       
     div.innerHTML = `
-    <input id='val${thisnum}' type='text' class='nodeval' value='${node.getvalue}' onchange="modvalue(${thisnum});">
+    <h2 style='margin-top: 5px;'>${node.getvalue}</h2>
     `;
 
     let theleft = node.getleft;
 
-    if (theleft == null || theleft.getvalue == 'deleted'){
-        div.innerHTML += ` <button id='leftadder${thisnum}' class='nodeadderleft' onclick='addleft(${thisnum});'>left</button>`
-    } else {
-        div.innerHTML += ` <button id='leftadder${thisnum}' class='nodeadderleft' style='opacity: 0;'>left</button>`
-    }
-
-    let theright = node.getright;
-
-    if (theright == null || theright.getvalue == 'deleted'){
-        div.innerHTML += `<button id='rightadder${thisnum}' class='nodeadderright' onclick='addright(${thisnum});'>right</button>`;
-    } else {
-        div.innerHTML += `<button id='rightadder${thisnum}' class='nodeadderright' style='opacity: 0;'>right</button>`;
-    }
-
-    if ((theright == null || theright.getvalue == 'deleted') && (theleft == null || theleft.getvalue == 'deleted') && node != root){
-        div.innerHTML += ` <button id='deletenode${thisnum}' onclick='delnode(${thisnum});' class='deletenode'>del</button>`
-    } else {
-        div.innerHTML += ` <button id='deletenode${thisnum}' class='deletenode' style='opacity: 0;'>del</button>`
-    }
+    node.setxcoord(x);
 
     div.style.marginLeft = x+'%';
     div.style.marginTop = y+'px';
     div.style.position = 'absolute';
 
     div.id = 'thenode'+String(thisnum);
+
+    if (node == badnode){
+        div.setAttribute('id', 'badone');
+    }
 
     div.onclick = function() {document.getElementById(div.id).style.zIndex = rnzindex; rnzindex += 1;};
 
@@ -95,6 +103,8 @@ function drawnode(node,x,y){
     // }
 
     treeholder.appendChild(div);
+
+    
 }
 
 function modvalue(n){
@@ -133,7 +143,7 @@ function redrawtree(){
 
 function addleft(num){
     console.log('addleft on '+num+' with '+nodearr);
-    let newnode = new treenode(0,null,null);
+    let newnode = new treenode(0,null,null,nodearr[num]);
     nodearr[num].setleft(newnode);
 
     nodesadded += 1;
@@ -145,7 +155,7 @@ function addleft(num){
 }
 
 function addright(num){
-    let newnode = new treenode(0,null,null);
+    let newnode = new treenode(0,null,null,nodearr[num]);
     nodearr[num].setright(newnode);
 
     nodesadded += 1;
@@ -162,6 +172,8 @@ function drawtree(root, x, y, prevx){
     }
     if (root != null && root.getvalue != 'deleted'){
         drawnode(root,x,y);
+
+        console.log('set xcoord as ',x,'but',root.getxcoord);
 
         let newy = y + 75;
         let leftx;
@@ -318,12 +330,181 @@ function closeinstructions(){
 let bt1 = localStorage.getItem('binarytree');
 if (bt1 == null){
     localStorage.setItem('binarytree','opened');
-    document.getElementById('instructions').style.display = 'block';
-    document.getElementById('instructions').style.opacity = 1;
-    document.getElementById('instructions').style.left = '25%';
+    // document.getElementById('instructions').style.display = 'block';
+    // document.getElementById('instructions').style.opacity = 1;
+    // document.getElementById('instructions').style.left = '25%';
 }
 
-let root = new treenode('root',null,null);
+let root = new treenode('root',null,null,null);
+
+// dont think this is needed
+// function isbst(root){
+//     if (root.getleft != null && root.getleft.getvalue > root.getvalue){
+//         // not fine
+//         return false;
+//     }
+//     if (root.getright != null && root.getright.getvalue > root.getvalue){
+//         // also not fine
+//         return false;
+//     }
+// }
+
+function genlist(l){
+    let i = 0;
+    let arr = [];
+    let n = 0;
+    while (i < l){
+        n += Math.floor(Math.random()*10)+1;
+        arr.push(n);
+        i += 1;
+    }
+    return arr;
+}
+
+function createl(root, arr) {
+    if (arr.length == 0){
+        return null;
+    }
+
+    let mid = arr[Math.floor(arr.length/2)];
+    let left = arr.slice(0,Math.floor(arr.length/2))
+    let right = arr.slice(Math.floor(arr.length/2)+1,arr.length);
+
+    let mnode = new treenode(mid, null, null);
+
+    mnode.setleft(createl(mnode, left));
+    mnode.setright(createl(mnode, right));
+
+    return mnode;
+}
+
+function genbst(){
+    // suppose u have an arr
+    //let arr = [1,7,9,15,20,23,32,45,55,62,64,75,88,99];
+    let arr = genlist(document.getElementById('numnodes').value);
+
+    let mid = arr[Math.floor(arr.length/2)];
+    let left = arr.slice(0,Math.floor(arr.length/2))
+    let right = arr.slice(Math.floor(arr.length/2)+1,arr.length);
+
+    let mnode = new treenode(mid, null, null);
+
+    mnode.setleft(createl(mnode, left));
+    mnode.setright(createl(mnode, right));
+
+    console.log(mnode);
+
+    return mnode;
+}
+
+function runtree(){
+    let thetree = genbst();
+    // now shall we put an error or not
+    let rand = Math.floor(Math.random()*10);
+
+    let changednode = null;
+
+    if (rand < 6){
+        // yup were putting error
+        // what kind of error
+
+        let rand2 = Math.floor(Math.random()*8);
+        if (rand2 == 0){
+            // head is too low
+            let newhead = thetree.getleft.getvalue-(Math.floor(Math.random()*5)+1);
+            thetree.setvalue(newhead);
+            changednode = thetree;
+        } else if (rand2 == 1){
+            // head is too high
+            let newhead = thetree.getright.getvalue+(Math.floor(Math.random()*5)+1);
+            thetree.setvalue(newhead);
+            changednode = thetree;
+        } else if (rand2 == 2){
+            // the second level left is too high
+            // make it higher than the head
+            
+            let newhead = thetree.getvalue+(Math.floor(Math.random()*5)+1);
+            thetree.getleft.setvalue(newhead);
+            changednode = thetree.getleft;
+        } else if (rand2 == 3){
+            // the second level right is too low
+            // make it lower than the head
+            
+            let newhead = thetree.getvalue-(Math.floor(Math.random()*5)+1);
+            thetree.getright.setvalue(newhead);
+            changednode = thetree.getright;
+        } else if (rand2 >= 4){
+            // make a last node bigger or smaller than parent
+            let lastnode = null;
+            let lastlastnode = null;
+            let tn = thetree;
+            let lastdir = '0';
+            let lastlastdir = '0';
+            while (tn != null){
+                lastlastdir = lastdir;
+                lastlastnode = lastnode;
+                lastnode = tn;
+                if (Math.random() < 0.5){
+                    tn = tn.getleft;
+                    lastdir = 'l';
+                } else {
+                    tn = tn.getright;
+                    lastdir = 'r';
+                }
+            }
+
+            let newhead;
+            if (lastlastdir == 'r'){
+                newhead = lastlastnode.getvalue-(Math.floor(Math.random()*5)+1);
+                console.log(lastlastnode.getvalue,'minus smth');
+            } else {
+                newhead = lastlastnode.getvalue+(Math.floor(Math.random()*5)+1);
+                console.log(lastlastnode.getvalue,'plus smth');
+            }
+            console.log('modified',newhead);
+            lastnode.setvalue(newhead);
+
+            changednode = lastnode;
+        }
+    } else {
+        // nope were good to go
+    }
+
+    badnode = changednode;
+    drawtree(thetree, x, y, 50);
+
+    return thetree;
+
+}
+
+function iscorrect(){
+    if (badnode == null){
+        // correct
+        document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
+        document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
+    } else {
+        // has an error
+        document.getElementById('correct').style.border = '3px solid rgb(255,0,0)';
+        document.getElementById('wrong').style.border = '3px solid rgb(0,255,0)';
+        resl = true;
+        document.getElementById('badone').style.border = '3px solid red';
+    }
+}
+
+
+function iswrong(){
+    if (badnode == null){
+        // doesnt have an error
+        document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
+        document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
+    } else {
+        // has an error
+        document.getElementById('wrong').style.border = '3px solid rgb(0,255,0)';
+        document.getElementById('correct').style.border = '3px solid rgb(255,0,0)';
+        resl = true;
+        document.getElementById('badone').style.border = '3px solid red';
+    }
+}
 
 // let left = new treenode('left',new treenode('leftleft',new treenode('leftleftleft',null,null),null),new treenode('leftright',new treenode('leftrightleft',null,null),null));
 
@@ -340,7 +521,7 @@ let root = new treenode('root',null,null);
 
 let leftbuttons = [];
 let delnodes = [];
-let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 // intialx
 let x = 50;
@@ -349,4 +530,22 @@ let y = 0;
 let rnzindex = 10;
 let stayingup = false;
 
-drawtree(root, x, y, 50);
+//drawtree(root, x, y, 50);
+
+//let start = genbst();
+
+//console.log(start);
+
+//drawtree(start, x, y, 50);
+
+function initnums(){
+    let tv = document.getElementById('numnodes').value;
+    if (tv == "" || isNaN(parseInt(tv)) || parseInt(tv) > 50){
+        document.getElementById('numnodes').value = 10;
+    }
+    console.log("acceptable "+document.getElementById('numnodes').value,parseInt(document.getElementById('numnodes').value))
+}
+
+initnums();
+
+let actualtree = runtree();
