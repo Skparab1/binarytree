@@ -5,9 +5,16 @@
 
 body {
   margin: 0;
-  background: black;
+  background: var(--bg);
   background-attachment: fixed;
   height: 2900px;
+}
+
+:root {
+  --bg: black;
+  --contrast: white;
+  --main: rgb(7, 176, 176);
+  --br: 0px;
 }
 
 button {
@@ -21,7 +28,7 @@ button {
 
 .nicegrad {
   font-size: 72px;
-  background: -webkit-linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0));
+  background: var(--bg);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -31,16 +38,16 @@ button {
   width: 100px;
   height: 50px;
   font-size: 20px;
-  border: 4px solid rgb(7, 176, 176);
-  color: white;
+  border: 4px solid var(--main);
+  color: var(--contrast);
   text-align: center;
-  background-color: black;
+  background-color: var(--bg);
 }
 
 .nodeval{
   width: 100%;
-  background: black;
-  color: rgb(7, 176, 176);
+  background: var(--bg);
+  color: var(--main);
   border: 0px;
   font-size: 20px;
   text-align: center;
@@ -48,9 +55,9 @@ button {
 
 .guess{
   width: 75%;
-  background: rgb(75, 75, 75);
-  color: rgb(7, 176, 176);
-  border: 3px solid rgb(7, 176, 176);
+  background: var(--bg);
+  color: var(--main);
+  border: 3px solid var(--main);
   font-size: 20px;
   text-align: center;
 }
@@ -62,7 +69,7 @@ button {
 
 .check{
   width: 31.25%;
-  background: rgb(75, 75, 75);
+  background: var(--bg);
   color: rgb(176, 52, 7);
   border: 3px solid rgb(176, 52, 7);
   font-size: 20px;
@@ -75,51 +82,54 @@ button {
 .nodeadderleft{
   width: 30px;
   font-size: 10px;
-  border: 1px solid rgb(7, 176, 176);
-  color: white;
+  border: 1px solid var(--main);
+  color: var(--contrast);
   text-align: center;
   float: left;
-  background: black;
+  background: var(--bg);
   transform: background-color 0.2s;
   cursor: pointer;
 }
 
 .nodeadderleft:hover{
-  background: rgb(76, 76, 76);
+  background: var(--main);
+  color: var(--bg);
 }
 
 .nodeadderright{
   width: 30px;
   font-size: 10px;
-  border: 1px solid rgb(7, 176, 176);
-  color: white;
+  border: 1px solid var(--main);
+  color: var(--contrast);
   text-align: center;
   float: right;
-  background: black;
+  background: var(--bg);
   transform: background-color 0.2s;
   cursor: pointer;
 }
 
 .nodeadderright:hover{
- background: rgb(76, 76, 76);
+ background: var(--main);
+ color: var(--bg);
 }
 
 .deletenode{
   width: 32px;
   font-size: 10px;
   border: 1px solid rgb(176, 27, 7);
-  color: white;
+  color: var(--contrast);
   text-align: center;
   float: right;
-  background: black;
+  background: var(--bg);
   transform: background-color 0.2s;
   cursor: pointer;
 }
 
 .connector{
   position: absolute;
-  border-top: 7px solid white;
-  border-left: 7px solid white;
+  border-radius: var(--br);
+  border-top: 7px solid var(--contrast);
+  border-left: 7px solid var(--contrast);
 }
 
 .notif{
@@ -129,23 +139,23 @@ button {
   position: fixed;
   height: 33px;
   background: gray;
-  border: 3px solid white;
+  border: 3px solid var(--contrast);
 }
 
 h1 {
-  color: white;
+  color: var(--contrast);
 }
 
 h2 {
-  color: white;
+  color: var(--contrast);
 }
 
 h3 {
-  color: white;
+  color: var(--contrast);
 }
 
 a {
-  color: white;
+  color: var(--contrast);
   text-decoration: none;
 }
 nav {
@@ -160,13 +170,13 @@ nav {
 
 .nav-items li {
   display: inline-block;
-  color: white;
+  color: var(--contrast);
 }
 
 .nav-items li a {
   display: block;
   padding: 1rem;
-  color: white;
+  color: var(--contrast);
 }
 
 .results{
@@ -175,8 +185,8 @@ nav {
   height: 40%;
   width: 100%;
   text-align: center;
-  background-color: black;
-  border: 7px solid rgb(7, 176, 176);
+  background-color: var(--bg);
+  border: 7px solid var(--main);
   transition: top 0.2s;
   z-index: 1000;
 }
@@ -201,7 +211,7 @@ nav {
   height: 5%;
   aspect-ratio: 1;
   position: absolute;
-  background-color: white;
+  background-color: var(--contrast);
   border-radius: 100px;
   top: 50%;
   left: 50%;
@@ -213,12 +223,12 @@ nav {
   height: 30%;
   left: -100%;
   top: 35%;
-  background-color: rgb(8, 47, 125);
+  background-color: var(--bg);
   border-radius: 25px;
-  border: 6px solid rgb(29, 82, 238);
+  border: 6px solid var(--main);
   text-align: center;
   font-size: 50px;
-  color: white;
+  color: var(--contrast);
   opacity: 0;
   z-index: 1000;
   transition: opacity 0.25s, display 0.25s, left 0.75s;
@@ -227,8 +237,9 @@ nav {
 .close {
   width: 20%;
   margin-left: 40%;
-  background: black;
-  border: 5px solid rgb(29, 82, 238);
+  background: var(--bg);
+  color: var(--contrast);
+  border: 5px solid var(--main);
   font-size: 20px;
   cursor: pointer;
 }
@@ -237,8 +248,8 @@ nav {
   all: unset;
   cursor: pointer;
   position: absolute;
-  color: white;
-  top: 0;
+  color: var(--contrast);
+  bottom: 0;
   right: 15px;
   width: 2.5rem;
   font-size: 10px;
@@ -255,15 +266,76 @@ nav {
   height: 10%;
   width: 100%;
   text-align: center;
-  background: black;
+  background: var(--bg);
 }
 
 .checkbutton {
   width: 10%;
   height: 33px;
-  background: black;
-  color:white;
+  background: var(--bg);
+  color:var(--contrast);
   padding-top: 5px;
   border: 3px solid rgb(176, 27, 7);
   cursor: pointer;
+}
+
+
+/* totally not copied over from w3 lmfao */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

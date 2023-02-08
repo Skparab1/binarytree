@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="fullwidth">
-        <h1 id='head' style="font-size: 50px; color: white; margin-left: 75px;">Binary tree</h1>
+        <h1 id='head' style="font-size: 50px; color: var(--contrast); margin-left: 75px;">Binary tree</h1>
     </div>
 
     <div id="treeholder">
@@ -26,6 +26,7 @@
 
     <div id='res' class="results">
       <button class="exit-modal" onclick="if (!stayingup){ document.getElementById('res').style.top = '60%'; stayingup = true; document.getElementById('sb').textContent = '';}"><p id='sb'>Lock movement</p></button>
+      <button class="exit-modal" style='left: 15px;' onclick="openprefs();"><p id='prefs'>Preferences</p></button>
 
       <h1>Output</h1>
 
@@ -51,6 +52,23 @@
       <h5 id="inordersol">In order: </h5>
       <h5 id="postordersol">Post order: </h5>
       <div class="close" onclick="closesolutions();">Close</div>
+    </div>
+
+    <div class="largenotif" id="preferences" style="height: 60%; top: 25%;">
+      <h1 style="font-size: 25px;">Preferences</h1>
+      <h3 style="font-size: 15px; margin-bottom: 5px;" id="theme">Theme: (Dark)</h3>
+      <label class="switch" onclick="toggletheme();">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+
+      <h3 style="font-size: 15px; margin-bottom: 5px;" id="lines">Lines: (Cornered)</h3>
+      <label class="switch" onclick="toggleangle();">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+
+      <div class="close" onclick="closeprefs();">Close</div>
     </div>
 
     <div class="largenotif" id="instructions">

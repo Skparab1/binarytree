@@ -193,7 +193,7 @@ function drawtree(root, x, y, prevx){
         const div1 = document.createElement('div');
 
         div1.className = 'connector';
-        div1.style.borderRight = '7px solid white';
+        div1.style.borderRight = '7px solid var(--contrast)';
         div1.style.borderLeft = '0px solid white';
         div1.style.width = wid+'%';
         div1.style.height = '75px'
@@ -302,6 +302,75 @@ function showsolutions(){
     document.getElementById('solutions').style.left = '25%';
 }
 
+function openprefs(){
+    document.getElementById('preferences').style.opacity = 1;
+    document.getElementById('preferences').style.left = '25%';
+}
+
+function toggletheme(override){
+    var r = document.querySelector(':root');
+
+    let endtime = new Date();
+    var timediff = endtime - lasttoggle; 
+    lasttoggle = endtime;
+
+    if (timediff < 333 && !override){
+        return;
+    }
+
+    console.log('changeing from  '+theme);
+    if (theme == 'dark'){
+        // make light
+        theme = 'light';
+        localStorage.setItem('bttheme','light');
+        document.getElementById('theme').textContent = "Theme: (light)";
+        r.style.setProperty('--bg', 'white');
+        r.style.setProperty('--contrast', 'black');
+        r.style.setProperty('--main', 'rgb(12, 34, 162)');
+    } else {
+        // make dark
+        theme = 'dark';
+        localStorage.setItem('bttheme','dark');
+        document.getElementById('theme').textContent = "Theme: (dark)";
+        r.style.setProperty('--bg', 'black');
+        r.style.setProperty('--contrast', 'white');
+        r.style.setProperty('--main', 'rgb(7, 176, 176)');
+    }
+}
+
+function toggleangle(override){
+    var r = document.querySelector(':root');
+
+    let endtime = new Date();
+    var timediff = endtime - lasttoggle; 
+    lasttoggle = endtime;
+
+    if (timediff < 333 && !override){
+        console.log('returned');
+        return;
+    }
+
+    if (angle == 'cornered'){
+        // make light
+        angle = 'curved';
+        localStorage.setItem('btangle','curved');
+        document.getElementById('lines').textContent = "Lines: (Curved)";
+        r.style.setProperty('--br', '25px');
+    } else {
+        // make dark
+        angle = 'cornered';
+        localStorage.setItem('btangle','cornered');
+        document.getElementById('lines').textContent = "Lines: (Cornered)";
+        r.style.setProperty('--br', '0px');
+    }
+}
+
+function closeprefs(){
+    //document.getElementById('solutions').style.display = 'none';
+    document.getElementById('preferences').style.opacity = 0;
+    document.getElementById('preferences').style.left = '-100%';
+}
+
 function closesolutions(){
     //document.getElementById('solutions').style.display = 'none';
     document.getElementById('solutions').style.opacity = 0;
@@ -321,6 +390,25 @@ if (bt1 == null){
     document.getElementById('instructions').style.display = 'block';
     document.getElementById('instructions').style.opacity = 1;
     document.getElementById('instructions').style.left = '25%';
+}
+
+let theme = localStorage.getItem('bttheme');
+let angle = localStorage.getItem('btangle');
+
+let lasttoggle = new Date();
+
+if (theme == null){
+    localStorage.setItem("bttheme",'dark');
+} else if (theme == 'light'){
+    theme = 'dark';
+    toggletheme(true);
+}
+
+if (angle == null){
+    localStorage.setItem("btangle",'cornered');
+} else if (angle == 'curved'){
+    angle = 'cornered';
+    toggleangle(true);
 }
 
 let root = new treenode('root',null,null);
