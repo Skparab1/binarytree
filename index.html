@@ -31,17 +31,17 @@
       <h1>Output</h1>
 
       <div class="guesstile">
-        <h3>Post order <span onclick="redrawtree(); glowtreepostorder(root);" style="color: yellow;"> (Demo)</span></h3>
+        <h3>Post order <span id='playpost' onclick=" if (!disabled){(async () => { disableplay(); redrawtree(); await glowtreepostorder(root); enableplay(); })();}" style="color: yellow;"> ▷</span></h3>
         <input class="guess" id="postorder">
       </div>
       <div class="guesstile">
-        <h3>In order <span onclick="redrawtree(); glowtreeinorder(root);" style="color: yellow;"> (Demo)</span></h3>
+        <h3>In order <span id='playin' onclick="  if (!disabled){(async () => { disableplay(); redrawtree(); await glowtreeinorder(root); enableplay(); })();}" style="color: yellow;"> ▷</span></h3>
         <input class="guess" id="inorder">
         <div class="check" onclick="checkall();">Check All</div>
         <div class="check" onclick="showsolutions();">Solutions</div>
       </div>
       <div class="guesstile">
-        <h3>Pre order <span onclick="redrawtree(); glowtreepreorder(root);" style="color: yellow;"> (Demo)</span></h3>
+        <h3>Pre order <span id='playpre' onclick="  if (!disabled){(async () => { disableplay(); redrawtree(); await glowtreepreorder(root); enableplay(); })();}" style="color: yellow;"> ▷</span></h3>
         <input class="guess" id="preorder">
       </div>
     </div>

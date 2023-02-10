@@ -400,6 +400,8 @@ async function glowtreepreorder(start){
     await sleep(350);
 
     await glowtreepreorder(start.getright);
+
+    //enableplay();
 }
 
 async function glowtreeinorder(start){
@@ -419,6 +421,24 @@ async function glowtreeinorder(start){
     await sleep(350);
 
     await glowtreeinorder(start.getright);
+
+    //enableplay();
+}
+
+function disableplay(){
+    document.getElementById('playpost').style.color = 'rgba(125,125,125,0.6)';
+    document.getElementById('playin').style.color = 'rgba(125,125,125,0.6)';
+    document.getElementById('playpre').style.color = 'rgba(125,125,125,0.6)';
+
+    disabled = true;
+}
+
+function enableplay(){
+    document.getElementById('playpost').style.color = 'yellow';
+    document.getElementById('playin').style.color = 'yellow';
+    document.getElementById('playpre').style.color = 'yellow';
+
+    disabled = false;
 }
 
 async function glowtreepostorder(start){
@@ -438,6 +458,8 @@ async function glowtreepostorder(start){
     await sleep(350);
 
     nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+
+    //enableplay();
 
 }
 
@@ -491,6 +513,8 @@ let leftbuttons = [];
 let delnodes = [];
 let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
+let disabled = false;
+
 // intialx
 let x = 50;
 let y = 0;
@@ -500,4 +524,4 @@ let stayingup = false;
 
 drawtree(root, x, y, 50);
 
-glowtree(root);
+//glowtree(root);
