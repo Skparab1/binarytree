@@ -382,6 +382,65 @@ function closeinstructions(){
     document.getElementById('instructions').style.opacity = 0;
 }
 
+async function glowtreepreorder(start){
+    if (start == null){
+        return;
+    }
+    
+
+    let idx = nodearr.indexOf(start);
+    let nd = document.getElementById('thenode'+String(idx));
+
+    nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+
+    await sleep(350);
+
+    await glowtreepreorder(start.getleft);
+
+    await sleep(350);
+
+    await glowtreepreorder(start.getright);
+}
+
+async function glowtreeinorder(start){
+    if (start == null){
+        return;
+    }
+
+    let idx = nodearr.indexOf(start);
+    let nd = document.getElementById('thenode'+String(idx));
+
+    await sleep(350);
+
+    await glowtreeinorder(start.getleft);
+
+    nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+
+    await sleep(350);
+
+    await glowtreeinorder(start.getright);
+}
+
+async function glowtreepostorder(start){
+    if (start == null){
+        return;
+    }
+
+    let idx = nodearr.indexOf(start);
+    let nd = document.getElementById('thenode'+String(idx));
+
+    await glowtreepostorder(start.getleft);
+
+    await sleep(350);
+
+    await glowtreepostorder(start.getright);
+
+    await sleep(350);
+
+    nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+
+}
+
 
 // rules
 let bt1 = localStorage.getItem('binarytree');
@@ -426,6 +485,8 @@ let root = new treenode('root',null,null);
 // right.setleft(rightleft);
 // right.setright(rightright);
 
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
 let leftbuttons = [];
 let delnodes = [];
 let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -438,3 +499,5 @@ let rnzindex = 10;
 let stayingup = false;
 
 drawtree(root, x, y, 50);
+
+glowtree(root);

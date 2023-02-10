@@ -31,17 +31,17 @@
       <h1>Output</h1>
 
       <div class="guesstile">
-        <h3>Post order</h3>
+        <h3>Post order <span onclick="redrawtree(); glowtreepostorder(root);" style="color: yellow;"> (Demo)</span></h3>
         <input class="guess" id="postorder">
       </div>
       <div class="guesstile">
-        <h3>In order</h3>
+        <h3>In order <span onclick="redrawtree(); glowtreeinorder(root);" style="color: yellow;"> (Demo)</span></h3>
         <input class="guess" id="inorder">
         <div class="check" onclick="checkall();">Check All</div>
         <div class="check" onclick="showsolutions();">Solutions</div>
       </div>
       <div class="guesstile">
-        <h3>Pre order</h3>
+        <h3>Pre order <span onclick="redrawtree(); glowtreepreorder(root);" style="color: yellow;"> (Demo)</span></h3>
         <input class="guess" id="preorder">
       </div>
     </div>
@@ -68,7 +68,7 @@
         <span class="slider round"></span>
       </label>
 
-      <a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><div class="close" style="margin-bottom: 10px;">Report bug</div></a>
+      <a href="https://github.com/skparab1/binarytree/issues/newi" target="_blank"><div class="close" style="margin-bottom: 10px;">Report bug</div></a>
 
       <div class="close" onclick="closeprefs();">Close</div>
     </div>
