@@ -121,8 +121,27 @@ button {
   text-align: center;
   float: right;
   background: var(--bg);
-  transform: background-color 0.2s;
   cursor: pointer;
+}
+
+.deletenode:hover{
+  background: rgb(176, 27, 7);
+  color: white;
+ }
+
+.wrong {
+  position: fixed;
+  width: 50%;
+  left: 25%;
+  height: 30%;
+  top: 35%;
+  background-color: rgba(0,0,0,0.7);
+  border-radius: 25px;
+  border: 6px solid var(--main);
+  text-align: center;
+  opacity: 0;
+  left: -100%;
+  transition: opacity 0.25s;
 }
 
 .connector{

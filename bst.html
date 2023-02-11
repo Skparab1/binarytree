@@ -28,8 +28,12 @@
 
       <h1>Settings</h1>
 
-      <h3>Number of nodes (less than 50)</h3>
-      <input class="guess" id="numnodes" onchange="initnums();">
+      <h3>Max number of levels</h3>
+      <select class='guess' name="numnodes" id="numnodes" onchange="initnums();">
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+      </select>
     </div>
 
     <div class="clickbuttons">
@@ -46,11 +50,24 @@
       <div class="close" onclick="closesolutions();">Close</div>
     </div>
 
+    <div class="wrong" id="wr">
+      <h1 >Wrong!</h1>
+      <h5 id="explanation" style="color: white;">Explanation</h5>
+      <div class="close" onclick="closeel('wr');">Close</div>
+    </div>
+
+    <div class="wrong" id="corr">
+      <h1 >Correct!</h1>
+      <h3 >Good job!</h3>
+      <div class="close" onclick="closeel('corr');">Close</div>
+      <div class="close" onclick="location.reload();">Next</div>
+
+    </div>
+
     <div class="largenotif" id="instructions">
       <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
-      <h5 style='font-size: 15px; margin: 10px;'>1. Construct a binary tree using the left/right buttons to add nodes and delete button to remove nodes</h5>
-      <h5 style='font-size: 15px; margin: 10px;'>2. Type in guesses for results in output box at the bottom of your screen</h5>
-      <h5 style='font-size: 15px; margin: 10px;'>3. Press check answers or view solutions</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>1. Evaluate the finary tree to determine whether it is a binary search tree</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>2. Press the corresponding buttons</h5>
       <div class="close" onclick="closeinstructions();">Close</div>
     </div>
     

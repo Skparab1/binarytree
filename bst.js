@@ -59,6 +59,7 @@ let treeholder = document.getElementById('treeholder');
 let nodesadded = 0;
 
 let badnode = null;
+let explanation = "";
 let resl = true;
 let badid = '';
 
@@ -314,6 +315,19 @@ function showsolutions(){
     document.getElementById('solutions').style.left = '25%';
 }
 
+function openel(e){
+    console.log('shud have opened it');
+    document.getElementById(e).style.display = 'block';
+    document.getElementById(e).style.opacity = 1;
+    document.getElementById(e).style.left = '25%';
+}
+
+function closeel(e){
+    document.getElementById(e).style.opacity = 0;
+    document.getElementById(e).style.left = '-100%';
+
+}
+
 function closesolutions(){
     //document.getElementById('solutions').style.display = 'none';
     document.getElementById('solutions').style.opacity = 0;
@@ -372,10 +386,21 @@ function createl(root, arr) {
 
     let mnode = new treenode(mid, null, null);
 
-    mnode.setleft(createl(mnode, left));
-    mnode.setright(createl(mnode, right));
+    mnode.setleft(createl(mnode, right));
+    mnode.setright(createl(mnode, left));
 
     return mnode;
+}
+
+function reversearr(arr){
+    let newarr = [];
+    let e = arr.length-1;
+    while (e >= 0){
+        newarr.push(arr[e]);
+        e -= 1;
+    }
+
+    return newarr;
 }
 
 function genbst(){
@@ -383,23 +408,30 @@ function genbst(){
     //let arr = [1,7,9,15,20,23,32,45,55,62,64,75,88,99];
     let arr = genlist(document.getElementById('numnodes').value);
 
+    console.log('arr before ',arr);
+    // arr = reversearr(arr);
+    console.log('arr after ',arr);
+
     let mid = arr[Math.floor(arr.length/2)];
     let left = arr.slice(0,Math.floor(arr.length/2))
     let right = arr.slice(Math.floor(arr.length/2)+1,arr.length);
 
     let mnode = new treenode(mid, null, null);
 
-    mnode.setleft(createl(mnode, left));
-    mnode.setright(createl(mnode, right));
+    mnode.setleft(createl(mnode, right));
+    mnode.setright(createl(mnode, left));
 
     console.log(mnode);
 
     return mnode;
 }
 
-function runtree(){
-    let thetree = genbst();
+function adderror(root){
+    // not rlly garunteeing an error add but yeah
     // now shall we put an error or not
+
+    thetree = root;
+    
     let rand = Math.floor(Math.random()*10);
 
     let changednode = null;
@@ -408,17 +440,23 @@ function runtree(){
         // yup were putting error
         // what kind of error
 
-        let rand2 = Math.floor(Math.random()*8);
+        let rand2 = Math.floor(Math.random()*10);
         if (rand2 == 0){
             // head is too low
             let newhead = thetree.getleft.getvalue-(Math.floor(Math.random()*5)+1);
             thetree.setvalue(newhead);
             changednode = thetree;
+
+            explanation = "The root valued "+newhead+" is too low, making the left child's value ("+thetree.getleft.getvalue+") larger than it.";
+
         } else if (rand2 == 1){
             // head is too high
             let newhead = thetree.getright.getvalue+(Math.floor(Math.random()*5)+1);
             thetree.setvalue(newhead);
             changednode = thetree;
+
+            explanation = "The root valued "+newhead+" is too high, making the right child's value ("+thetree.getright.getvalue+") smaller than it.";
+
         } else if (rand2 == 2){
             // the second level left is too high
             // make it higher than the head
@@ -426,6 +464,8 @@ function runtree(){
             let newhead = thetree.getvalue+(Math.floor(Math.random()*5)+1);
             thetree.getleft.setvalue(newhead);
             changednode = thetree.getleft;
+
+            explanation = "The node valued "+newhead+" is too high, making it higher than the parent ("+thetree.getvalue+"), which it is the left child of.";
         } else if (rand2 == 3){
             // the second level right is too low
             // make it lower than the head
@@ -433,6 +473,8 @@ function runtree(){
             let newhead = thetree.getvalue-(Math.floor(Math.random()*5)+1);
             thetree.getright.setvalue(newhead);
             changednode = thetree.getright;
+
+            explanation = "The node valued "+newhead+" is too low, making it lower than the parent ("+thetree.getvalue+"), which it is the right child of.";
         } else if (rand2 >= 4){
             // make a last node bigger or smaller than parent
             let lastnode = null;
@@ -444,7 +486,9 @@ function runtree(){
                 lastlastdir = lastdir;
                 lastlastnode = lastnode;
                 lastnode = tn;
-                if (Math.random() < 0.5){
+
+                let rand2 = Math.random();
+                if (rand2 < 0.5){
                     tn = tn.getleft;
                     lastdir = 'l';
                 } else {
@@ -457,9 +501,13 @@ function runtree(){
             if (lastlastdir == 'r'){
                 newhead = lastlastnode.getvalue-(Math.floor(Math.random()*5)+1);
                 console.log(lastlastnode.getvalue,'minus smth');
+
+                explanation = "The node valued "+newhead+" is too low, making it lower than its parent ("+lastlastnode.getvalue+"), which it is the right child of.";
             } else {
                 newhead = lastlastnode.getvalue+(Math.floor(Math.random()*5)+1);
                 console.log(lastlastnode.getvalue,'plus smth');
+
+                explanation = "The node valued "+newhead+" is too high, making it higher than its parent ("+lastlastnode.getvalue+"), which it is the left child of.";
             }
             console.log('modified',newhead);
             lastnode.setvalue(newhead);
@@ -468,13 +516,12 @@ function runtree(){
         }
     } else {
         // nope were good to go
+        explanation = "This follows the rules of a binary tree";
     }
 
     badnode = changednode;
-    drawtree(thetree, x, y, 50);
 
     return thetree;
-
 }
 
 function iscorrect(){
@@ -482,27 +529,87 @@ function iscorrect(){
         // correct
         document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
         document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
+        openel('corr');
+    
     } else {
         // has an error
         document.getElementById('correct').style.border = '3px solid rgb(255,0,0)';
         document.getElementById('wrong').style.border = '3px solid rgb(0,255,0)';
         resl = true;
         document.getElementById('badone').style.border = '3px solid red';
+
+        document.getElementById('explanation').innerHTML = explanation;
+
+        openel('wr');
     }
+
+    //document.getElementById('wrong').style.left = '50%';
+    //document.getElementById('explanation').textContent = 'Explanation: '+explanation;
+
 }
 
 
-function iswrong(){
+
+async function iswrong(){
     if (badnode == null){
         // doesnt have an error
+        
         document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
         document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
+        
+        document.getElementById('explanation').innerHTML = explanation;
+        openel('wr');
     } else {
         // has an error
         document.getElementById('wrong').style.border = '3px solid rgb(0,255,0)';
         document.getElementById('correct').style.border = '3px solid rgb(255,0,0)';
         resl = true;
         document.getElementById('badone').style.border = '3px solid red';
+    
+        openel('corr');
+    }
+}
+
+function countnodes(root){
+    if (root == null){
+        return 0;
+    }
+    return (1 + countnodes(root.getleft) + countnodes(root.getright));
+}
+
+function getrandtree(){
+    let mnode = new treenode('root', null, null);
+
+    let nleft = new treenode('left', null, null);
+    let nright = new treenode('right', null, null);
+
+    mnode.setleft(nleft);
+    mnode.setright(nright);
+
+    let totalnodes = 1;
+    totalnodes += addlevel75(nleft, 0);
+    totalnodes += addlevel75(nright, 0);
+    drawtree(mnode, x, y, 50);
+
+    return mnode;
+}
+
+function addlevel75(root, level){
+
+    if (level >= document.getElementById('numnodes').value-1){
+        return;
+    }
+    let newnode;
+    if (Math.floor(Math.random()*4) > 0){
+        newnode = new treenode(0, null, null);
+        root.setleft(newnode);
+        addlevel75(newnode, level+1);
+    }
+
+    if (Math.floor(Math.random()*4) > 0){
+        newnode = new treenode(0, null, null);
+        root.setright(newnode);
+        addlevel75(newnode, level+1);
     }
 }
 
@@ -540,12 +647,63 @@ let stayingup = false;
 
 function initnums(){
     let tv = document.getElementById('numnodes').value;
-    if (tv == "" || isNaN(parseInt(tv)) || parseInt(tv) > 50){
-        document.getElementById('numnodes').value = 10;
+    if (tv == "" || isNaN(parseInt(tv))){
+        document.getElementById('numnodes').value = 3;
     }
-    console.log("acceptable "+document.getElementById('numnodes').value,parseInt(document.getElementById('numnodes').value))
+
+    localStorage.setItem('levels',String(document.getElementById('numnodes').value));
+
 }
 
-initnums();
+function putnums(root,arr){
 
-let actualtree = runtree();
+    if (arr.length == 0){
+        return;
+    }
+
+    //get nums of nodes on left
+    let leftcount = countnodes(root.getleft);
+    let rightcount = countnodes(root.getright);
+    
+    // ideally leftcount+rightocount+1 shud = arr.length
+
+    // so u have the arr
+    let leftrange = arr.slice(0,leftcount);
+    let rightrange = arr.slice(leftcount+1,arr.length);
+    let thenum = arr[leftcount];
+
+    root.setvalue(thenum);
+
+    putnums(root.getleft, leftrange);
+    putnums(root.getright, rightrange);
+
+    return root;
+}
+
+let thl = localStorage.getItem('levels');
+if (thl == null){
+    initnums();
+} else {
+    document.getElementById('numnodes').value = parseInt(thl);
+}
+
+// let actualtree = runtree();
+
+let theroot = getrandtree();
+
+let ncount = countnodes(theroot);
+
+// now gen an arr with those many nums
+let genedarr = genlist(ncount);
+
+theroot = putnums(theroot, genedarr);
+
+theroot = adderror(theroot);
+
+drawtree(theroot, x, y, 50);
+
+
+// now put att the things into the tree
+
+
+//theroot.setvalue(countnodes(theroot));
