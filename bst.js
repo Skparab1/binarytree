@@ -62,6 +62,7 @@ let badnode = null;
 let explanation = "";
 let resl = true;
 let badid = '';
+let type = 'alpha';
 
 function drawnode(node,x,y){
     const div = document.createElement('div');
@@ -372,7 +373,26 @@ function genlist(l){
         arr.push(n);
         i += 1;
     }
+
+    type = 'numeric';
+
     return arr;
+}
+
+function genlistabc(l){
+    let abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+    // so now we need to remove (26-l) elements from it
+
+    while (abc.length > l){
+        //console.log(Math.floor(Math.random()*abc.length),abc);
+        abc.splice(Math.floor(Math.random()*abc.length),1);
+    }
+
+    console.log(l, abc);
+
+    type = 'alpha';
+    return abc;
 }
 
 function createl(root, arr) {
@@ -430,6 +450,10 @@ function adderror(root){
     // not rlly garunteeing an error add but yeah
     // now shall we put an error or not
 
+    let abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+    console.log('abclength',abc.length);
+
     thetree = root;
     
     let rand = Math.floor(Math.random()*10);
@@ -443,36 +467,86 @@ function adderror(root){
         let rand2 = Math.floor(Math.random()*10);
         if (rand2 == 0){
             // head is too low
-            let newhead = thetree.getleft.getvalue-(Math.floor(Math.random()*5)+1);
-            thetree.setvalue(newhead);
-            changednode = thetree;
+            let newhead;
+            if (type != "alpha"){
+                newhead = thetree.getleft.getvalue-(Math.floor(Math.random()*5)+1);
+                thetree.setvalue(newhead);
+                changednode = thetree;
+            } else {
+                // lower than thetree.getleft.getvalue
+                let base = abc.indexOf(thetree.getleft.getvalue);
+                // now add a rand to the base
+                base = Math.floor(base*Math.random());
+                newhead = abc[base];
+
+                thetree.setvalue(newhead);
+                changednode = thetree;
+                console.log('changed1 index ',base);
+            }
+
 
             explanation = "The root valued "+newhead+" is too low, making the left child's value ("+thetree.getleft.getvalue+") larger than it.";
 
         } else if (rand2 == 1){
             // head is too high
-            let newhead = thetree.getright.getvalue+(Math.floor(Math.random()*5)+1);
-            thetree.setvalue(newhead);
-            changednode = thetree;
+            let newhead;
+            if (type != "alpha"){
+                newhead = thetree.getright.getvalue+(Math.floor(Math.random()*5)+1);
+                thetree.setvalue(newhead);
+                changednode = thetree;
+            } else {
+                // lower than thetree.getleft.getvalue
+                let base = abc.indexOf(thetree.getright.getvalue);
+                // now add a rand to the base
+                base = Math.floor(base+Math.random()*(26-base));
+                newhead = abc[base];
+
+                thetree.setvalue(newhead);
+                changednode = thetree;
+                console.log('changed2 index ',base);
+            }
 
             explanation = "The root valued "+newhead+" is too high, making the right child's value ("+thetree.getright.getvalue+") smaller than it.";
 
         } else if (rand2 == 2){
             // the second level left is too high
             // make it higher than the head
-            
-            let newhead = thetree.getvalue+(Math.floor(Math.random()*5)+1);
-            thetree.getleft.setvalue(newhead);
-            changednode = thetree.getleft;
+
+            let newhead;
+            if (type != "alpha"){
+                newhead = thetree.getvalue+(Math.floor(Math.random()*5)+1);
+                thetree.getleft.setvalue(newhead);
+                changednode = thetree.getleft;
+            } else {
+                let base = abc.indexOf(thetree.getvalue);
+                // now add a rand to the base
+                base = Math.floor(base+Math.random()*(26-base));
+                newhead = abc[base];
+
+                thetree.getleft.setvalue(newhead);
+                changednode = thetree.getleft;
+                console.log('changed3 index ',base);
+            }
 
             explanation = "The node valued "+newhead+" is too high, making it higher than the parent ("+thetree.getvalue+"), which it is the left child of.";
         } else if (rand2 == 3){
             // the second level right is too low
             // make it lower than the head
-            
-            let newhead = thetree.getvalue-(Math.floor(Math.random()*5)+1);
-            thetree.getright.setvalue(newhead);
-            changednode = thetree.getright;
+            let newhead;
+            if (type != "alpha"){
+                newhead = thetree.getvalue-(Math.floor(Math.random()*5)+1);
+                thetree.getright.setvalue(newhead);
+                changednode = thetree.getright;
+            } else {
+                let base = abc.indexOf(thetree.getvalue);
+                // now add a rand to the base
+                base = Math.floor(base*Math.random());
+                newhead = abc[base];
+
+                thetree.getleft.setvalue(newhead);
+                changednode = thetree.getleft;
+                console.log('changed4 index ',base);
+            }
 
             explanation = "The node valued "+newhead+" is too low, making it lower than the parent ("+thetree.getvalue+"), which it is the right child of.";
         } else if (rand2 >= 4){
@@ -499,13 +573,31 @@ function adderror(root){
 
             let newhead;
             if (lastlastdir == 'r'){
-                newhead = lastlastnode.getvalue-(Math.floor(Math.random()*5)+1);
-                console.log(lastlastnode.getvalue,'minus smth');
+                if (type != "alpha"){
+                    newhead = lastlastnode.getvalue-(Math.floor(Math.random()*5)+1);
+                    console.log(lastlastnode.getvalue,'minus smth');
+                } else {
+                    let base = abc.indexOf(thetree.getvalue);
+                    // now add a rand to the base
+                    base = Math.floor(base*Math.random());
+                    newhead = abc[base];
+                    console.log('changed5 index ',base);
+                }
 
                 explanation = "The node valued "+newhead+" is too low, making it lower than its parent ("+lastlastnode.getvalue+"), which it is the right child of.";
             } else {
-                newhead = lastlastnode.getvalue+(Math.floor(Math.random()*5)+1);
-                console.log(lastlastnode.getvalue,'plus smth');
+                if (type != "alpha"){
+
+                    newhead = lastlastnode.getvalue+(Math.floor(Math.random()*5)+1);
+                    console.log(lastlastnode.getvalue,'plus smth');
+                } else {
+
+                    let base = abc.indexOf(thetree.getvalue);
+                    // now add a rand to the base
+                    base = Math.floor(base+Math.random()*(26-base));
+                    newhead = abc[base];
+                    console.log('changed6 index ',base);
+                }
 
                 explanation = "The node valued "+newhead+" is too high, making it higher than its parent ("+lastlastnode.getvalue+"), which it is the left child of.";
             }
@@ -648,7 +740,7 @@ let stayingup = false;
 function initnums(){
     let tv = document.getElementById('numnodes').value;
     if (tv == "" || isNaN(parseInt(tv))){
-        document.getElementById('numnodes').value = 3;
+        document.getElementById('numnodes').value = 4;
     }
 
     localStorage.setItem('levels',String(document.getElementById('numnodes').value));
@@ -694,7 +786,38 @@ let theroot = getrandtree();
 let ncount = countnodes(theroot);
 
 // now gen an arr with those many nums
-let genedarr = genlist(ncount);
+// shud it be alhpabetical or numeric
+
+// yes the audi
+let ttrs = localStorage.getItem('treetype');
+
+if (ttrs == null){
+    document.getElementById('treetype').value = 'numeric';
+    localStorage.setItem('treetype','numeric');
+} else {
+    document.getElementById('treetype').value = ttrs;
+}
+
+let genedarr;
+let tp = document.getElementById('treetype').value;
+if (tp == 'alpha'){
+    type = 'alpha';
+    genedarr = genlistabc(ncount);
+} else if (tp == 'numeric'){
+    type = 'numeric';
+    genedarr = genlist(ncount);
+} else {
+    let rr = Math.floor(Math.random()*2);
+    if (rr == 0){
+        type = 'alpha';
+        genedarr = genlistabc(ncount);
+    } else {
+        type = 'numeric';
+        genedarr = genlist(ncount);
+    }
+}
+
+
 
 theroot = putnums(theroot, genedarr);
 

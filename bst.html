@@ -26,13 +26,21 @@
 
     <div id='res' class="results" style="width: 33%; margin-left: 33%;">
 
-      <h1>Settings</h1>
+      <h1 style="margin-bottom: 0px;">Settings</h1>
 
-      <h3>Max number of levels</h3>
+      <h3 style="margin-bottom: 0px;">Max number of levels</h3>
       <select class='guess' name="numnodes" id="numnodes" onchange="initnums();">
         <option value=1>1</option>
         <option value=2>2</option>
         <option value=3>3</option>
+        <option value=4>4</option>
+      </select>
+
+      <h3 style="margin-bottom: 0px;">Tree type</h3>
+      <select class='guess' name="treetype" id="treetype" onchange="localStorage.setItem('treetype',document.getElementById('treetype').value);">
+        <option value="alpha">Alphabetical</option>
+        <option value="numeric">Numerical</option>
+        <option value="rand">Random</option>
       </select>
     </div>
 
