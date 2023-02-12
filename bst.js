@@ -94,7 +94,7 @@ function drawnode(node,x,y){
         div.setAttribute('id', 'badone');
     }
 
-    div.onclick = function() {document.getElementById(div.id).style.zIndex = rnzindex; rnzindex += 1;};
+    //div.onclick = function() {document.getElementById(div.id).style.zIndex = rnzindex; rnzindex += 1;};
 
     rnzindex += 1;
 
