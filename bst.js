@@ -543,8 +543,8 @@ function adderror(root){
                 base = Math.floor(base*Math.random());
                 newhead = abc[base];
 
-                thetree.getleft.setvalue(newhead);
-                changednode = thetree.getleft;
+                thetree.getright.setvalue(newhead);
+                changednode = thetree.getright;
                 console.log('changed4 index ',base);
             }
 
@@ -577,7 +577,7 @@ function adderror(root){
                     newhead = lastlastnode.getvalue-(Math.floor(Math.random()*5)+1);
                     console.log(lastlastnode.getvalue,'minus smth');
                 } else {
-                    let base = abc.indexOf(thetree.getvalue);
+                    let base = abc.indexOf(lastlastnode.getvalue);
                     // now add a rand to the base
                     base = Math.floor(base*Math.random());
                     newhead = abc[base];
@@ -592,7 +592,7 @@ function adderror(root){
                     console.log(lastlastnode.getvalue,'plus smth');
                 } else {
 
-                    let base = abc.indexOf(thetree.getvalue);
+                    let base = abc.indexOf(lastlastnode.getvalue);
                     // now add a rand to the base
                     base = Math.floor(base+Math.random()*(26-base));
                     newhead = abc[base];
