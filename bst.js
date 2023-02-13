@@ -825,8 +825,18 @@ theroot = adderror(theroot);
 
 drawtree(theroot, x, y, 50);
 
-
 // now put att the things into the tree
 
-
 //theroot.setvalue(countnodes(theroot));
+
+// update the coubnt without interfereing with the stuff
+(async () => {
+    fetch((`https://pst652.deta.dev/?UPDATECOUNTER=bst`))
+      .then(response => {
+          return response.json();
+      })
+      .then(data => {
+          console.log(data);
+      })
+  })();
+  

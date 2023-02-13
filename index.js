@@ -525,3 +525,14 @@ let stayingup = false;
 drawtree(root, x, y, 50);
 
 //glowtree(root);
+
+// update the coubnt without interfereing with the stuff
+(async () => {
+    fetch((`https://pst652.deta.dev/?UPDATECOUNTER=binarytree`))
+      .then(response => {
+          return response.json();
+      })
+      .then(data => {
+          console.log(data);
+      })
+  })();
