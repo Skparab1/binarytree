@@ -73,6 +73,29 @@
       <div class="close" onclick="closeprefs();">Close</div>
     </div>
 
+    <div class="randompls" onclick="openel('randomtree');">Generate Random tree</div>
+
+    <div class="largenotif" id="randomtree" style="height: 60%; top: 15%;">
+
+      <h1 style="margin-bottom: 0px; font-size: 25px;">Generate random tree</h1>
+
+      <h3 style="margin-bottom: 0px; font-size: 25px;">Max number of levels</h3>
+      <select class='guess' name="numnodes" id="numnodes" onchange="initnums();">
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+      </select>
+
+      <h3 style="margin-bottom: 0px; font-size: 25px;">Tree type</h3>
+      <select class='guess' name="treetype" id="treetype" onchange="localStorage.setItem('treetype',document.getElementById('treetype').value);">
+        <option value="alpha">Alphabetical</option>
+        <option value="numeric">Numerical</option>
+        <option value="rand">Random</option>
+      </select>
+      <div class="close" onclick="closeel('randomtree'); root = randtree(); redrawtree();">Generate</div>
+    </div>
+
     <div class="largenotif" id="instructions">
       <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
       <h5 style='font-size: 15px; margin: 10px;'>1. Construct a binary tree using the left/right buttons to add nodes and delete button to remove nodes</h5>

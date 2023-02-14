@@ -142,6 +142,8 @@ function addleft(num){
     console.log(nodearr);
 
     redrawtree();
+
+    return nodesadded;
 }
 
 function addright(num){
@@ -272,7 +274,7 @@ function checkall(){
 
     let userpreorder = document.getElementById('preorder').value;
     userpreorder = userpreorder.replaceAll(' ','').replaceAll(',','');
-    if (userpreorder == preorder){
+    if (userpreorder.toUpperCase() == preorder.toUpperCase()){
         document.getElementById('preorder').style.border = '3px solid rgba(0,245,0)';
     } else {
         document.getElementById('preorder').style.border = '3px solid rgba(245,0,0)';
@@ -280,7 +282,7 @@ function checkall(){
 
     let userinorder = document.getElementById('inorder').value;
     userinorder = userinorder.replaceAll(' ','').replaceAll(',','');
-    if (userinorder == inorder){
+    if (userinorder.toUpperCase() == inorder.toUpperCase()){
         document.getElementById('inorder').style.border = '3px solid rgba(0,245,0)';
     } else {
         document.getElementById('inorder').style.border = '3px solid rgba(245,0,0)';
@@ -288,7 +290,7 @@ function checkall(){
 
     let userpostorder = document.getElementById('postorder').value;
     userpostorder = userpostorder.replaceAll(' ','').replaceAll(',','');
-    if (userpostorder == postorder){
+    if (userpostorder.toUpperCase() == postorder.toUpperCase()){
         document.getElementById('postorder').style.border = '3px solid rgba(0,245,0)';
     } else {
         document.getElementById('postorder').style.border = '3px solid rgba(245,0,0)';
@@ -305,6 +307,11 @@ function showsolutions(){
 function openprefs(){
     document.getElementById('preferences').style.opacity = 1;
     document.getElementById('preferences').style.left = '25%';
+}
+
+function openel(el){
+    document.getElementById(el).style.opacity = 1;
+    document.getElementById(el).style.left = '25%';
 }
 
 function toggletheme(override){
@@ -369,6 +376,12 @@ function closeprefs(){
     //document.getElementById('solutions').style.display = 'none';
     document.getElementById('preferences').style.opacity = 0;
     document.getElementById('preferences').style.left = '-100%';
+}
+
+function closeel(el){
+    //document.getElementById('solutions').style.display = 'none';
+    document.getElementById(el).style.opacity = 0;
+    document.getElementById(el).style.left = '-100%';
 }
 
 function closesolutions(){
@@ -491,6 +504,158 @@ if (angle == null){
     angle = 'cornered';
     toggleangle(true);
 }
+
+function getrandtree(){
+    // let mnode = new treenode('root', null, null);
+    let mnode = root;
+
+    let nleft = new treenode('left', null, null);
+    let nright = new treenode('right', null, null);
+
+    mnode.setleft(nleft);
+
+    nodesadded += 1;
+    // add a new one
+    nodearr[nodesadded] = nleft;
+
+    mnode.setright(nright);
+
+    nodesadded += 1;
+    // add a new one
+    nodearr[nodesadded] = nright;
+
+    let totalnodes = 1;
+    totalnodes += addlevel75(nleft, 0);
+    totalnodes += addlevel75(nright, 0);
+
+    return mnode;
+}
+
+
+function addlevel75(root, level){
+
+    if (level >= document.getElementById('numnodes').value-1){
+        return;
+    }
+    let newnode;
+    if (Math.floor(Math.random()*4) > 0){
+        newnode = new treenode(0, null, null);
+        root.setleft(newnode);
+
+        nodesadded += 1;
+        // add a new one
+        nodearr[nodesadded] = newnode;
+
+        addlevel75(newnode, level+1);
+    }
+
+    if (Math.floor(Math.random()*4) > 0){
+        newnode = new treenode(0, null, null);
+        root.setright(newnode);
+
+        nodesadded += 1;
+        // add a new one
+        nodearr[nodesadded] = newnode;
+
+        addlevel75(newnode, level+1);
+    }
+}
+
+// counts the nodes
+function countnodes(root){
+    if (root == null){
+        return 0;
+    }
+    return (1 + countnodes(root.getleft) + countnodes(root.getright));
+}
+
+// get an arr with n random numbers
+function genlist(n){
+    // lets try smth
+    
+    let ttrs = []; // yes the audi
+
+    while (ttrs.length < n){
+        ttrs.push(Math.floor(Math.random()*100));
+    }
+
+    return ttrs; // yes bring it back pls audi
+}
+
+// abcdefghijklmnop
+function genlistabc(n){
+    // lets try smth
+    let abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+    let lucidair = []; // yes the audi
+
+    while (lucidair.length < n){
+        lucidair.push(abc[Math.floor(Math.random()*26)]);
+    }
+
+    return lucidair; //hehe
+}
+
+// just put in the facking nums
+function putnums(root,arr){
+
+    if (arr.length == 0){
+        return;
+    }
+
+    //get nums of nodes on left
+    let leftcount = countnodes(root.getleft);
+    let rightcount = countnodes(root.getright);
+    
+    // ideally leftcount+rightocount+1 shud = arr.length
+
+    // so u have the arr
+    let leftrange = arr.slice(0,leftcount);
+    let rightrange = arr.slice(leftcount+1,arr.length);
+    let thenum = arr[leftcount];
+
+    root.setvalue(thenum);
+
+    putnums(root.getleft, leftrange);
+    putnums(root.getright, rightrange);
+
+    return root;
+}
+
+// this is for a random tree
+function randtree(){
+    // first of all make a tree
+    
+    let theroot = getrandtree();
+
+    let ncount = countnodes(theroot);
+
+    // now gen an arr with those many nodes
+
+    let genedarr;
+    let tp = document.getElementById('treetype').value;
+    if (tp == 'alpha'){
+        type = 'alpha';
+        genedarr = genlistabc(ncount);
+    } else if (tp == 'numeric'){
+        type = 'numeric';
+        genedarr = genlist(ncount);
+    } else {
+        let rr = Math.floor(Math.random()*2);
+        if (rr == 0){
+            type = 'alpha';
+            genedarr = genlistabc(ncount);
+        } else {
+            type = 'numeric';
+            genedarr = genlist(ncount);
+        }
+    }
+
+    putnums(theroot,genedarr);
+
+    return theroot;
+}
+
 
 let root = new treenode('root',null,null);
 

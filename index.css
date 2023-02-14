@@ -79,6 +79,20 @@ button {
   cursor: pointer;
 }
 
+.randompls{
+  position: absolute;
+  left: 43%;
+  top: 0px;
+  width: 20%;
+  text-align: center;
+  background: var(--bg);
+  color: var(--contrast);
+  border: 2px solid var(--main);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
 .nodeadderleft{
   width: 30px;
   font-size: 10px;
@@ -281,11 +295,11 @@ nav {
 
 .clickbuttons {
   position: fixed;
-  top: 80%;
+  top: 78%;
   height: 10%;
   width: 100%;
   text-align: center;
-  background: var(--bg);
+  background: rgba(0,0,0,0);
 }
 
 .checkbutton {
