@@ -4,16 +4,31 @@
     <meta charset='utf-8'>
     <meta name='og:viewport' content='width=device-width,initial-scale=1'>
     <meta name="og:description" content="Skparab1 - Binary tree">
-    <title>Skparab1 - Binary tree</title>
-    <link rel="stylesheet" href="index.css">
+    <title>Binary tree builder</title>
+    <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" type="image/x-icon" href="pacman-favicon.png">
+    <link rel="icon" type="image/x-icon" href="https://skparab1.github.io/binarytree/assets/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
   </head>
   <body>
+    <nav id="nav1">
+      <ul class="nav-items navleft">
+        <li class="headername">Binary Tree Builder</li>
+      </ul>
+      <ul class="nav-items navcenter" id="nav">
+        <li><a class="larget" onclick="openel('randomtree');">Random Tree</a></li>
+        <li><a class="larget" id='header2' href="./bst.html">BST Classification</a></li>
+      </ul> 
+      <ul class="nav-items navright">
+        <li title="Settings"><a onclick="openprefs();"><img src="assets/settings.png" height="30px" class="logo"></a></li>
+        <li title="Help"><a onclick="openel('instructions')"><img src="assets/help.png" height="30px" class="logo"></a></li>
+        <li title="Report bug"><a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><img src="assets/reportbuggy.png" height="30px" class="logo"></a></li>
+      </ul>
+    </nav>
+
     <div class="fullwidth">
-        <h1 id='head' style="font-size: 50px; color: var(--contrast); margin-left: 75px;">Binary tree</h1>
+        <h1 id='head' style="font-size: 50px; color: rgba(0,0,0,0);">e</h1>
     </div>
 
     <div id="treeholder">
@@ -24,8 +39,8 @@
 
     </div>
 
-    <div id='res' class="results">
-      <button class="exit-modal" onclick="if (!stayingup){ document.getElementById('res').style.top = '60%'; stayingup = true; document.getElementById('sb').textContent = '';}"><p id='sb'>Lock movement</p></button>
+    <div id='res' class="results" onmouseenter="raiseresults();" onmouseleave="lowerresults();">
+      <button class="exit-modal" onclick="if (!stayingup){ raiseresults(); stayingup = true; document.getElementById('sb').textContent = 'Unlock movement';} else {stayingup = false; document.getElementById('sb').textContent = 'Lock movement';}"><p id='sb'>Lock movement</p></button>
       <button class="exit-modal" style='left: 15px;' onclick="openprefs();"><p id='prefs'>Preferences</p></button>
 
       <h1>Output</h1>
@@ -54,8 +69,8 @@
       <div class="close" onclick="closesolutions();">Close</div>
     </div>
 
-    <div class="largenotif" id="preferences" style="height: 60%; top: 25%;">
-      <h1 style="font-size: 25px;">Preferences</h1>
+    <div class="largenotif" id="preferences" style="height: 60%;">
+      <h1 style="font-size: 25px;">Settings</h1>
       <h3 style="font-size: 15px; margin-bottom: 5px;" id="theme">Theme: (Dark)</h3>
       <label class="switch" onclick="toggletheme();">
         <input type="checkbox">
@@ -68,12 +83,11 @@
         <span class="slider round"></span>
       </label>
 
-      <a href="https://github.com/skparab1/binarytree/issues/newi" target="_blank"><div class="close" style="margin-bottom: 10px;">Report bug</div></a>
+      <a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><div class="close" style="margin-bottom: 10px;">Report bug</div></a>
 
       <div class="close" onclick="closeprefs();">Close</div>
     </div>
 
-    <div class="randompls" onclick="openel('randomtree');">Generate Random tree</div>
 
     <div class="largenotif" id="randomtree" style="height: 60%; top: 15%;">
 
@@ -96,15 +110,21 @@
       <div class="close" onclick="closeel('randomtree'); root = randtree(); redrawtree();">Generate</div>
     </div>
 
-    <div class="largenotif" id="instructions">
+    <div class="largenotif" id="instructions" style="top: 30%;">
       <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
       <h5 style='font-size: 15px; margin: 10px;'>1. Construct a binary tree using the left/right buttons to add nodes and delete button to remove nodes</h5>
       <h5 style='font-size: 15px; margin: 10px;'>2. Type in guesses for results in output box at the bottom of your screen</h5>
       <h5 style='font-size: 15px; margin: 10px;'>3. Press check answers or view solutions</h5>
       <div class="close" onclick="closeinstructions();">Close</div>
     </div>
-    
-    <script src="index.js"></script>
+
+    <!-- <img class="standaloneicon" id="x1" src="assets/redx.png" height="75px" alt="large red x">
+    <img class="standaloneicon" id="x2" src="assets/redx.png" height="75px" alt="large red x">
+    <img class="standaloneicon" id="x3" src="assets/redx.png" height="75px" alt="large red x">
+    <img class="standaloneicon" id="check1" src="assets/greencheck.png" height="75px" alt="green check">
+    <img class="standaloneicon" id="check2" src="assets/greencheck.png" height="75px" alt="green check">
+    <img class="standaloneicon" id="check3" src="assets/greencheck.png" height="75px" alt="green check"> -->
+    <script src="js/index.js"></script>
 
   </body>
 </html>

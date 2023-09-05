@@ -3,17 +3,31 @@
   <head>
     <meta charset='utf-8'>
     <meta name='og:viewport' content='width=device-width,initial-scale=1'>
-    <meta name="og:description" content="Skparab1 - Binary search tree">
-    <title>Skparab1 - Binary search tree</title>
-    <link rel="stylesheet" href="index.css">
+    <meta name="og:description" content="Skparab1 - BST classification">
+    <title>BST Classification</title>
+    <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" type="image/x-icon" href="pacman-favicon.png">
+    <link rel="icon" type="image/x-icon" href="https://skparab1.github.io/binarytree/assets/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
   </head>
   <body>
+    <nav id="nav1">
+      <ul class="nav-items navleft">
+        <li class="headername">BST Classification</li>
+      </ul>
+      <ul class="nav-items navcenter" id="nav">
+        <li><a class="larget" id='header2' href="./index.html">Binary Tree Builder</a></li>
+      </ul> 
+      <ul class="nav-items navright">
+        <li title="Settings"><a onclick="openprefs();"><img src="assets/settings.png" height="30px" class="logo"></a></li>
+        <li title="Help"><a onclick="openel('instructions')"><img src="assets/help.png" height="30px" class="logo"></a></li>
+        <li title="Report bug"><a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><img src="assets/reportbuggy.png" height="30px" class="logo"></a></li>
+      </ul>
+    </nav>
+
     <div class="fullwidth">
-        <h1 id='head' style="font-size: 50px; color: white; margin-left: 75px;">Binary search tree</h1>
+      <h1 id='head' style="font-size: 50px; color: rgba(0,0,0,0);">e</h1>
     </div>
 
     <div id="treeholder">
@@ -78,8 +92,27 @@
       <h5 style='font-size: 15px; margin: 10px;'>2. Press the corresponding buttons</h5>
       <div class="close" onclick="closeinstructions();">Close</div>
     </div>
+
+    <div class="largenotif" id="preferences" style="height: 60%;">
+      <h1 style="font-size: 25px;">Settings</h1>
+      <h3 style="font-size: 15px; margin-bottom: 5px;" id="theme">Theme: (Dark)</h3>
+      <label class="switch" onclick="toggletheme();">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+
+      <h3 style="font-size: 15px; margin-bottom: 5px;" id="lines">Lines: (Cornered)</h3>
+      <label class="switch" onclick="toggleangle();">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+
+      <a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><div class="close" style="margin-bottom: 10px;">Report bug</div></a>
+
+      <div class="close" onclick="closeprefs();">Close</div>
+    </div>
     
-    <script src="bst.js"></script>
+    <script src="js/bst.js"></script>
 
   </body>
 </html>
