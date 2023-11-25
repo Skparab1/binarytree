@@ -43,16 +43,16 @@
       <h1 style="margin-bottom: 0px;">Problem type</h1>
 
       <h3 style="margin-bottom: 0px;" id="levelsdisplay">Max number of levels</h3>
-      <div class="slidecontainer">
-        <input type="range" min="1" max="4" value="3" step="1" class="slider" name="numnodes" id="numnodes" onchange="initnums();">
+      <div class="slide2container">
+        <input type="range" min="1" max="4" value="3" step="1" class="slider2" name="numnodes" id="numnodes" onchange="initnums();">
       </div>
       
       <h3 style="margin-bottom: 0px;">Tree type</h3>
 
       <input type="checkbox" id="alphabetical" name="alphabetical" value="alphabetical" onchange="updatetreetype();">
-      <label for="vehicle1"> Alphabetical</label><br>
+      <label for="vehicle1" style="color: var(--contrast)"> Alphabetical</label><br>
       <input type="checkbox" id="numeric" name="numeric" value="numeric" onchange="updatetreetype();">
-      <label for="vehicle2"> Numeric</label><br>
+      <label for="vehicle2" style="color: var(--contrast)"> Numeric</label><br>
     </div>
 
     <div class="clickbuttons">
@@ -85,7 +85,7 @@
 
     <div class="largenotif" id="instructions">
       <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
-      <h5 style='font-size: 15px; margin: 10px;'>1. Evaluate the finary tree to determine whether it is a binary search tree</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>1. Evaluate the binary tree to determine whether it is a binary search tree</h5>
       <h5 style='font-size: 15px; margin: 10px;'>2. Press the corresponding buttons</h5>
       <div class="close" onclick="closeinstructions();">Close</div>
     </div>

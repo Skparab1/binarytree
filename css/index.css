@@ -16,7 +16,7 @@ body {
   background-attachment: fixed;
   height: 2900px;
 
-  transition: background-color 0.25s;
+  /* transition: background-color 0.25s; */
 }
 
 :root {
@@ -451,7 +451,7 @@ input:checked + .slider:before {
 }
 
 
-.slidecontainer {
+.slide2container {
   position: relative;
   margin-top: 5px;
   margin-bottom: 30px;
@@ -460,11 +460,11 @@ input:checked + .slider:before {
 
 /* slider */
 
-.slider {
+.slider2 {
   -webkit-appearance: none;
   appearance: none;
   width: 50%;
-  margin-left: 25%;
+  margin-left: 0%;
   height: 10px;
   background: var(--contrast);
   outline: none;
@@ -473,11 +473,11 @@ input:checked + .slider:before {
   transition: opacity .2s;
 }
 
-.slider:hover {
+.slider2:hover {
   opacity: 1;
 }
 
-.slider::-webkit-slider-thumb {
+.slider2::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   height: 25px; 
@@ -486,7 +486,7 @@ input:checked + .slider:before {
   cursor: pointer; 
 }
 
-.slider::-moz-range-thumb {
+.slider2::-moz-range-thumb {
   height: 25px;
   width: 10px; 
   background: var(--main); 
