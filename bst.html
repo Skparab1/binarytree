@@ -38,24 +38,21 @@
 
     </div>
 
-    <div id='res' class="results" style="width: 33%; margin-left: 33%;">
+    <div id='res' class="results" style="width: 33%; margin-left: 33%;" onmouseenter="raiseresults();" onmouseleave="lowerresults();">
 
-      <h1 style="margin-bottom: 0px;">Settings</h1>
+      <h1 style="margin-bottom: 0px;">Problem type</h1>
 
-      <h3 style="margin-bottom: 0px;">Max number of levels</h3>
-      <select class='guess' name="numnodes" id="numnodes" onchange="initnums();">
-        <option value=1>1</option>
-        <option value=2>2</option>
-        <option value=3>3</option>
-        <option value=4>4</option>
-      </select>
-
+      <h3 style="margin-bottom: 0px;" id="levelsdisplay">Max number of levels</h3>
+      <div class="slidecontainer">
+        <input type="range" min="1" max="4" value="3" step="1" class="slider" name="numnodes" id="numnodes" onchange="initnums();">
+      </div>
+      
       <h3 style="margin-bottom: 0px;">Tree type</h3>
-      <select class='guess' name="treetype" id="treetype" onchange="localStorage.setItem('treetype',document.getElementById('treetype').value);">
-        <option value="alpha">Alphabetical</option>
-        <option value="numeric">Numerical</option>
-        <option value="rand">Random</option>
-      </select>
+
+      <input type="checkbox" id="alphabetical" name="alphabetical" value="alphabetical" onchange="updatetreetype();">
+      <label for="vehicle1"> Alphabetical</label><br>
+      <input type="checkbox" id="numeric" name="numeric" value="numeric" onchange="updatetreetype();">
+      <label for="vehicle2"> Numeric</label><br>
     </div>
 
     <div class="clickbuttons">
@@ -74,7 +71,7 @@
 
     <div class="wrong" id="wr">
       <h1 >Wrong!</h1>
-      <h5 id="explanation" style="color: white;">Explanation</h5>
+      <h5 id="explanation" style="color: var(--contrast);">Explanation</h5>
       <div class="close" onclick="closeel('wr');">Close</div>
     </div>
 

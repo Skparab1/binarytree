@@ -449,3 +449,46 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+.slidecontainer {
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+/* slider */
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50%;
+  margin-left: 25%;
+  height: 10px;
+  background: var(--contrast);
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 25px; 
+  width: 10px; 
+  background: var(--main); 
+  cursor: pointer; 
+}
+
+.slider::-moz-range-thumb {
+  height: 25px;
+  width: 10px; 
+  background: var(--main); 
+  cursor: pointer; 
+}

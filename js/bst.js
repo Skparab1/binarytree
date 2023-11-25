@@ -64,6 +64,8 @@ let resl = true;
 let badid = '';
 let type = 'alpha';
 
+let onsomeselector = false;
+
 function drawnode(node,x,y){
     const div = document.createElement('div');
     
@@ -635,7 +637,7 @@ function adderror(root){
         }
     } else {
         // nope were good to go
-        explanation = "This follows the rules of a binary tree";
+        explanation = "This follows the rules of a binary search tree";
     }
 
     badnode = changednode;
@@ -730,6 +732,37 @@ function addlevel75(root, level){
         root.setright(newnode);
         addlevel75(newnode, level+1);
     }
+}
+
+
+function raiseresults(){
+    if (stayingup){
+        return;
+    }
+    let res = document.getElementById("res");
+    res.style.top = (1-(res.offsetHeight/window.innerHeight))*100+"%"
+}
+
+function lowerresults(){
+    if (stayingup || onsomeselector){
+        return;
+    }
+    let res = document.getElementById("res");
+    res.style.top = "90%"
+}
+
+function updatetreetype(){
+    let alphabetical = document.getElementById("alphabetical").checked;
+    let numeric = document.getElementById("numeric").checked;
+    if (alphabetical && numeric){
+        localStorage.setItem('treetype',"rand");
+    } else if (alphabetical){
+        localStorage.setItem('treetype',"alpha");
+    } else if (numeric){
+        localStorage.setItem('treetype',"numeric");
+    }
+
+    console.log(localStorage.getItem("treetype"));
 }
 
 function openprefs(){
@@ -849,8 +882,10 @@ let stayingup = false;
 function initnums(){
     let tv = document.getElementById('numnodes').value;
     if (tv == "" || isNaN(parseInt(tv))){
-        document.getElementById('numnodes').value = 4;
+        document.getElementById('numnodes').value = 3;
     }
+
+    document.getElementById("levelsdisplay").innerHTML = "Max number of levels ("+tv+")";
 
     localStorage.setItem('levels',String(document.getElementById('numnodes').value));
 
@@ -888,6 +923,8 @@ if (thl == null){
     document.getElementById('numnodes').value = parseInt(thl);
 }
 
+initnums();
+
 // let actualtree = runtree();
 
 let theroot = getrandtree();
@@ -901,14 +938,25 @@ let ncount = countnodes(theroot);
 let ttrs = localStorage.getItem('treetype');
 
 if (ttrs == null){
-    document.getElementById('treetype').value = 'numeric';
+    document.getElementById('numeric').checked = true;
+    document.getElementById('alphabetical').checked = false;
     localStorage.setItem('treetype','numeric');
+    ttrs = 'numeric';
 } else {
-    document.getElementById('treetype').value = ttrs;
+    if (ttrs == 'rand'){
+        document.getElementById('numeric').checked = true;
+        document.getElementById('alphabetical').checked = true;
+    } else if (ttrs == 'numeric'){
+        document.getElementById('numeric').checked = true;
+        document.getElementById('alphabetical').checked = false;
+    } else if (ttrs == "alphabetical"){
+        document.getElementById('numeric').checked = false;
+        document.getElementById('alphabetical').checked = true;
+    }
 }
 
 let genedarr;
-let tp = document.getElementById('treetype').value;
+let tp = ttrs;
 if (tp == 'alpha'){
     type = 'alpha';
     genedarr = genlistabc(ncount);
