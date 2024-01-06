@@ -15,6 +15,9 @@
   <script>
     let data = location.href.split("&data=")[1];
 
+    data = data.replaceAll("%20"," ");
+    data = data.replaceAll("  "," ");
+
     localStorage.setItem("binarytreestorage",data);
 
     location.href = location.href.split("/share")[0];
