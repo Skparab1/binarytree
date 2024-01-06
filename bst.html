@@ -18,6 +18,7 @@
       </ul>
       <ul class="nav-items navcenter" id="nav">
         <li><a class="larget" id='header2' href="./index.html">Binary Tree Builder</a></li>
+        <li><a class="larget" onclick="openel('sharetree'); createshareURL();">Share this Tree</a></li>
       </ul> 
       <ul class="nav-items navright">
         <li title="Settings"><a onclick="openprefs();"><img src="assets/settings.png" height="30px" class="logo"></a></li>
@@ -108,6 +109,15 @@
       <a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><div class="close" style="margin-bottom: 10px;">Report bug</div></a>
 
       <div class="close" onclick="closeprefs();">Close</div>
+    </div>
+
+    <div class="largenotif" id="sharetree" style="top: 100%; opacity: 0; height: auto; margin-bottom: 50px;">
+      <h1 style='font-size: 25px; margin: 10px;'>Share Tree</h1>
+      <h5 style='font-size: 15px; margin: 18px;'>Send the following URL to someone to share your tree with them.</h5>
+      
+      <h5 id="shareurldisp" style='font-size: 20px; margin: 15px; padding: 10px; border-radius: 25px; color: var(--main); background-color: var(--bg);'></h5>
+
+      <div class="close" onclick="closeel('sharetree');">Close</div>
     </div>
     
     <script src="js/bst.js"></script>

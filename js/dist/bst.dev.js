@@ -824,21 +824,24 @@ function toggleangle(override) {
     document.getElementById('lines').textContent = "Lines: (Cornered)";
     r.style.setProperty('--br', '0px');
   }
-} // turning the tree into a 
+}
 
+function preorderwithnullpointers(node) {
+  if (node == null) {
+    return "NULL";
+  }
 
-function serialize(root, fp) {
-  // If current node is NULL, store marker
-  if (root === null) {
-    fp.push(MARKER);
-    return;
-  } // Else, store current node and
-  // recur for its children
+  var st = "";
+  st += node.getvalue + " ";
+  st += preorderwithnullpointers(node.getleft) + " ";
+  st += preorderwithnullpointers(node.getright) + " ";
+  return st.replaceAll("deleted", ""); //recreatetree("a b NULL c NULL NULL   NULL ");
+}
 
-
-  fp.push(root.key);
-  serialize(root.left, fp);
-  serialize(root.right, fp);
+function createshareURL() {
+  var query = preorderwithnullpointers(theroot);
+  query = query.replaceAll(" ", "%20");
+  document.getElementById("shareurldisp").textContent = location.href + "/share?data=" + query;
 } // let left = new treenode('left',new treenode('leftleft',new treenode('leftleftleft',null,null),null),new treenode('leftright',new treenode('leftrightleft',null,null),null));
 // let right = new treenode('right',null,null);
 // let rightright = new treenode('rightright',null,new treenode('rightrightright',null,null));

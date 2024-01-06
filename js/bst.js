@@ -870,23 +870,28 @@ function toggleangle(override){
 
 
 
-
-// turning the tree into a 
-function serialize(root, fp) {
-    // If current node is NULL, store marker
-    if (root === null) {
-        fp.push(MARKER);
-        return;
+function preorderwithnullpointers(node){
+    if (node == null){
+        return "NULL";
     }
- 
-    // Else, store current node and
-    // recur for its children
-    fp.push(root.key);
-    serialize(root.left, fp);
-    serialize(root.right, fp);
+    let st = "";
+    st += node.getvalue+" ";
+    st += preorderwithnullpointers(node.getleft)+" ";
+    st += preorderwithnullpointers(node.getright)+" ";
+
+    return st.replaceAll("deleted","");
+
+    //recreatetree("a b NULL c NULL NULL   NULL ");
 }
 
 
+function createshareURL(){
+    let query = preorderwithnullpointers(theroot);
+
+    query = query.replaceAll(" ","%20"); 
+    
+    document.getElementById("shareurldisp").textContent = location.href+"/share?data="+query;
+}
 
 
 
