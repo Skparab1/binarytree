@@ -1,730 +1,919 @@
 "use strict";
 
-// hehe
-var playing = false;
-var clearmemory = false; // basically a reset
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function makestring(inp) {
-  var j = 0;
-  var oup = '';
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  while (j < inp.length) {
-    oup = oup + inp[j] + ' ';
-    j += 1;
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// binary tree shot
+// ive neevr made a class before lmfao
+// this is a treenode
+var treenode =
+/*#__PURE__*/
+function () {
+  function treenode(value, left, right) {
+    _classCallCheck(this, treenode);
+
+    this.value = value;
+    this.left = left;
+    this.right = right;
   }
 
-  return oup;
-}
-
-function makestringand(inp) {
-  var j = 0;
-  var oup = '';
-
-  while (j < inp.length) {
-    oup = oup + inp[j] + '&next&';
-    j += 1;
-  }
-
-  return oup;
-}
-
-function arrincludes(arr, cont) {
-  var y = 0;
-
-  while (y < arr.length) {
-    if (arr[y] == cont) {
-      return true;
+  _createClass(treenode, [{
+    key: "setvalue",
+    value: function setvalue(val) {
+      this.value = val;
     }
+  }, {
+    key: "setleft",
+    value: function setleft(l) {
+      this.left = l;
+    }
+  }, {
+    key: "setright",
+    value: function setright(r) {
+      this.right = r;
+    }
+  }, {
+    key: "getvalue",
+    get: function get() {
+      return this.value;
+    }
+  }, {
+    key: "getleft",
+    get: function get() {
+      return this.left;
+    }
+  }, {
+    key: "getright",
+    get: function get() {
+      return this.right;
+    }
+  }]);
 
-    y += 1;
+  return treenode;
+}();
+
+var treeholder = document.getElementById('treeholder');
+var nodesadded = 0;
+
+function drawnode(node, x, y) {
+  var div = document.createElement('div');
+
+  if (!nodearr.includes(node)) {// add a new one
+    // nodearr[nodesadded] = node;
+    // console.log('pushed in '+node.getvalue+' with '+nodearr.length +' and '+ nodesadded);
+    // addedone = true;
   }
 
-  return false;
+  var thisnum = nodearr.indexOf(node);
+  div.innerHTML = "\n    <input id='val".concat(thisnum, "' type='text' class='nodeval' value='").concat(node.getvalue, "' onchange=\"modvalue(").concat(thisnum, ");\">\n    ");
+  var theleft = node.getleft;
+
+  if (theleft == null || theleft.getvalue == 'deleted') {
+    div.innerHTML += " <button id='leftadder".concat(thisnum, "' class='nodeadderleft' onclick='addleft(").concat(thisnum, ");'>left</button>");
+  } else {
+    div.innerHTML += " <button id='leftadder".concat(thisnum, "' class='nodeadderleft' style='opacity: 0;'>left</button>");
+  }
+
+  var theright = node.getright;
+
+  if (theright == null || theright.getvalue == 'deleted') {
+    div.innerHTML += "<button id='rightadder".concat(thisnum, "' class='nodeadderright' onclick='addright(").concat(thisnum, ");'>right</button>");
+  } else {
+    div.innerHTML += "<button id='rightadder".concat(thisnum, "' class='nodeadderright' style='opacity: 0;'>right</button>");
+  }
+
+  if ((theright == null || theright.getvalue == 'deleted') && (theleft == null || theleft.getvalue == 'deleted') && node != root) {
+    div.innerHTML += " <button id='deletenode".concat(thisnum, "' onclick='delnode(").concat(thisnum, ");' class='deletenode'>del</button>");
+  } else {
+    div.innerHTML += " <button id='deletenode".concat(thisnum, "' class='deletenode' style='opacity: 0;'>del</button>");
+  }
+
+  div.style.marginLeft = x + '%';
+  div.style.marginTop = y + 'px';
+  div.style.position = 'absolute';
+  div.id = 'thenode' + String(thisnum);
+
+  div.onclick = function () {
+    document.getElementById(div.id).style.zIndex = rnzindex;
+    rnzindex += 1;
+  };
+
+  rnzindex += 1;
+  div.className = 'node'; // if (addedone){
+  //     nodesadded += 1;
+  // }
+
+  treeholder.appendChild(div);
 }
 
-function sortbyfavs() {
-  var id1 = 0;
-  var firstbeats = [];
-  var lastbeats = [];
-  var newfavsfirst = [];
-  var newfavslast = [];
-  var sortpathfirst = [];
-  var sortpathlast = [];
+function modvalue(n) {
+  var el = document.getElementById('val' + n);
+  nodearr[n].setvalue(el.value);
+  storetree();
+}
 
-  while (id1 < largebeatarr.length) {
-    if (favs[id1] == 'red') {
-      firstbeats.push(largebeatarr[id1]);
-      newfavsfirst.push('red');
-      sortpathfirst.push(id1);
+function delnode(n) {
+  console.log(nodearr, n, nodearr[n].getvalue); //nodearr[n].setvalue('deleted');
+
+  var thing = nodearr[n];
+  thing.setvalue('deleted');
+  nodearr[n] = null;
+  nodearr.splice(n, 1); //nodearr[n] = null;
+  // go through and find whos left or right this is
+  // console.log(findnode(root,nodearr[n]));
+  //delnodes.push(n);
+
+  console.log(root.getleft);
+  nodesadded -= 1;
+  redrawtree();
+}
+
+function storetree() {
+  // store the tree in localstorage
+  var tostore = preorderwithnullpointers(root);
+  localStorage.setItem("binarytreestorage", tostore);
+}
+
+function redrawtree() {
+  console.log(nodearr);
+  treeholder.innerHTML = "";
+  connectors.innerHTML = "";
+  storetree();
+  drawtree(root, 50, 0, 50);
+}
+
+function addleft(num) {
+  console.log('addleft on ' + num + ' with ' + nodearr);
+  var newnode = new treenode(0, null, null);
+  nodearr[num].setleft(newnode);
+  nodesadded += 1; // add a new one
+
+  nodearr[nodesadded] = newnode;
+  console.log(nodearr);
+  redrawtree();
+  return nodesadded;
+}
+
+function addright(num) {
+  var newnode = new treenode(0, null, null);
+  nodearr[num].setright(newnode);
+  nodesadded += 1; // add a new one
+
+  nodearr[nodesadded] = newnode;
+  redrawtree();
+} // draw the tree recursive
+
+
+function drawtree(root, x, y, prevx) {
+  if (root.getvalue == 'deleted') {
+    root = null;
+  }
+
+  if (root != null && root.getvalue != 'deleted') {
+    drawnode(root, x, y);
+    var newy = y + 75;
+    var leftx;
+    var rightx;
+
+    if (x == 50) {
+      leftx = 25;
+      rightx = 75;
     } else {
-      lastbeats.push(largebeatarr[id1]);
-      newfavslast.push('white');
-      sortpathlast.push(id1);
+      // distance from middle Math.abs(50-x)
+      leftx = x - Math.abs(prevx - x) / 2;
+      rightx = x + Math.abs(prevx - x) / 2;
+      console.log(leftx);
+    } // leftx = leftx-(5000/window.innerWidth);
+    // rightx = rightx-(5000/window.innerWidth);
+
+
+    var div = document.createElement('div');
+    var wid = Math.abs(leftx - x);
+    div.className = 'connector';
+    div.style.width = wid + '%';
+    div.style.height = '75px';
+    div.style.left = leftx + 5000 / window.innerWidth + '%';
+    div.style.top = y + 150 + 'px';
+    div.style.zIndex = -1; // line for right   
+
+    var div1 = document.createElement('div');
+    div1.className = 'connector';
+    div1.style.borderRight = '7px solid var(--contrast)';
+    div1.style.borderLeft = '0px solid white';
+    div1.style.width = wid + '%';
+    div1.style.height = '75px';
+    div1.style.left = x + 5000 / window.innerWidth + '%';
+    div1.style.top = y + 150 + 'px';
+    div1.style.zIndex = -1;
+
+    if (root.getleft != null && root.getleft.getvalue != 'deleted') {
+      document.getElementById('connectors').appendChild(div);
+      drawtree(root.getleft, leftx, newy, x);
     }
 
-    id1 += 1;
+    if (root.getright != null && root.getright.getvalue != 'deleted') {
+      document.getElementById('connectors').appendChild(div1);
+      drawtree(root.getright, rightx, newy, x);
+    }
+  }
+}
+
+function traversepreorder(node) {
+  if (node == null) {
+    return "";
   }
 
-  largebeatarr = firstbeats.concat(lastbeats);
-  accessfavs = newfavsfirst.concat(newfavslast);
-  sortpath = sortpathfirst.concat(sortpathlast);
-} // this is the one time wipe cuz we changed names
+  var st = "";
+  st += node.getvalue + " ";
+  st += traversepreorder(node.getleft) + " ";
+  st += traversepreorder(node.getright) + " ";
+  return st;
+}
 
-
-var otw = localStorage.getItem('otw');
-
-if (otw == null) {
-  // wipe
-  clearmemory = true;
-  localStorage.setItem('otw', 'something');
-} // define the beats
-// 2d arr of all beat data
-// like this [beatname,imgsrc,beatsrc,length]
-
-
-var largebeatarr = [['Yeat Type Beat - "Rope"', 'beat.png', 'cut the rope type beat.wav', '1:38'], ['Ken Carson x Yeat Type Beat - "Demon Time"', 'beat.png', 'demon beat 5.wav', '2:13'], ['Yeat x Lyfe type beat - "Madness"', 'beat.png', 'demon beat 6.wav', '1:39'], ['void Type Beat - "Mystic"', 'beat.png', 'demon beat 7.wav', '1:32'], ['Yeat x Lyfe Type Beat - "Movin"', 'beat.png', 'demon beat 8.wav', '1:58'], ['Lil Yachty Type Beat - "South Pole"', 'beat.png', 'demon beat 9.mp3', '2:01'], ['Pop Smoke x Fivio Foreign Type Beat - "Streets"', 'beat.png', 'drill beat 2.wav', '1:49'], ['Yeat x Ken Carson Type Beat - "Rager"', 'beat.png', 'fire rage beat.mp3', '1:43'], ['Summrs Type Beat - "Pac"', 'beat.png', 'first plugg beat.wav', '1:33'], ['Playboi Carti Flatbed Freestyle Remake', 'beat.png', 'flatbed freestyle remake.wav', '0:56'], ['Playboi Carti x Self Titled Type Beat - "Pour it up"', 'beat.png', 'flute beat 1.mp3', '1:35'], ['Yeat Type Beat - "Happy Bout That"', 'beat.png', 'generic yeat type beat.wav', '1:06'], ['Yeat Type Beat - "Busy"', 'beat.png', 'get busy type beat.wav', '1:44'], ['Playboi Carti x Die Lit Type Beat - "Feelings"', 'beat.png', 'goofy beat 2.wav', '1:39'], ['Pierre Bourne Type Beat - "Heaven"', 'beat.png', 'heavenly beat.wav', '1:57'], ['Jazz Type Beat', 'beat.png', 'jazz type beat.wav', '1:16'], ['Yeat Type Beat - "Mapping"', 'beat.png', 'lava_map_pacman.mp3', '3:34'], ['Playboi Carti Long Time Remake', 'beat.png', 'long time remake.wav', '1:20'], ['Trippie Redd x Pierre Bourne Type Beat - "X\'s"', 'beat.png', 'mellow beat 3.wav', '2:16'], ['Lil Uzi Vert Type Beat - "Eternal"', 'beat.png', 'mellow beat 4.wav', '1:56'], ['Playboi Carti x Die Lit Type Beat - "Emotions"', 'beat.png', 'mellow beat 5.wav', '2:26'], ['Lil Baby Type Beat - "Cash"', 'beat.png', 'mellow beat 7.wav', '1:58'], ['Playboi Carti Type Beat - "Cash"', 'beat.png', 'mellow beat 8.wav', '1:02'], ['Lil Tecca x Lil Baby Type Beat - "Let it Go"', 'beat.png', 'mellow beat 9.wav', '1:12'], ['J. Cole x Lil Baby Type Beat - "False"', 'beat.png', 'mellow beat 11.wav', '1:17'], ['Lil Uzi Vert x Trippie Redd Type Beat - "Lost Cause"', 'beat.png', 'mellow beat 12.mp3', '2:24'], ['Yeat x Ken Carson Type Beat - "Stacks"', 'beat.png', 'money so big type beat.wav', '2:10'], ['Phonk Type Beat', 'beat.png', 'morbius type beat (phonk).wav', "0:51"], ['Playboi Carti x Self Titled Type Beat - "Summer Days"', 'summerdays.png', 'organ beat.wav', '2:15'], ['Video Game Type Beat - "Stars"', 'beat.png', 'pacman_racetrack_map.mp3', '2:41'], ['Playboi Carti Type Beat - "WLR"', 'carti.png', 'playboi carti wlr type beat.wav', '2:08'], ['Autumn! Type Beat - "Sleep"', 'beat.png', 'plugg beat 3 (sleepy beat).wav', '1:01'], ['Kankan x Summrs Type Beat - "Temptations"', 'beat.png', 'plugg beat 4.wav', '1:34'], ['Summrs Type Beat - "iPhone"', 'beat.png', 'plugg beat 5.wav', '2:02'], ['Autumn! x Kankan Type Beat - "Pipes"', 'beat.png', 'plugg beat 6.wav', '1:20'], ['Baby Santana x PnB Rock Type Beat - "God"', 'beat.png', 'plugg beat 7.wav', '1:00'], ['Autumn! x Summrs type beat - "over"', 'beat.png', 'plugg beat 8.wav', '1:28'], ['Autumn! x Summrs Type Beat - "Heart Break" ', 'beat.png', 'plugg beat 9.wav', '2:11'], ['Kankan Type Beat - "L34N"', 'beat.png', 'plugg beat 10.wav', '1:07'], ['Kankan Type Beat - "Fans"', 'beat.png', 'plugg beat 11.wav', '1:16'], ['Summrs x Autumn! type beat - "Equation"', 'beat.png', 'plugg beat 13.mp3', '2:05'], ['Summrs x Autumn! type beat - "Life"', 'beat.png', 'plugg beat 14.mp3', '1:31'], ['Lil Uzi Vert x Trippie Redd Type Beat - "Tripping"', 'beat.png', 'rage type beat 10.wav', '2:02'], ['Playboi Carti x Self Titled Type Beat - "Pour it up 2"', 'beat.png', 'reversed melody beat.wav', '1:55'], ['Summrs Type Beat - "Plug"', 'beat.png', 'second_plugg_beat.wav', '2:48'], ['J. Cole Type Beat - "Brass"', 'beat.png', 'simple victory beat.wav', '0:52'], ['Yeat Type Beat - "Halloween"', 'beat.png', 'spooky_beat.mp3', '5:23'], ['Playboi Carti x Pierre Bourne Type Beat - "Rich"', 'beat.png', 'synth beat 1.mp3', '1:54'], ['Lil Baby x NBA Youngboy Type Beat - "To the Lost Homies"', 'beat.png', 'to the lost homies.wav', '0:50'], ['Lil Baby x Lil Durk Type Beat - "Trenches"', 'beat.png', 'trap sad piano beat.wav', '2:06'], ['Pop Smoke Type Beat - "Twinkle"', 'beat.png', 'twinkle drill.mp3', "3:26"], ['Kanye West Type Beat - "Dear Matthew"', 'beat.png', 'Untitled_song-11.wav', '1:01'], ['Playboi Carti x UnoTheActivist Type Beat - "Nostalgia"', 'beat.png', 'video game type beat 2.wav', '1:58'], ['Lil Baby x Gunna Type Beat - "Wavy"', 'beat.png', 'Wavy beat.wav', '1:03'], ['Playboi Carti Type Beat - "Fangs"', 'beat.png', 'wlr type beat 2.wav', '1:56'], ['Ken Carson Type Beat - "I\'m Winning"', 'beat.png', 'wlr type beat 3.wav', '1:30'], ['Kankan Type Beat - "H1GH3R TH4N G0D"', 'beat.png', 'arcade_type_beat.mp3', '2:12'], ['Lil Durk x NBA Youngboy Type Beat - "To the Lost Homies 2"', 'beat.png', 'emotional_piano_beat.mp3', '3:15'], ['Playboi Carti x Self Titled Type Beat - “Marigold”', 'beat.png', 'flute_beat_2(1).mp3', '2:09'], ['Gunna Type Beat - "Litty"', 'beat.png', 'guitar_beat_fire.mp3', '2:31'], ['Playboi Carti x Pierre Bourne Type Beat - "Drank"', 'beat.png', 'mellow_beat_13.mp3', '3:56'], ['Plants vs. Zombies Type Beat', 'beat.png', 'pvz_type_beat.mp3', '4:25'], ['Yeat Type Beat - "Spooky"', 'beat.png', 'spooky_beat2.mp3', '3:05'], ['Yeat Type Beat - "Alive"', 'beat.png', 'yeat_beat_alive_2.mp3', '1:24'], ['Juice Wrld Type Beat - "Fallen Soldiers"', 'beat.png', 'beautiful_guitar_synth_beat.mp3', '2:12'], ['Playboi Carti x Die Lit Type Beat - "Soda"', 'beat.png', 'mellow_beat_14.mp3', '2:46'], ['NBA Youngboy Type Beat - "Darkness"', 'beat.png', 'fire_piano_beat.mp3', '3:42'], ['Summrs Type Beat - "Problem"', 'beat.png', 'pluggnb_type_beat_-_problems.mp3', '2:45'], ['Trippie Redd Type Beat - "Jarring"', 'beat.png', 'rage_finale.mp3', '2:34'], ['Yeat Type Beat - "Revival"', 'beat.png', 'alive_yeat_beat_part_2.mp3', '3:01'], ['Playboi Carti x Whole Lotta Red Type Beat - "0P1UM"', 'beat.png', 'opium.mp3', '3:25'], ['Playboi Carti Type Beat - "M3D$"', 'beat.png', 'bobraja_freestyle_beat_remake.mp3', '2:06'], ['Pierre Bourne Type Beat - "Demonic"', 'beat.png', 'demon_10.mp3', '2:23'], ['Trippie Redd Type Beat - "Tomorrow"', 'beat.png', 'rage_type_beat_5_9.mp3', '3:06'], ['Trippie Redd Type Beat - "Miss the Rage"', 'beat.png', 'mtr_rip_off_beat.mp3', '3:17'], ['UnoTheActivist x Mexikodro Type Beat - "Future"', 'beat.png', 'UnoTheActivist_x_Mexikodro_Type_Beat_-_future.mp3', '2:28'], ['Lil Pump Type Beat - "War"', 'beat.png', 'war_type_beat.mp3', '2:10'], ['Kankan Type Beat - "Trap"', 'beat.png', 'kankan_type_beat_-_trap.mp3', '2:15'], ['Kankan Type Beat - "Clouds"', 'beat.png', 'kankan_type_beat_-_clouds.mp3', '2:46'], ['Trippie Redd Type Beat - "Cartoon"', 'beat.png', 'rage_type_beat_3_album(2).mp3', '2:29'], ['Pierre Bourne Type Beat - "Location"', 'beat.png', 'Pierre_Bourne_Type_Beat_-_Location.mp3', '2:33']];
-var origlargebeat = largebeatarr;
-var secbeats = [['Bob Raja Ultimate Mix', 'raja.png', 'abhinav_raja_ultimate_mix.mp3', '4:05'], ['Summrs x Autumn! type beat - "Equation" ft. Bob Raja', 'raja.png', 'plugg_beat_13-2.mp3', '1:32'], ['Rage Type Beat 2 ft. Bob Raja', 'raja.png', 'rage_type_beat_2_album_ft_bobraja.mp3', '4:07'], ['"To the lost homies" ft. Bob Raja', 'raja.png', 'Bob_-_to_the_lost_homies_Prod._AGP_1.mp3', '1:24'], ['Demon Beat 8 ft. Bob Raja', 'raja.png', 'bobraja_demon_8.mp3', '2:02'], ['"To the lost Homies 2" ft. Bob Raja Eshwar', 'raja.png', 'bobraja_ft_eshwar_-_to_the_lost_homies_pt2.mp3', '4:22'], ['"Emotional Guitar Beat" ft. Bob Raja', 'raja.png', 'emotional_guitar_beat__bobraja.mp3', '3:09'], ['"Heavenly Beat 2" ft. Bob Raja', 'raja.png', 'heavenly_beat_2__bobraja.mp3', '4:58'], ['"Mellow Beat 10" ft. Bob Raja', 'raja.png', 'mellow_beat_10_bobraja_second_version.mp3', '2:33'], ['"Mellow Beat 12" ft. Bob Raja', 'raja.png', 'mellow_beat_12_ft_bobraja.mp3', '2:24'], ['"Plugg Beat 14" ft. Bob Raja', 'raja.png', 'plugg_beat_14_bobraja.mp3', '1:33'], ['"To the lost Homies" ft. Bob Raja 2"', 'raja.png', 'to_the_lost_homies_2.mp3', '1:40'], ['"To the lost Homies 3" ft. Bob Raja', 'raja.png', 'to_the_lost_homies_3.mp3', '1:40'], ['"To the lost Homies" meme version ft. Bob Raja', 'raja.png', 'to_the_lost_homies_meme_version.mp3', '1:40'], ['"To the lost Homies" official version ft. Bob Raja', 'raja.png', 'to_the_lost_homies_official_version.mp3', '1:40'], ['"Twinkle Drill" ft. Bob Raja', 'raja.png', 'twinkle_drill_bobraja.mp3', '3:27'], ['"4bobraja" ft. Bob Raja', 'raja.png', 'bobraja4.mp3', '1:05'], ['"Twinkle drill 2" ft. Bob Raja', 'raja.png', 'twinkle_drill_bobraja_2.mp3', '3:39'], ['"Twinkle drill 3" ft. Bob Raja', 'raja.png', 'twinkle_drill_bobraja3.mp3', '3:27'], ['NBA Youngboy Type Beat "Darkness" ft. Bob Raja', 'raja.png', 'fire_piano_beat_ft_bobraja.mp3', '4:02'], ['Kankan Type Beat "Clouds" ft. Bob Raja', 'raja.png', 'kankan_type_beat_-_clouds_ft_bobraja.mp3', '2:46'], ['"Mtr rip off" ft. Bob Raja', 'raja.png', 'mtr_rip_off_ft_bobraka.mp3', '3:17'], ['"War" ft. Bob Raja', 'raja.png', 'bobraja_war.mp3', '2:10'], ['"1H4T3V3G" ft. Bob Raja', 'raja.png', 'Bobraja_corn.mp3', '2:15'], ['Trippie Redd Type Beat - “Demonic” ft Bobraja', 'raja.png', 'demon_beat_10_ft_bobraja.mp3', '2:23'], ['Aarit synth beat song ft Bobraja', 'raja.png', 'aarit_synth_beat_song.mp3', '2:00'], ['Bobraja freestyle ft Bobraja', 'raja.png', 'bobraja_freestyle.mp3', '1:29'], ['Emotional piano beat 2 ft bobraka', 'raja.png', 'emotional_piano_beat_2_ft_bobraka.mp3', '2:38'], ['"Fallen Soldiers" ft Bobraja', 'raja.png', 'fallen_soldiers_ft_bobraja.mp3', '2:12'], ['"Problem" ft Bobraja', 'raja.png', 'problem_ft_bobraja.mp3', '2:45'], ['Rage type beat "Million" ft Bobraja', 'raja.png', 'rage_type_beat_million_ft_bobraja.mp3', '2:14'], ['"revival" ft Bobraja"', 'raja.png', 'revival_ft_bobraja.mp3', '3:01'], ['"Dunk on the opps" ft Bobraja"', 'raja.png', 'dunk_on_the_opps_ft_bobraja.mp3', '2:02'], ['Rage 7 ft Bobraja', 'raja.png', 'rage_7_prototype_ft_bobraja(1).mp3', '3:00'], ['"Opps be talkin" ft. Bobraja', 'raja.png', 'opps_be_talkin_ft_bobraja.mp3', '1:53'], ['"Plugg 18" ft. Bobraja', 'raja.png', 'plugg_beat_18_ft_bobraja.mp3', '2:19'], ['"Where we at" ft. Bobraja', 'raja.png', 'bobraja_-_where_we_at.mp3', '3:29'], ['"memories" ft. Bobraja', 'raja.png', 'plugg_beat_-_memories_ft_bobraja(1).mp3', '3:08'], ['"Sorry from the bottom of my heart" ft. Bobraja', 'raja.png', 'sorry_from_the_bottom_of_my_heart_-_bobraja.mp3', '2:46'], ['"Trappin" ft. Bobraja', 'raja.png', 'raka.png', 'bobraja_-_trappin.mp3', '2:13']];
-var insecpl = false;
-var keybindarr = ["", "", "", "", "", "", "", ""];
-var currentpc = 0;
-var queue = [];
-var currenthover = -1;
-var openedqueue = false;
-var playingqueue = false;
-var finishedqueue = false; // dont do stuff
-
-var justplayed = -1;
-var startedbeat = 0;
-var openedpl = false; // station hosting 
-
-var hoststatus = "";
-var satelitestatus = ""; // or a particular station
-
-var syncedbeat = -1;
-console.log(largebeatarr.length);
-var playcounts = [];
-var playcountssec = [];
-var returndata = [0, 0, 0];
-fetch("https://pst652.deta.dev/?GET1").then(function (response) {
-  return response.json();
-}).then(function (data) {
-  console.log(data);
-  returndata[0] = data;
-});
-fetch("https://pst652.deta.dev/?GET2").then(function (response) {
-  return response.json();
-}).then(function (data) {
-  console.log(data);
-  returndata[1] = data;
-});
-fetch("https://pst652.deta.dev/?GET3").then(function (response) {
-  return response.json();
-}).then(function (data) {
-  console.log(data);
-  returndata[2] = data;
-});
-fetch("https://pst652.deta.dev/?GET4").then(function (response) {
-  return response.json();
-}).then(function (data) {
-  console.log(data);
-  playcountssec = data;
-});
-var sortpath = [];
-var favs = localStorage.getItem('favbeats');
-
-if (favs == null || clearmemory) {
-  var c = 0;
-  favs = [];
-
-  while (c < largebeatarr.length) {
-    favs.push('white');
-    c += 1;
+function traverseinorder(node) {
+  if (node == null) {
+    return "";
   }
 
-  localStorage.setItem('favbeats', makestring(favs));
-} else {
-  favs = favs.split(' ');
-} // get the playlists
-
-
-var playlists = localStorage.getItem('playlists');
-
-if (playlists == null || clearmemory) {
-  playlists = [];
-  localStorage.setItem('playlists', makestringand(playlists));
-} else {
-  playlists = playlists.split('&next&');
+  var st = "";
+  st += traverseinorder(node.getleft) + " ";
+  st += node.getvalue + " ";
+  st += traverseinorder(node.getright) + " ";
+  return st;
 }
 
-var playlistcontent = localStorage.getItem('playlistcontent');
-console.log(playlistcontent);
-
-if (playlistcontent == null || clearmemory) {
-  var _c = 0;
-  playlistcontent = [];
-
-  while (_c < playlists.length) {
-    playlistcontent.push('');
-    _c += 1;
+function traversepostorder(node) {
+  if (node == null) {
+    return "";
   }
 
-  localStorage.setItem('playlistcontent', makestring(playlistcontent));
-} else {
-  playlistcontent = playlistcontent.split('&next&');
+  var st = "";
+  st += traversepostorder(node.getleft) + " ";
+  st += traversepostorder(node.getright) + " ";
+  st += node.getvalue + " ";
+  return st;
 }
 
-console.log(playlistcontent);
-var currentplaylist = -1;
-var currentplaylistsongs = [];
-var gottem = false; // access accesfavs but change favs
+function checkall() {
+  // first run each
+  var preorder = traversepreorder(root).replaceAll('deleted', '');
+  var inorder = traverseinorder(root).replaceAll('deleted', '');
+  var postorder = traversepostorder(root).replaceAll('deleted', '');
+  var sols = document.getElementById('solutions');
+  sols.innerHTML = "\n    <h1 style='font-size: 25px'>Solutions</h1>\n    <h1 style='font-size: 15px'>Pre order: ".concat(preorder, "</h1>\n    <h1 style='font-size: 15px'>In order: ").concat(inorder, "</h1>\n    <h1 style='font-size: 15px'>Post order: ").concat(postorder, "</h1>\n    <div class=\"close\" onclick=\"closesolutions();\">Close</div>\n    ");
+  preorder = preorder.replaceAll(' ', '');
+  inorder = inorder.replaceAll(' ', '');
+  postorder = postorder.replaceAll(' ', '');
+  var userpreorder = document.getElementById('preorder').value;
+  userpreorder = userpreorder.replaceAll(' ', '').replaceAll(',', '');
+  var porder = document.getElementById('preorder');
+  var res = document.getElementById('res');
 
-var accessfavs = favs; //basically whenever you want to get the fav of something get it from accessfavs
-// but when you wanna write then convert it using sortpath and then write to favs
-// the actual original order is sortpath[new order] previos order
-//console.log(favs);
+  if (userpreorder.toUpperCase() == preorder.toUpperCase()) {
+    document.getElementById('preorder').style.border = '3px solid rgba(0,245,0)';
+  } else {
+    porder.style.border = '3px solid rgba(245,0,0)'; // let thex = document.getElementById('x1');
+    // thex.style.left = porder.offsetLeft+'px';
+    // thex.style.top = porder.offsetTop+res.offsetTop+'px';
+  }
 
-sortbyfavs();
-console.log(sortpath); // basically sortpath is like this
-// sortpath(x) where x is index in current sort will be original index
+  var userinorder = document.getElementById('inorder').value;
+  userinorder = userinorder.replaceAll(' ', '').replaceAll(',', '');
 
-var squery = '';
-var lquery = '';
-var currentresults = '';
-var searcheron = -1;
-var searcheropen = false;
-var dialogueopened = false;
-var randomxplayed = [];
-var currentadder = 0;
-var triggeredfav = false;
-var triggerdaddbeat = false;
-var currentbeat = 0;
-var audio = new Audio(largebeatarr[0][2]); // this shudnt be overriden
-// for importing plauylist
+  if (userinorder.toUpperCase() == inorder.toUpperCase()) {
+    document.getElementById('inorder').style.border = '3px solid rgba(0,245,0)';
+  } else {
+    document.getElementById('inorder').style.border = '3px solid rgba(245,0,0)';
+  }
 
-var addingname = '';
-var addingcont = ''; // for editing
+  var userpostorder = document.getElementById('postorder').value;
+  userpostorder = userpostorder.replaceAll(' ', '').replaceAll(',', '');
 
-var optionspl = 0;
-var audiomode = localStorage.getItem('audiomode');
-
-if (audiomode == null) {
-  localStorage.setItem('audiomode', 'playonce');
-  audiomode = 'playonce';
+  if (userpostorder.toUpperCase() == postorder.toUpperCase()) {
+    document.getElementById('postorder').style.border = '3px solid rgba(0,245,0)';
+  } else {
+    document.getElementById('postorder').style.border = '3px solid rgba(245,0,0)';
+  }
 }
 
-var md = document.getElementById('mode');
-md.value = audiomode;
-var notif1 = localStorage.getItem('notif1');
-
-if (notif1 == null || notif1 == 'again') {
-  openelement('notif1');
+function showsolutions() {
+  checkall();
+  document.getElementById('solutions').style.display = 'block';
+  document.getElementById('solutions').style.opacity = 1;
+  document.getElementById('solutions').style.top = '25%';
 }
 
-var storedvol = parseInt(localStorage.getItem('storedvol'));
-
-if (storedvol == null) {
-  storedvol = 100;
-  localStorage.setItem('storedvol', '100');
+function openprefs() {
+  document.getElementById('preferences').style.display = 'block';
+  document.getElementById('preferences').style.opacity = 1;
+  document.getElementById('preferences').style.top = '25%';
 }
 
-audio = new Audio('rage_type_beat_1_album.mp3');
-var pw;
-var tk;
+function openel(el) {
+  document.getElementById(el).style.display = 'block';
+  document.getElementById(el).style.opacity = 1;
+  document.getElementById(el).style.top = '25%';
+}
 
-(function _callee() {
-  var data1, data2;
-  return regeneratorRuntime.async(function _callee$(_context) {
+function toggletheme(override) {
+  var r = document.querySelector(':root');
+  var endtime = new Date();
+  var timediff = endtime - lasttoggle;
+  lasttoggle = endtime;
+
+  if (timediff < 333 && !override) {
+    return;
+  }
+
+  console.log('changeing from  ' + theme);
+
+  if (theme == 'dark') {
+    // make light
+    theme = 'light';
+    localStorage.setItem('bttheme', 'light');
+    document.getElementById('theme').textContent = "Theme: (light)";
+    r.style.setProperty('--bg', 'white');
+    r.style.setProperty('--contrast', 'black');
+    r.style.setProperty('--main', '#0d6efd');
+    r.style.setProperty('--slight', 'rgb(220,220,220)');
+  } else {
+    // make dark
+    theme = 'dark';
+    localStorage.setItem('bttheme', 'dark');
+    document.getElementById('theme').textContent = "Theme: (dark)";
+    r.style.setProperty('--bg', 'black');
+    r.style.setProperty('--contrast', 'white');
+    r.style.setProperty('--main', '#0d6efd');
+    r.style.setProperty('--slight', 'rgb(40, 40, 40)');
+  }
+}
+
+function forcedark() {
+  theme = 'dark';
+  localStorage.setItem('bttheme', 'dark');
+  document.getElementById('theme').textContent = "Theme: (dark)";
+  var r = document.querySelector(':root');
+  r.style.setProperty('--bg', 'black');
+  r.style.setProperty('--contrast', 'white');
+  r.style.setProperty('--main', '#0d6efd');
+  r.style.setProperty('--slight', 'rgb(40, 40, 40)');
+}
+
+function toggleangle(override) {
+  var r = document.querySelector(':root');
+  var endtime = new Date();
+  var timediff = endtime - lasttoggle;
+  lasttoggle = endtime;
+
+  if (timediff < 333 && !override) {
+    console.log('returned');
+    return;
+  }
+
+  if (angle == 'cornered') {
+    // make light
+    angle = 'curved';
+    localStorage.setItem('btangle', 'curved');
+    document.getElementById('lines').textContent = "Lines: (Curved)";
+    r.style.setProperty('--br', '25px');
+  } else {
+    // make dark
+    angle = 'cornered';
+    localStorage.setItem('btangle', 'cornered');
+    document.getElementById('lines').textContent = "Lines: (Cornered)";
+    r.style.setProperty('--br', '0px');
+  }
+}
+
+function closeprefs() {
+  //document.getElementById('solutions').style.display = 'none';
+  document.getElementById('preferences').style.opacity = 0;
+  document.getElementById('preferences').style.top = '100%';
+}
+
+function closeel(el) {
+  //document.getElementById('solutions').style.display = 'none';
+  document.getElementById(el).style.opacity = 0;
+  document.getElementById(el).style.top = '100%';
+}
+
+function raiseresults() {
+  if (stayingup) {
+    return;
+  }
+
+  var res = document.getElementById("res");
+  res.style.top = (1 - res.offsetHeight / window.innerHeight) * 100 + "%";
+}
+
+function lowerresults() {
+  if (stayingup) {
+    return;
+  }
+
+  var res = document.getElementById("res");
+  res.style.top = "90%";
+}
+
+function closesolutions() {
+  //document.getElementById('solutions').style.display = 'none';
+  document.getElementById('solutions').style.opacity = 0;
+  document.getElementById('solutions').style.top = '100%';
+}
+
+function closeinstructions() {
+  document.getElementById('instructions').style.top = '100%';
+  document.getElementById('instructions').style.opacity = 0;
+}
+
+function glowtreepreorder(start) {
+  var idx, nd;
+  return regeneratorRuntime.async(function glowtreepreorder$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          _context.next = 2;
-          return regeneratorRuntime.awrap(fetch('tokens/tk.json').then(function (r) {
-            return r.json();
-          }));
+          if (!(start == null)) {
+            _context.next = 2;
+            break;
+          }
+
+          return _context.abrupt("return");
 
         case 2:
-          data1 = _context.sent;
-          pw = data1.data[0];
-          pw = JSON.stringify(pw);
-          pw = pw.replace('{"pwd":"', '').replace('"}', '');
-          _context.next = 8;
-          return regeneratorRuntime.awrap(fetch('tokens/tk2.json').then(function (r) {
-            return r.json();
-          }));
+          idx = nodearr.indexOf(start);
+          nd = document.getElementById('thenode' + String(idx));
 
-        case 8:
-          data2 = _context.sent;
-          tk = data2.data[0];
-          tk = JSON.stringify(tk);
-          tk = tk.replace('{"pwd":"', '').replace('"}', ''); //console.log('THIS',pw);
+          try {
+            nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+          } catch (error) {}
 
-        case 12:
+          _context.next = 7;
+          return regeneratorRuntime.awrap(sleep(500));
+
+        case 7:
+          _context.next = 9;
+          return regeneratorRuntime.awrap(glowtreepreorder(start.getleft));
+
+        case 9:
+          _context.next = 11;
+          return regeneratorRuntime.awrap(sleep(500));
+
+        case 11:
+          _context.next = 13;
+          return regeneratorRuntime.awrap(glowtreepreorder(start.getright));
+
+        case 13:
         case "end":
           return _context.stop();
       }
     }
   });
-})();
+}
 
-(function _callee5() {
-  var counter, counter2, counter3, counter4, sleep, positify, setoverlay, setoverlaylite, setoverlayicon, formatsec, revealmore, h1, h2, h3, fav, title, nav, head, head1, head2, nowplaying, mainimg, beatimg, ctime, ttime, playimg, pauseimg, voldisp, volumer, timekeeper, playnow, nowname, controls, allbeats, hc, hol, htop, cl, cl2, dimclr, dimclr2, d, f, _f, n, b, y, mutelineclr, brightlineclr, _c2;
-
-  return regeneratorRuntime.async(function _callee5$(_context5) {
+function glowtreeinorder(start) {
+  var idx, nd;
+  return regeneratorRuntime.async(function glowtreeinorder$(_context2) {
     while (1) {
-      switch (_context5.prev = _context5.next) {
+      switch (_context2.prev = _context2.next) {
         case 0:
-          revealmore = function _ref6(x) {
-            var l = document.getElementById('more');
-            l.style.display = 'block';
-            l.style.opacity = 0; // nvm ignore the opacity stuff
-
-            var c = 0;
-
-            (function _callee2() {
-              return regeneratorRuntime.async(function _callee2$(_context2) {
-                while (1) {
-                  switch (_context2.prev = _context2.next) {
-                    case 0:
-                      if (!(c < 100)) {
-                        _context2.next = 7;
-                        break;
-                      }
-
-                      l.style.opacity = 0;
-                      _context2.next = 4;
-                      return regeneratorRuntime.awrap(sleep(2));
-
-                    case 4:
-                      c += 1;
-                      _context2.next = 0;
-                      break;
-
-                    case 7:
-                    case "end":
-                      return _context2.stop();
-                  }
-                }
-              });
-            })();
-          };
-
-          formatsec = function _ref5(sec) {
-            sec = Math.floor(sec);
-            var mins = Math.floor(sec / 60);
-            sec = sec % 60;
-
-            if (String(sec).length == 1) {
-              sec = '0' + String(sec);
-            }
-
-            return mins + ":" + sec;
-          };
-
-          setoverlayicon = function _ref4(ovl, dv, pushback, pushl) {
-            ovl.style.position = 'absolute';
-            ovl.style.top = dv.offsetTop + 25 - pushback + 'px';
-            ovl.style.left = dv.offsetLeft + 100 + pushl + 'px';
-          };
-
-          setoverlaylite = function _ref3(ovl, dv) {
-            ovl.style.position = 'absolute';
-            ovl.style.top = dv.offsetTop + 25 + 'px';
-            ovl.style.left = dv.offsetLeft + 100 + 'px';
-          };
-
-          setoverlay = function _ref2(ovl, dv) {
-            ovl.style.top = dv.offsetTop + 'px';
-            ovl.style.left = dv.offsetLeft + 'px';
-            ovl.style.height = dv.offsetHeight + 'px';
-            ovl.style.width = dv.offsetWidth + 'px';
-          };
-
-          positify = function _ref(x) {
-            if (x >= 0) {
-              return x;
-            } else {
-              return 0;
-            }
-          };
-
-          counter = -50;
-          counter2 = -3 * window.innerWidth / 4 + 2000;
-          counter3 = 0;
-          counter4 = 0;
-
-          sleep = function sleep(ms) {
-            return new Promise(function (res) {
-              return setTimeout(res, ms);
-            });
-          };
-
-          // def all teh consts
-          h1 = document.getElementById('header1');
-          h2 = document.getElementById('header2');
-          h3 = document.getElementById('header3'); //h1.addEventListener('mouseover',colorize(h1));
-
-          fav = document.getElementById('fav');
-          title = document.getElementById('title');
-          nav = document.getElementById('nav1');
-          head = document.getElementById('head');
-          head1 = document.getElementById('head1');
-          head2 = document.getElementById('head2');
-          nowplaying = document.getElementById('nowplaying');
-          mainimg = document.getElementById('mainimg');
-          beatimg = document.getElementById('beatimg'); //beatimg.addEventListener('mouseover', showplaypause() , false);
-
-          ctime = document.getElementById('currenttime');
-          ttime = document.getElementById('totaltime');
-          playimg = document.getElementById('playimg');
-          pauseimg = document.getElementById('pauseimg');
-          voldisp = document.getElementById('volumedisp');
-          volumer = document.getElementById('volumer');
-          timekeeper = document.getElementById('timekeeper');
-
-          timekeeper.oninput = function () {
-            var pc = this.value / 100;
-            audio.currentTime = Math.floor(audio.duration * pc);
-          };
-
-          playnow = document.getElementById('playnow');
-          nowname = document.getElementById('nowplayingname');
-          controls = document.getElementById('controlsbox');
-          controls.style.position = 'absolute';
-          controls.style.left = window.innerWidth * 75 / 100 + 'px';
-          ;
-          controls.style.marginTop = '112px';
-          controls.style.zIndex = 8;
-          allbeats = document.getElementById('allbeats');
-          hc = document.getElementById('hcontainer');
-          hol = document.getElementById('headoverlay');
-          hol.style.top = head.offsetTop + 'px';
-          hol.style.left = head.offsetLeft + 'px';
-          hol.style.height = head.offsetHeight + 'px';
-          hol.style.width = head.offsetWidth + 'px';
-          htop = head.offsetTop; // for cool effect
-          // canvas
-          // this is the base
-          //ctx.fillRect(ps.offsetLeft,ps.offsetTop,ps.offsetWidth,ps.offsetHeight);
-
-          buttonglower = 0;
-          linemaker = 0;
-          linemaker2 = 0;
-          savelmaker1 = 0;
-          brightner1 = 0;
-          brightner2 = 0;
-          brightner3 = 0;
-          brightner4 = 0;
-          brightner5 = 0;
-          brightner6 = 0;
-          brightner7 = 0;
-          brightner8 = 0;
-
-        case 59:
-          if (!true) {
-            _context5.next = 106;
+          if (!(start == null)) {
+            _context2.next = 2;
             break;
           }
 
-          if (!(counter <= 100)) {
-            _context5.next = 77;
-            break;
-          }
+          return _context2.abrupt("return");
 
-          cl = counter / 100 * 255;
-          cl2 = cl * 2 - 255 / 2;
-          dimclr = 'rgb(' + cl + ',' + cl + ',' + cl + ')';
-          dimclr2 = 'rgb(' + cl2 + ',' + cl2 + ',' + cl2 + ')'; // header fade
+        case 2:
+          idx = nodearr.indexOf(start);
+          nd = document.getElementById('thenode' + String(idx));
+          _context2.next = 6;
+          return regeneratorRuntime.awrap(sleep(500));
 
-          h1.style.color = dimclr;
-          h2.style.color = dimclr;
-          h3.style.color = dimclr;
-          fav.style.opacity = cl / 255;
-          title.style.color = dimclr;
-          nav.style.borderColor = dimclr; //head.style.color = 'rgb('+cl+','+cl+','+cl+')';
-          //hol.style.width = head.offsetWidth*(counter/100) +'px';
-          //hol.style.backgroundImage = 'linear-gradient(to right,rgba(0,0,0,'+(1-(counter/100))+'),rgba(0,0,0,'+(1-(counter/1000))+'))';
+        case 6:
+          _context2.next = 8;
+          return regeneratorRuntime.awrap(glowtreeinorder(start.getleft));
 
-          if (!(!window.location.href.includes('nointro') || true)) {
-            _context5.next = 74;
-            break;
-          }
+        case 8:
+          try {
+            nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+          } catch (error) {}
 
-          _context5.next = 74;
-          return regeneratorRuntime.awrap(sleep(2));
+          _context2.next = 11;
+          return regeneratorRuntime.awrap(sleep(500));
 
-        case 74:
-          if (counter <= 100) {
-            counter = counter + (105 - counter) / 100;
-          }
+        case 11:
+          _context2.next = 13;
+          return regeneratorRuntime.awrap(glowtreeinorder(start.getright));
 
-          _context5.next = 80;
-          break;
-
-        case 77:
-          counter += 1;
-          _context5.next = 80;
-          return regeneratorRuntime.awrap(sleep(2));
-
-        case 80:
-          if (playingqueue) {
-            document.getElementById('progressbar').style.width = audio.currentTime / audio.duration * 100 + '%';
-          }
-
-          if (!(satelitestatus != "")) {
-            _context5.next = 86;
-            break;
-          }
-
-          // connected to a station
-          d = new Date();
-
-          if (!(d.getSeconds() % 10 == 0)) {
-            _context5.next = 86;
-            break;
-          }
-
-          _context5.next = 86;
-          return regeneratorRuntime.awrap(fetch("https://pst652.deta.dev/?SPECIFIC=astation".concat(satelitestatus)).then(function (response) {
-            return response.json();
-          }).then(function (data) {
-            console.log(data);
-            console.log(data.plays); // plays is the current beat
-            // name is the playing or not
-
-            if (data.name == 'offline') {
-              alert('Station "' + satelitestatus + '" has ended its broadcast');
-              terminatesatelite();
-            }
-
-            if (data.name == "playing" && data.plays != syncedbeat) {
-              (function _callee3() {
-                var d;
-                return regeneratorRuntime.async(function _callee3$(_context3) {
-                  while (1) {
-                    switch (_context3.prev = _context3.next) {
-                      case 0:
-                        playbeatorig(data.plays);
-                        audio.pause();
-
-                      case 2:
-                        if (!true) {
-                          _context3.next = 10;
-                          break;
-                        }
-
-                        d = new Date();
-
-                        if (!(d.getSeconds() % 10 == 3)) {
-                          _context3.next = 6;
-                          break;
-                        }
-
-                        return _context3.abrupt("break", 10);
-
-                      case 6:
-                        _context3.next = 8;
-                        return regeneratorRuntime.awrap(sleep(2));
-
-                      case 8:
-                        _context3.next = 2;
-                        break;
-
-                      case 10:
-                        audio.play();
-
-                      case 11:
-                      case "end":
-                        return _context3.stop();
-                    }
-                  }
-                });
-              })();
-            }
-          }));
-
-        case 86:
-          if (returndata[0] != 0 && returndata[1] != 0 && returndata[2] != 0) {
-            (function () {
-              //gottem all
-              playcounts = returndata[0].concat(returndata[1].concat(returndata[2]));
-              console.log(playcounts);
-              var s = 0;
-
-              (function _callee4() {
-                var g;
-                return regeneratorRuntime.async(function _callee4$(_context4) {
-                  while (1) {
-                    switch (_context4.prev = _context4.next) {
-                      case 0:
-                        if (!(s < largebeatarr.length)) {
-                          _context4.next = 7;
-                          break;
-                        }
-
-                        try {
-                          g = document.getElementById('playct' + s);
-                          g.textContent = "▷ " + playcounts[sortpath[s]].plays;
-                        } catch (error) {// its fine
-                        }
-
-                        _context4.next = 4;
-                        return regeneratorRuntime.awrap(sleep(15));
-
-                      case 4:
-                        s += 1;
-                        _context4.next = 0;
-                        break;
-
-                      case 7:
-                      case "end":
-                        return _context4.stop();
-                    }
-                  }
-                });
-              })();
-
-              returndata = [0, 0, 0, 0]; //dont do it again
-            })();
-          }
-
-          counter2 -= 6;
-          f = document.getElementById('pwd');
-
-          if (f.value == pw || window.location.href == 'file:///Users/homemac/Desktop/Programming/Otherprograms/agpbeats/index.html' && f.value == 'a') {
-            // so i can aceess it hehe
-            f.value = "";
-            closedialogue('pwdask');
-            opensecret(); // validate the ls
-
-            localStorage.setItem('rajavault', 'validated');
-          }
-
-          if (counter2 > -3 * window.innerWidth / 4) {
-            // ends when 2000-counter2 == 3*window.innerWidth/4
-            //so from counter2 = 0 to counter == -3*window.innerwidth/4+2000
-            // we want start at that
-            document.body.style.background = 'black';
-            hol.style.left = counter / 50 + 'px';
-            hol.style.width = 2000 - counter2 + 'px';
-          } else {
-            head.style.display = 'none';
-            nowplaying.style.display = 'inline-block';
-            counter3 += 1;
-            nowplaying.style.opacity = counter3 / 100;
-            hol.style.display = 'none';
-            _f = document.getElementById('plc');
-            _f.style.opacity = counter3 / 300;
-            n = document.getElementById('nav'); // nav.style.backgroundColor = 'black';
-
-            nav.style.opacity = counter3 / 100; //document.body.style.backgroundImage = 'url("bg.png")';
-
-            b = document.getElementById('bg1');
-            b.style.opacity = counter3 / 550;
-            y = document.getElementById('nowplaying');
-            y.style.top = document.getElementById('placeholder').offsetTop + "px";
-
-            if (window.scrollY > y.offsetTop) {//console.log('hitter');
-              // let z = document.getElementById('placeholder');
-              // z.style.display = 'block';
-              // t = y.offsetLeft;
-              // y.style.position = 'fixed';
-              // y.style.top = document.getElementById('placeholder').offsetTop/4+"px";
-              // y.style.left = 3*t/4+'px';
-            }
-
-            controls.style.top = -80 + 'px';
-            beatimg.style.position = 'absolute';
-            setoverlayicon(beatimg, y, document.getElementById('placeholder').offsetTop / 2, 100);
-            playimg.style.position = 'absolute';
-            setoverlayicon(playimg, y, document.getElementById('placeholder').offsetTop / 2, 100);
-            pauseimg.style.position = 'absolute';
-            setoverlayicon(pauseimg, y, document.getElementById('placeholder').offsetTop / 2, 100);
-            allbeats.style.opacity = counter3 / 200;
-          }
-
-          counter4 += 1;
-          mutelineclr = 'rgb(50,50,50)';
-          brightlineclr = 'rgb(100,100,100)'; // basically glow the buttons sequentially
-          // so we have the button
-          // bt1
-          // the intensity is distance from mid = 50
-          // upgrade the button stuff
-
-          buttonglower += 0.5;
-
-          if (buttonglower >= 500) {
-            buttonglower = 0;
-          }
-
-          if (lquery != document.getElementById('query').textContent) {
-            console.log('hit');
-            _c2 = document.getElementById('query');
-            lquery = _c2.textContent;
-            searcher(_c2.textContent);
-          }
-
-          localStorage.setItem('storedvol', String(volumer.value));
-          audio.volume = volumer.value / 100;
-          voldisp.textContent = 'Vol: ' + String(volumer.value) + '%'; // controls.style.left = window.innerWidth*70/100 +'px';;
-
-          ctime.textContent = formatsec(audio.currentTime);
-          ttime.textContent = formatsec(audio.duration); //detadb(('song'+sortpath[ix]),(largebeatarr[ix][0].replaceAll(" ",'').replaceAll('"','').replaceAll("-",'')),cp);
-
-          if (audio.currentTime >= audio.duration && !finishedqueue) {
-            playnextbeat();
-          } // let n1 = document.getElementById('nav1');
-          // if (window.scrollY > n1.offsetHeight){
-          //   nowplaying.style.position = 'fixed';
-          //   nowplaying.style.top = n1.offsetHeight+'px';
-          // }
-          //let pc = Math.floor(timekeeper.value/100);
-          //audio.currentTime = audio.duration*pc;
-
-
-          timekeeper.value = audio.currentTime / audio.duration * 100;
-          _context5.next = 59;
-          break;
-
-        case 106:
+        case 13:
         case "end":
-          return _context5.stop();
+          return _context2.stop();
       }
     }
   });
-})(); // we can generate the lengths
-
-
-var iterator = 0;
-var ix = 0;
-
-while (ix < largebeatarr.length) {
-  var div = document.createElement('div');
-  div.innerHTML = "\n  <div id='beat" + ix + "' class=\"beatblock\" onclick=\"playbeat(" + ix + ");\" onmouseover=\"beathover('beat" + ix + "')\" onmouseout=\"beatunhover('beat" + ix + "')\">\n  <div class=\"fullwidth\" onmouseover=\"currenthover=" + ix + "\">\n\n    <div class=\"leftblock\"><h1 class=\"beattitle\">" + largebeatarr[ix][0] + "</h1></div>\n    <div class=\"rightblockfav\" onclick='favbeat()';><h1 id='heart" + ix + "' class=\"beatheart\" onclick='favbeat();' style='color: " + accessfavs[ix] + ";'>\u2661</h1></div>\n    <div class=\"rightblockmore\" onclick='addtoplaylist()';><h1 id='ellipses" + ix + "' class=\"beatmore\"  style='color: white'>\u2026</h1></div>\n\n    <div class='rightblock'><h1 class=\"beatlength\">" + largebeatarr[ix][3] + "</h1></div>\n    <div class='rightblockpc' id='pcb" + ix + "'><h1 class=\"beatlength\" id='playct" + ix + "'>\u25B7 </h1></div>\n\n  </div>\n  </div>";
-  allbeats.appendChild(div);
-  ix += 1;
 }
 
-var plc = document.getElementById('allplaylists');
-var allp = document.getElementById('alloptions');
-ix = 0;
-
-while (ix < playlists.length) {
-  var _div = document.createElement('div');
-
-  if (playlists[ix] != '') {
-    _div.innerHTML = "<div class=\"playlist\" onclick='openplaylist(" + ix + ");'>" + playlists[ix] + "</div>";
-    plc.appendChild(_div);
+function getlevel(level, node, currentlevel, gotnodes) {
+  if (node == null) {
+    gotnodes.push(null);
+    return gotnodes;
   }
 
-  if (ix >= 0 && playlists[ix] != '') {
-    var div2 = document.createElement('div');
-    div2.innerHTML = "  <input id='check" + ix + "' type=\"checkbox\">\n    <label style='font-size: 15px; color: white;'>" + playlists[ix] + "</label><br>";
-    allp.appendChild(div2);
+  if (currentlevel == level) {
+    gotnodes.push(node);
+    return gotnodes;
   }
 
-  ix += 1;
+  gotnodes = getlevel(level, node.getleft, currentlevel + 1, gotnodes);
+  gotnodes = getlevel(level, node.getright, currentlevel + 1, gotnodes);
+  return gotnodes;
 }
+
+function getlevelorder() {
+  var res = [0];
+  var _final = [];
+  var lev = 0;
+
+  while (res.length != 0) {
+    res = getlevel(lev, root, 0, []);
+
+    if (res.length == 0) {
+      break;
+    }
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = res[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        i = _step.value;
+
+        _final.push(i);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    lev += 1;
+  }
+
+  return _final;
+}
+
+function preorderwithnullpointers(node) {
+  if (node == null) {
+    return "NULL";
+  }
+
+  var st = "";
+  st += node.getvalue + " ";
+  st += preorderwithnullpointers(node.getleft) + " ";
+  st += preorderwithnullpointers(node.getright) + " ";
+  return st.replaceAll("deleted", ""); //recreatetree("a b NULL c NULL NULL   NULL ");
+}
+
+function createshareURL() {
+  var query = preorderwithnullpointers(root);
+  query = query.replaceAll(" ", "%20");
+  document.getElementById("shareurldisp").textContent = location.href + "/share?data=" + query;
+}
+
+var universalrecreator = 0;
+
+function recreatenode(sequence, num) {
+  if (num > sequence.length) {
+    return null;
+  }
+
+  var newnode = new treenode(sequence[num], null, null);
+  nodesadded += 1; // add a new one
+
+  nodearr[nodesadded] = newnode;
+  universalrecreator += 1;
+
+  if (sequence[universalrecreator] != "NULL") {
+    newnode.setleft(recreatenode(sequence, universalrecreator));
+  } else {
+    universalrecreator += 1;
+  }
+
+  if (sequence[universalrecreator] != "NULL") {
+    newnode.setright(recreatenode(sequence, universalrecreator));
+  } else {
+    universalrecreator += 1;
+  }
+
+  return newnode;
+}
+
+function purgesequence(sequence) {
+  var newsequence = [];
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = sequence[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      i = _step2.value;
+
+      if (i != "") {
+        newsequence.push(i);
+      }
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+        _iterator2["return"]();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  return newsequence;
+}
+
+function recreatetree(sequence) {
+  sequence = sequence.replaceAll("%20", " ");
+  sequence = sequence.replaceAll("  ", " ");
+  sequence = sequence.split(" ");
+  sequence = purgesequence(sequence);
+  console.log(sequence);
+  universalrecreator = 0;
+  root = new treenode(sequence[universalrecreator], null, null);
+  nodearr[0] = root;
+  universalrecreator += 1;
+
+  if (sequence[universalrecreator] != "NULL") {
+    root.setleft(recreatenode(sequence, universalrecreator));
+  } else {
+    universalrecreator += 1;
+  }
+
+  if (sequence[universalrecreator] != "NULL") {
+    root.setright(recreatenode(sequence, universalrecreator));
+  } else {
+    universalrecreator += 1;
+  }
+}
+
+function disableplay() {
+  var post = document.getElementById('playpost');
+  var ino = document.getElementById('playin');
+  var pre = document.getElementById('playpre');
+  post.style.color = 'rgba(125,125,125,0.6)';
+  post.style.cursor = "wait";
+  ino.style.color = 'rgba(125,125,125,0.6)';
+  ino.style.cursor = "wait";
+  pre.style.color = 'rgba(125,125,125,0.6)';
+  pre.style.cursor = "wait";
+  disabled = true;
+}
+
+function enableplay() {
+  var post = document.getElementById('playpost');
+  var ino = document.getElementById('playin');
+  var pre = document.getElementById('playpre');
+  post.style.color = 'yellow';
+  post.style.cursor = "pointer";
+  ino.style.color = 'yellow';
+  ino.style.cursor = "pointer";
+  pre.style.color = 'yellow';
+  pre.style.cursor = "pointer";
+  disabled = false;
+}
+
+function glowtreepostorder(start) {
+  var idx, nd;
+  return regeneratorRuntime.async(function glowtreepostorder$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          if (!(start == null)) {
+            _context3.next = 2;
+            break;
+          }
+
+          return _context3.abrupt("return");
+
+        case 2:
+          idx = nodearr.indexOf(start);
+          nd = document.getElementById('thenode' + String(idx));
+          _context3.next = 6;
+          return regeneratorRuntime.awrap(glowtreepostorder(start.getleft));
+
+        case 6:
+          _context3.next = 8;
+          return regeneratorRuntime.awrap(sleep(500));
+
+        case 8:
+          _context3.next = 10;
+          return regeneratorRuntime.awrap(glowtreepostorder(start.getright));
+
+        case 10:
+          _context3.next = 12;
+          return regeneratorRuntime.awrap(sleep(500));
+
+        case 12:
+          try {
+            nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+          } catch (error) {} //enableplay();
+
+
+        case 13:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+} // rules
+
+
+var bt1 = localStorage.getItem('binarytree');
+
+if (bt1 == null) {
+  localStorage.setItem('binarytree', 'opened');
+  document.getElementById('instructions').style.display = 'block';
+  document.getElementById('instructions').style.opacity = 1;
+  document.getElementById('instructions').style.left = '25%';
+}
+
+var theme = localStorage.getItem('bttheme');
+var angle = localStorage.getItem('btangle');
+var lasttoggle = new Date();
+
+if (theme == null) {
+  localStorage.setItem("bttheme", 'light');
+  theme = 'light';
+} else if (theme == 'dark') {
+  forcedark();
+}
+
+if (angle == null) {
+  localStorage.setItem("btangle", 'cornered');
+} else if (angle == 'curved') {
+  angle = 'cornered';
+  toggleangle(true);
+}
+
+function getrandtree() {
+  // let mnode = new treenode('root', null, null);
+  var mnode = root;
+  var nleft = new treenode('left', null, null);
+  var nright = new treenode('right', null, null);
+  mnode.setleft(nleft);
+  nodesadded += 1; // add a new one
+
+  nodearr[nodesadded] = nleft;
+  mnode.setright(nright);
+  nodesadded += 1; // add a new one
+
+  nodearr[nodesadded] = nright;
+  var totalnodes = 1;
+  totalnodes += addlevel75(nleft, 0);
+  totalnodes += addlevel75(nright, 0);
+  return mnode;
+}
+
+function addlevel75(root, level) {
+  if (level >= document.getElementById('numnodes').value - 1) {
+    return;
+  }
+
+  var newnode;
+
+  if (Math.floor(Math.random() * 4) > 0) {
+    newnode = new treenode(0, null, null);
+    root.setleft(newnode);
+    nodesadded += 1; // add a new one
+
+    nodearr[nodesadded] = newnode;
+    addlevel75(newnode, level + 1);
+  }
+
+  if (Math.floor(Math.random() * 4) > 0) {
+    newnode = new treenode(0, null, null);
+    root.setright(newnode);
+    nodesadded += 1; // add a new one
+
+    nodearr[nodesadded] = newnode;
+    addlevel75(newnode, level + 1);
+  }
+} // counts the nodes
+
+
+function countnodes(root) {
+  if (root == null) {
+    return 0;
+  }
+
+  return 1 + countnodes(root.getleft) + countnodes(root.getright);
+} // get an arr with n random numbers
+
+
+function genlist(n) {
+  // lets try smth
+  var ttrs = []; // yes the audi
+
+  while (ttrs.length < n) {
+    ttrs.push(Math.floor(Math.random() * 100));
+  }
+
+  return ttrs; // yes bring it back pls audi
+} // abcdefghijklmnop
+
+
+function genlistabc(n) {
+  // lets try smth
+  var abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  var lucidair = []; // yes the audi
+
+  while (lucidair.length < n) {
+    lucidair.push(abc[Math.floor(Math.random() * 26)]);
+  }
+
+  return lucidair; //hehe
+} // just put in the facking nums
+
+
+function putnums(root, arr) {
+  if (arr.length == 0) {
+    return;
+  } //get nums of nodes on left
+
+
+  var leftcount = countnodes(root.getleft);
+  var rightcount = countnodes(root.getright); // ideally leftcount+rightocount+1 shud = arr.length
+  // so u have the arr
+
+  var leftrange = arr.slice(0, leftcount);
+  var rightrange = arr.slice(leftcount + 1, arr.length);
+  var thenum = arr[leftcount];
+  root.setvalue(thenum);
+  putnums(root.getleft, leftrange);
+  putnums(root.getright, rightrange);
+  return root;
+} // this is for a random tree
+
+
+function randtree() {
+  // first of all make a tree
+  var theroot = getrandtree();
+  var ncount = countnodes(theroot); // now gen an arr with those many nodes
+
+  var genedarr;
+  var tp = document.getElementById('treetype').value;
+
+  if (tp == 'alpha') {
+    type = 'alpha';
+    genedarr = genlistabc(ncount);
+  } else if (tp == 'numeric') {
+    type = 'numeric';
+    genedarr = genlist(ncount);
+  } else {
+    var rr = Math.floor(Math.random() * 2);
+
+    if (rr == 0) {
+      type = 'alpha';
+      genedarr = genlistabc(ncount);
+    } else {
+      type = 'numeric';
+      genedarr = genlist(ncount);
+    }
+  }
+
+  putnums(theroot, genedarr);
+  return theroot;
+}
+
+var root = new treenode('root', null, null); // let left = new treenode('left',new treenode('leftleft',new treenode('leftleftleft',null,null),null),new treenode('leftright',new treenode('leftrightleft',null,null),null));
+// let right = new treenode('right',null,null);
+// let rightright = new treenode('rightright',null,new treenode('rightrightright',null,null));
+// let rightleft = new treenode('rightleft',null,null);
+// root.setleft(left);
+// root.setright(right);
+// right.setleft(rightleft);
+// right.setright(rightright);
 
 var sleep = function sleep(ms) {
   return new Promise(function (res) {
@@ -732,233 +921,38 @@ var sleep = function sleep(ms) {
   });
 };
 
-(function _callee6() {
-  var url, ur, content, listname, endcontent, y, stcont, g, station, urmom;
-  return regeneratorRuntime.async(function _callee6$(_context6) {
+var leftbuttons = [];
+var delnodes = [];
+var nodearr = [root, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var disabled = false; // intialx
+
+var x = 50;
+var y = 0;
+var rnzindex = 10;
+var stayingup = false;
+
+if (localStorage.getItem("binarytreestorage") != null) {
+  console.log('used made tree', localStorage.getItem("binarytreestorage"));
+  recreatetree(localStorage.getItem("binarytreestorage"));
+}
+
+redrawtree(); //glowtree(root);
+// update the coubnt without interfereing with the stuff
+
+(function _callee() {
+  return regeneratorRuntime.async(function _callee$(_context4) {
     while (1) {
-      switch (_context6.prev = _context6.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
-          // if u wanna play using url path
-          url = window.location.href; //console.log(ur);
-
-          ur = url.replace('file:///Users/homemac/Desktop/Programming/Otherprograms/agpbeats/index.html?', '');
-          ur = ur.replace('https://skparab1.github.io/agpbeats/?', '');
-          ur = ur.replace('https://skparab1.github.io/agpbeats?', '');
-          ur = ur.replaceAll('%20', ' '); // ok u know my laptop directories so what
-
-          if (ur.includes('addpl=')) {
-            // ur importing a playlist
-            ur = ur.replace('addpl=', '');
-            content = ur.split('&next&');
-            listname = content[0];
-            content = content[1];
-            content = content.replaceAll('D1', '-');
-            content = content.replaceAll('Q1', '"');
-            content = content.split('&');
-            endcontent = '';
-            y = 0;
-
-            while (y < content.length) {
-              endcontent += origlargebeat[parseInt(content[y])];
-              y += 1;
-            }
-
-            stcont = content.length - 1;
-            content = endcontent;
-            openplaylistadder();
-            g = document.getElementById('addornot');
-            g.textContent = 'Do you want to add the playlist "' + listname + '" (' + stcont + ' beats)?';
-            addingname = listname;
-            addingcont = content;
-          }
-
-          if (ur.includes('joinstation=')) {
-            // ur importing a playlist
-            ur = ur.replace('joinstation=', '');
-            station = document.getElementById('stationname');
-            station.value = ur; // ur is the station
-
-            openelement('satelitemode');
-          }
-
-          _context6.next = 9;
-          return regeneratorRuntime.awrap(sleep(2000));
-
-        case 9:
-          urmom = 0;
-
-          while (urmom < largebeatarr.length && url != 'file:///Users/homemac/Desktop/Programming/Otherprograms/agpbeats/index.html' && url != 'https://skparab1.github.io/agpbeats' && url != 'https://skparab1.github.io/agpbeats/' && !url.includes('nointro') && !url.includes('addpl')) {
-            if (largebeatarr[urmom][0].toLowerCase().includes(ur.toLowerCase())) {
-              // thats the beat
-              playbeat(urmom);
-              playtoggle();
-            }
-
-            console.log(ur, largebeatarr[urmom][0].toLowerCase());
-            urmom += 1;
-          }
-
-          if (ur.includes('play=')) {
-            ur = ur.replace('play=', '');
-            ur = parseInt(ur);
-            urmom = 0;
-
-            while (urmom < origlargebeat.length && url != 'file:///Users/homemac/Desktop/Programming/Otherprograms/agpbeats/index.html' && url != 'https://skparab1.github.io/agpbeats' && url != 'https://skparab1.github.io/agpbeats/' && !url.includes('nointro') && !url.includes('addpl')) {
-              if (ur == urmom) {
-                // thats the beat
-                playbeatorig(urmom);
-                playtoggle();
-              }
-
-              urmom += 1;
-            }
-          }
-
-        case 12:
-        case "end":
-          return _context6.stop();
-      }
-    }
-  });
-})();
-
-window.addEventListener('keydown', function (e) {
-  if (e.keyCode == 32 && e.target == document.body) {
-    e.preventDefault();
-  }
-});
-
-(function _callee7() {
-  return regeneratorRuntime.async(function _callee7$(_context7) {
-    while (1) {
-      switch (_context7.prev = _context7.next) {
-        case 0:
-          window.addEventListener("keydown", function (event) {
-            if (event.defaultPrevented) {
-              return;
-            }
-
-            var actkey = event.code.replace('Key', '').replace('Digit', '');
-            var filterletters = 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890'; //console.log('pressed'+actkey);
-
-            keybindarr[0] = keybindarr[1];
-            keybindarr[1] = keybindarr[2];
-            keybindarr[2] = keybindarr[3];
-            keybindarr[3] = keybindarr[4];
-            keybindarr[4] = keybindarr[5];
-            keybindarr[5] = keybindarr[6];
-            keybindarr[6] = keybindarr[7];
-            keybindarr[7] = actkey;
-            console.log(keybindarr);
-
-            if (keybindarr[5] == "Q" && keybindarr[6] == "W" && keybindarr[7] == "E" && currenthover != -1 && !dialogueopened) {
-              addtoqueue(currenthover);
-              keybindarr = ["", "", "", "", "", "", "", ""];
-            }
-
-            if (keybindarr[4] == "S" && keybindarr[5] == "K" && keybindarr[6] == "I" && keybindarr[7] == "P") {
-              try {
-                console.log('git it');
-                playnextbeat(); //hehe
-              } catch (_unused) {}
-
-              keybindarr = ["", "", "", ""];
-            } //satelitemode
-
-
-            if (keybindarr[4] == "S" && keybindarr[5] == "A" && keybindarr[6] == "T" && keybindarr[7] == "E" && hoststatus == "") {
-              openelement('satelitemode');
-              keybindarr = ["", "", "", ""];
-            } //satelitemode
-
-
-            if (keybindarr[4] == "H" && keybindarr[5] == "O" && keybindarr[6] == "S" && keybindarr[7] == "T" && satelitestatus == "") {
-              // anyone can hmm
-              openelement('stationhoster');
-              keybindarr = ["", "", "", ""];
-            }
-
-            if (keybindarr[1] == "R" && keybindarr[2] == "A" && keybindarr[3] == "K" && keybindarr[4] == "A" && keybindarr[5] == "1" && keybindarr[6] == "2" && keybindarr[7] == "3") {
-              // anyone can hmm
-              opensecret();
-            }
-
-            if (actkey == 'Space' && !dialogueopened) {
-              playtoggle();
-            }
-
-            if (actkey == 'ArrowRight') {
-              skipahead(5);
-            }
-
-            if (actkey == 'ArrowLeft') {
-              skipahead(-5);
-            }
-
-            if (actkey == 'F' && !dialogueopened) {
-              event.preventDefault();
-              openfinder();
-            } else {
-              // you can do it if ur not invoking the opener
-              var ascii = 'ABCDEFGHIJKLMNOPQURSTUVWXYZ1234567890';
-
-              if (searcheropen && (ascii.includes(actkey) || actkey == 'Space')) {
-                var q = document.getElementById('query');
-                q.textContent = q.textContent + actkey.toLowerCase().replace('space', ' ');
-                searcheron = -1;
-              } else if (searcheropen && actkey == 'Backspace') {
-                var _q = document.getElementById('query');
-
-                _q.textContent = _q.textContent.substring(0, _q.textContent.length - 1);
-                searcheron = -1;
-              } else if (searcheropen && actkey == 'Enter') {
-                if (searcheron == -1) {
-                  closefinder();
-                } else {
-                  playbeat(parseInt(currentresults[searcheron]));
-                  closefinder();
-                }
-              } else if (searcheropen && actkey == 'ArrowDown') {
-                searcheron += 1;
-                updaterhighlight(searcheron - 1, searcheron);
-                event.preventDefault();
-              } else if (searcheropen && actkey == 'ArrowUp') {
-                searcheron -= 1;
-                updaterhighlight(searcheron + 1, searcheron);
-                event.preventDefault();
-              } else if (searcheropen && actkey == 'Escape') {
-                closefinder();
-              }
-            }
-
-            if (searcheron < -1) {
-              searcheron = -1;
-            }
-
-            if (actkey == 'ArrowUp' && !dialogueopened) {
-              if (insecpl) {
-                playbeatsec(currentbeat - 1);
-              } else if (currentplaylist == -1) {
-                playbeat(currentbeat - 1);
-              } else {
-                playbeat(currentplaylistsongs[currentplaylistsongs.indexOf(currentbeat) - 1]);
-              }
-            }
-
-            if (actkey == 'ArrowDown' && !dialogueopened) {
-              if (insecpl) {
-                playbeatsec(currentbeat + 1);
-              } else if (currentplaylist == -1) {
-                playbeat(currentbeat + 1);
-              } else {
-                playbeat(currentplaylistsongs[currentplaylistsongs.indexOf(currentbeat) + 1]);
-              }
-            }
-          }, true);
+          fetch("https://skparabapi-1-x8164494.deta.app/increment?key=binarytree").then(function (response) {
+            return response.json();
+          }).then(function (data) {
+            console.log(data);
+          });
 
         case 1:
         case "end":
-          return _context7.stop();
+          return _context4.stop();
       }
     }
   });

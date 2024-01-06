@@ -841,7 +841,7 @@ function preorderwithnullpointers(node) {
 function createshareURL() {
   var query = preorderwithnullpointers(theroot);
   query = query.replaceAll(" ", "%20");
-  document.getElementById("shareurldisp").textContent = location.href + "/share?data=" + query;
+  document.getElementById("shareurldisp").textContent = location.href.replace("/bst.html", "") + "/share?data=" + query;
 } // let left = new treenode('left',new treenode('leftleft',new treenode('leftleftleft',null,null),null),new treenode('leftright',new treenode('leftrightleft',null,null),null));
 // let right = new treenode('right',null,null);
 // let rightright = new treenode('rightright',null,new treenode('rightrightright',null,null));
@@ -961,7 +961,7 @@ drawtree(theroot, x, y, 50); // now put att the things into the tree
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          fetch("https://pst652.deta.dev/?UPDATECOUNTER=bst").then(function (response) {
+          fetch("https://skparabapi-1-x8164494.deta.app/increment?key=bst").then(function (response) {
             return response.json();
           }).then(function (data) {
             console.log(data);

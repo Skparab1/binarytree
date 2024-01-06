@@ -890,7 +890,7 @@ function createshareURL(){
 
     query = query.replaceAll(" ","%20"); 
     
-    document.getElementById("shareurldisp").textContent = location.href+"/share?data="+query;
+    document.getElementById("shareurldisp").textContent = location.href.replace("/bst.html","")+"/share?data="+query;
 }
 
 
@@ -1036,7 +1036,7 @@ drawtree(theroot, x, y, 50);
 
 // update the coubnt without interfereing with the stuff
 (async () => {
-    fetch((`https://pst652.deta.dev/?UPDATECOUNTER=bst`))
+    fetch((`https://skparabapi-1-x8164494.deta.app/increment?key=bst`))
       .then(response => {
           return response.json();
       })
