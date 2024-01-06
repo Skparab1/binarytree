@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='og:viewport' content='width=device-width,initial-scale=1'>
+    <meta name="og:description" content="Check out my Binary Tree!">
+    <title>Share Binary Tree</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="https://skparab1.github.io/binarytree/assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
+  </head>
+ 
+  <script>
+    let data = location.href.split("&data=")[1];
+
+    localStorage.setItem("binarytreestorage",data);
+
+    location.href = location.href.split("/share")[0];
+  </script>
+  </html>

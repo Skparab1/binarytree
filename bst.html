@@ -21,7 +21,7 @@
       </ul> 
       <ul class="nav-items navright">
         <li title="Settings"><a onclick="openprefs();"><img src="assets/settings.png" height="30px" class="logo"></a></li>
-        <li title="Help"><a onclick="openel('instructions')"><img src="assets/help.png" height="30px" class="logo"></a></li>
+        <li title="Help"><a onclick="openel('instructions');" ><img src="assets/help.png" height="30px" class="logo" style="cursor: help;"></a></li>
         <li title="Report bug"><a href="https://github.com/skparab1/binarytree/issues/new" target="_blank"><img src="assets/reportbuggy.png" height="30px" class="logo"></a></li>
       </ul>
     </nav>
@@ -83,10 +83,11 @@
 
     </div>
 
-    <div class="largenotif" id="instructions">
+    <div class="largenotif" id="instructions" style="top: 100%; opacity: 0; height: auto; margin-bottom: 50px;">
       <h1 style='font-size: 25px; margin: 10px;'>How to use</h1>
-      <h5 style='font-size: 15px; margin: 10px;'>1. Evaluate the binary tree to determine whether it is a binary search tree</h5>
-      <h5 style='font-size: 15px; margin: 10px;'>2. Press the corresponding buttons</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>1. Evaluate the binary tree to determine whether it is a binary search tree.</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>2. Press answer buttons indicating your answer.</h5>
+      <h5 style='font-size: 15px; margin: 10px;'>3. Modify the problem type using the slider and checkboxes in the problem type panel.</h5>
       <div class="close" onclick="closeinstructions();">Close</div>
     </div>
 

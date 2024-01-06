@@ -275,6 +275,19 @@ function traversepostorder(node){
     return st;
 }
 
+
+
+function outputlevelorder(node){
+    if (node == null){
+        return "";
+    }
+    let st = "";
+    st += traversepostorder(node.getleft)+" ";
+    st += traversepostorder(node.getright)+" ";
+    st += node.getvalue+" ";
+    return st;
+}
+
 function checkall(){
     // first run each
     let preorder = traversepreorder(root).replaceAll('deleted','');
@@ -324,14 +337,16 @@ function showsolutions(){
     checkall();
     //document.getElementById('solutions').style.display = 'block';
     document.getElementById('solutions').style.opacity = 1;
-    document.getElementById('solutions').style.left = '25%';
+    document.getElementById('solutions').style.top = '25%';
 }
 
-function openel(e){
-    console.log('shud have opened it');
-    document.getElementById(e).style.display = 'block';
-    document.getElementById(e).style.opacity = 1;
-    document.getElementById(e).style.left = '25%';
+function openel(el){
+    console.log('shud have opened it opener');
+    document.getElementById(el).style.display = 'block';
+    document.getElementById(el).style.opacity = 1;
+    document.getElementById(el).style.top = '25%';
+    document.getElementById(el).style.left = '25%';
+
 }
 
 function closeprefs(){
@@ -353,7 +368,7 @@ function closesolutions(){
 }
 
 function closeinstructions(){
-    document.getElementById('instructions').style.left = '125%';
+    document.getElementById('instructions').style.top = '100%';
     document.getElementById('instructions').style.opacity = 0;
 }
 
@@ -412,6 +427,11 @@ function genlistabc(l){
     let abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
     // so now we need to remove (26-l) elements from it
+
+    if (l > 26){
+        // we cant make a alphabetical tree out of this, get a new one
+        location.reload();
+    }
 
     while (abc.length > l){
         //console.log(Math.floor(Math.random()*abc.length),abc);
@@ -672,6 +692,7 @@ function iscorrect(){
 
 
 async function iswrong(){
+
     if (badnode == null){
         // doesnt have an error
         
@@ -846,6 +867,28 @@ function toggleangle(override){
         r.style.setProperty('--br', '0px');
     }
 }
+
+
+
+
+// turning the tree into a 
+function serialize(root, fp) {
+    // If current node is NULL, store marker
+    if (root === null) {
+        fp.push(MARKER);
+        return;
+    }
+ 
+    // Else, store current node and
+    // recur for its children
+    fp.push(root.key);
+    serialize(root.left, fp);
+    serialize(root.right, fp);
+}
+
+
+
+
 
 // let left = new treenode('left',new treenode('leftleft',new treenode('leftleftleft',null,null),null),new treenode('leftright',new treenode('leftrightleft',null,null),null));
 

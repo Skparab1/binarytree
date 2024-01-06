@@ -100,6 +100,8 @@ function drawnode(node,x,y){
 function modvalue(n){
     let el = document.getElementById('val'+n);
     nodearr[n].setvalue(el.value);
+
+    storetree();
 }
 
 function delnode(n){
@@ -124,10 +126,20 @@ function delnode(n){
     redrawtree();
 }
 
+function storetree(){
+    // store the tree in localstorage
+    let tostore = preorderwithnullpointers(root);
+
+    localStorage.setItem("binarytreestorage",tostore);
+}
+
 function redrawtree(){
     console.log(nodearr);
     treeholder.innerHTML = "";
     connectors.innerHTML = "";
+
+    storetree();
+    
     drawtree(root, 50, 0, 50);
 }
 
@@ -159,6 +171,7 @@ function addright(num){
 
 // draw the tree recursive
 function drawtree(root, x, y, prevx){
+
     if (root.getvalue == 'deleted'){
         root = null;
     }
@@ -443,13 +456,17 @@ async function glowtreepreorder(start){
     let idx = nodearr.indexOf(start);
     let nd = document.getElementById('thenode'+String(idx));
 
-    nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+    try {
+        nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+    } catch (error) {
+        
+    }    
 
-    await sleep(350);
+    await sleep(500);
 
     await glowtreepreorder(start.getleft);
 
-    await sleep(350);
+    await sleep(500);
 
     await glowtreepreorder(start.getright);
 
@@ -464,31 +481,193 @@ async function glowtreeinorder(start){
     let idx = nodearr.indexOf(start);
     let nd = document.getElementById('thenode'+String(idx));
 
-    await sleep(350);
+    await sleep(500);
 
     await glowtreeinorder(start.getleft);
 
-    nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+    try {
+        nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+    } catch (error) {
+        
+    }
 
-    await sleep(350);
+    await sleep(500);
 
     await glowtreeinorder(start.getright);
 
     //enableplay();
 }
 
+
+
+function getlevel(level, node, currentlevel, gotnodes){
+    if (node == null){
+        gotnodes.push(null);
+        return gotnodes;
+    }
+    if (currentlevel == level){
+        gotnodes.push(node);
+        return gotnodes;
+    }
+    
+    gotnodes = getlevel(level, node.getleft, currentlevel+1,gotnodes);
+    gotnodes = getlevel(level, node.getright, currentlevel+1,gotnodes);
+
+    return gotnodes;
+}
+
+
+function getlevelorder(){
+    let res = [0];
+    let final = [];
+    let lev = 0;
+    while (res.length != 0){
+        res = getlevel(lev, root, 0, []);
+        
+        if (res.length == 0){
+            break;
+        }
+        
+        for(i of res){
+            final.push(i);
+        }
+
+        lev += 1;
+
+    }
+
+    return final;
+}
+
+
+function preorderwithnullpointers(node){
+    if (node == null){
+        return "NULL";
+    }
+    let st = "";
+    st += node.getvalue+" ";
+    st += preorderwithnullpointers(node.getleft)+" ";
+    st += preorderwithnullpointers(node.getright)+" ";
+
+    return st.replaceAll("deleted","");
+
+    //recreatetree("a b NULL c NULL NULL   NULL ");
+}
+
+
+function createshareURL(){
+    let query = preorderwithnullpointers(root);
+
+    query = query.replaceAll(" ","%20"); 
+    
+    document.getElementById("shareurldisp").textContent = location.href+"/share?data="+query;
+}
+
+
+
+
+let universalrecreator = 0;
+
+function recreatenode(sequence, num){
+    if (num > sequence.length){
+        return null;
+    }
+
+    let newnode = new treenode(sequence[num],null,null);
+
+    nodesadded += 1;
+    // add a new one
+    nodearr[nodesadded] = newnode;
+
+
+    universalrecreator += 1;
+
+    if (sequence[universalrecreator] != "NULL"){
+        newnode.setleft(recreatenode(sequence, universalrecreator));
+    } else {
+        universalrecreator += 1;
+    }
+
+    if (sequence[universalrecreator] != "NULL"){
+        newnode.setright(recreatenode(sequence, universalrecreator));
+    } else {
+        universalrecreator += 1;
+    }
+
+
+    return newnode;
+}
+
+
+function purgesequence(sequence){
+    let newsequence = [];
+    for(i of sequence){
+        if (i != ""){
+            newsequence.push(i);
+        }
+    }
+    return newsequence;
+}
+
+function recreatetree(sequence){
+    sequence = sequence.replaceAll("%20"," ");
+    sequence = sequence.replaceAll("  "," ");
+
+    sequence = sequence.split(" ");
+
+    sequence = purgesequence(sequence);
+
+    console.log(sequence);
+
+    universalrecreator = 0;
+
+    root = new treenode(sequence[universalrecreator],null,null);
+
+    nodearr[0] = root;
+
+    universalrecreator += 1;
+
+    if (sequence[universalrecreator] != "NULL"){
+        root.setleft(recreatenode(sequence, universalrecreator));
+    } else {
+        universalrecreator += 1;
+    }
+
+    if (sequence[universalrecreator] != "NULL"){
+        root.setright(recreatenode(sequence, universalrecreator));
+    } else {
+        universalrecreator += 1;
+    }
+
+}
+
 function disableplay(){
-    document.getElementById('playpost').style.color = 'rgba(125,125,125,0.6)';
-    document.getElementById('playin').style.color = 'rgba(125,125,125,0.6)';
-    document.getElementById('playpre').style.color = 'rgba(125,125,125,0.6)';
+    let post = document.getElementById('playpost');
+    let ino = document.getElementById('playin');
+    let pre = document.getElementById('playpre');
+
+    post.style.color = 'rgba(125,125,125,0.6)';
+    post.style.cursor = "wait";
+    ino.style.color = 'rgba(125,125,125,0.6)';
+    ino.style.cursor = "wait";    
+    pre.style.color = 'rgba(125,125,125,0.6)';
+    pre.style.cursor = "wait";    
 
     disabled = true;
 }
 
 function enableplay(){
-    document.getElementById('playpost').style.color = 'yellow';
-    document.getElementById('playin').style.color = 'yellow';
-    document.getElementById('playpre').style.color = 'yellow';
+
+    let post = document.getElementById('playpost');
+    let ino = document.getElementById('playin');
+    let pre = document.getElementById('playpre');
+
+    post.style.color = 'yellow';
+    post.style.cursor = "pointer";
+    ino.style.color = 'yellow';
+    ino.style.cursor = "pointer";    
+    pre.style.color = 'yellow';
+    pre.style.cursor = "pointer";   
 
     disabled = false;
 }
@@ -503,13 +682,17 @@ async function glowtreepostorder(start){
 
     await glowtreepostorder(start.getleft);
 
-    await sleep(350);
+    await sleep(500);
 
     await glowtreepostorder(start.getright);
 
-    await sleep(350);
+    await sleep(500);
 
-    nd.style.boxShadow = '7px 7px 5px rgba(255, 255, 0, 0.7)';
+    try {
+        nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+    } catch (error) {
+        
+    }
 
     //enableplay();
 
@@ -726,7 +909,13 @@ let y = 0;
 let rnzindex = 10;
 let stayingup = false;
 
-drawtree(root, x, y, 50);
+
+if (localStorage.getItem("binarytreestorage") != null){
+    console.log('used made tree', localStorage.getItem("binarytreestorage"));
+    recreatetree(localStorage.getItem("binarytreestorage"));
+}
+    
+redrawtree();
 
 //glowtree(root);
 
