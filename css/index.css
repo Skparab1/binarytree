@@ -492,3 +492,16 @@ input:checked + .slider:before {
   background: var(--main); 
   cursor: pointer; 
 }
+
+
+.screen{
+  display: none;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 0.25s, display 0.25s;
+}

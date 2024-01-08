@@ -277,7 +277,7 @@ function checkall(){
     <h1 style='font-size: 15px'>Pre order: ${preorder}</h1>
     <h1 style='font-size: 15px'>In order: ${inorder}</h1>
     <h1 style='font-size: 15px'>Post order: ${postorder}</h1>
-    <div class="close" onclick="closesolutions();">Close</div>
+    <div class="close" onclick="closesolutions(); closescreen();">Close</div>
     `
 
     preorder = preorder.replaceAll(' ','');
@@ -451,7 +451,8 @@ async function glowtreepreorder(start){
     if (start == null){
         return;
     }
-    
+
+    await sleep(document.getElementById('waittime').value);
 
     let idx = nodearr.indexOf(start);
     let nd = document.getElementById('thenode'+String(idx));
@@ -462,11 +463,8 @@ async function glowtreepreorder(start){
         
     }    
 
-    await sleep(500);
 
     await glowtreepreorder(start.getleft);
-
-    await sleep(500);
 
     await glowtreepreorder(start.getright);
 
@@ -481,17 +479,15 @@ async function glowtreeinorder(start){
     let idx = nodearr.indexOf(start);
     let nd = document.getElementById('thenode'+String(idx));
 
-    await sleep(500);
-
     await glowtreeinorder(start.getleft);
 
+
+    await sleep(document.getElementById('waittime').value);
     try {
         nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
     } catch (error) {
         
     }
-
-    await sleep(500);
 
     await glowtreeinorder(start.getright);
 
@@ -662,11 +658,11 @@ function enableplay(){
     let ino = document.getElementById('playin');
     let pre = document.getElementById('playpre');
 
-    post.style.color = 'yellow';
+    post.style.color = 'rgb(255, 51, 0)';
     post.style.cursor = "pointer";
-    ino.style.color = 'yellow';
+    ino.style.color = 'rgb(255, 51, 0)';
     ino.style.cursor = "pointer";    
-    pre.style.color = 'yellow';
+    pre.style.color = 'rgb(255, 51, 0)';
     pre.style.cursor = "pointer";   
 
     disabled = false;
@@ -682,11 +678,9 @@ async function glowtreepostorder(start){
 
     await glowtreepostorder(start.getleft);
 
-    await sleep(500);
-
     await glowtreepostorder(start.getright);
 
-    await sleep(500);
+    await sleep(document.getElementById('waittime').value);
 
     try {
         nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
@@ -696,6 +690,28 @@ async function glowtreepostorder(start){
 
     //enableplay();
 
+}
+
+
+function openscreen(){
+    let el = document.getElementById("screen");
+    el.style.display = "block";
+    el.style.opacity = 0.4;
+
+    let res = document.getElementById("res");
+    res.style.opacity = 0.4;
+    stayingup = true;
+}
+
+function closescreen(){
+    console.log("called to close");
+    let el = document.getElementById("screen");
+    el.style.display = "none";
+    el.style.opacity = 0;
+
+    let res = document.getElementById("res");
+    res.style.opacity = 1;
+    stayingup = false;
 }
 
 

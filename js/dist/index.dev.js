@@ -263,7 +263,7 @@ function checkall() {
   var inorder = traverseinorder(root).replaceAll('deleted', '');
   var postorder = traversepostorder(root).replaceAll('deleted', '');
   var sols = document.getElementById('solutions');
-  sols.innerHTML = "\n    <h1 style='font-size: 25px'>Solutions</h1>\n    <h1 style='font-size: 15px'>Pre order: ".concat(preorder, "</h1>\n    <h1 style='font-size: 15px'>In order: ").concat(inorder, "</h1>\n    <h1 style='font-size: 15px'>Post order: ").concat(postorder, "</h1>\n    <div class=\"close\" onclick=\"closesolutions();\">Close</div>\n    ");
+  sols.innerHTML = "\n    <h1 style='font-size: 25px'>Solutions</h1>\n    <h1 style='font-size: 15px'>Pre order: ".concat(preorder, "</h1>\n    <h1 style='font-size: 15px'>In order: ").concat(inorder, "</h1>\n    <h1 style='font-size: 15px'>Post order: ").concat(postorder, "</h1>\n    <div class=\"close\" onclick=\"closesolutions(); closescreen();\">Close</div>\n    ");
   preorder = preorder.replaceAll(' ', '');
   inorder = inorder.replaceAll(' ', '');
   postorder = postorder.replaceAll(' ', '');
@@ -443,6 +443,10 @@ function glowtreepreorder(start) {
           return _context.abrupt("return");
 
         case 2:
+          _context.next = 4;
+          return regeneratorRuntime.awrap(sleep(document.getElementById('waittime').value));
+
+        case 4:
           idx = nodearr.indexOf(start);
           nd = document.getElementById('thenode' + String(idx));
 
@@ -450,22 +454,14 @@ function glowtreepreorder(start) {
             nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
           } catch (error) {}
 
-          _context.next = 7;
-          return regeneratorRuntime.awrap(sleep(500));
-
-        case 7:
           _context.next = 9;
           return regeneratorRuntime.awrap(glowtreepreorder(start.getleft));
 
         case 9:
           _context.next = 11;
-          return regeneratorRuntime.awrap(sleep(500));
-
-        case 11:
-          _context.next = 13;
           return regeneratorRuntime.awrap(glowtreepreorder(start.getright));
 
-        case 13:
+        case 11:
         case "end":
           return _context.stop();
       }
@@ -490,11 +486,11 @@ function glowtreeinorder(start) {
           idx = nodearr.indexOf(start);
           nd = document.getElementById('thenode' + String(idx));
           _context2.next = 6;
-          return regeneratorRuntime.awrap(sleep(500));
+          return regeneratorRuntime.awrap(glowtreeinorder(start.getleft));
 
         case 6:
           _context2.next = 8;
-          return regeneratorRuntime.awrap(glowtreeinorder(start.getleft));
+          return regeneratorRuntime.awrap(sleep(document.getElementById('waittime').value));
 
         case 8:
           try {
@@ -502,13 +498,9 @@ function glowtreeinorder(start) {
           } catch (error) {}
 
           _context2.next = 11;
-          return regeneratorRuntime.awrap(sleep(500));
-
-        case 11:
-          _context2.next = 13;
           return regeneratorRuntime.awrap(glowtreeinorder(start.getright));
 
-        case 13:
+        case 11:
         case "end":
           return _context2.stop();
       }
@@ -694,11 +686,11 @@ function enableplay() {
   var post = document.getElementById('playpost');
   var ino = document.getElementById('playin');
   var pre = document.getElementById('playpre');
-  post.style.color = 'yellow';
+  post.style.color = 'rgb(255, 51, 0)';
   post.style.cursor = "pointer";
-  ino.style.color = 'yellow';
+  ino.style.color = 'rgb(255, 51, 0)';
   ino.style.cursor = "pointer";
-  pre.style.color = 'yellow';
+  pre.style.color = 'rgb(255, 51, 0)';
   pre.style.cursor = "pointer";
   disabled = false;
 }
@@ -724,28 +716,43 @@ function glowtreepostorder(start) {
 
         case 6:
           _context3.next = 8;
-          return regeneratorRuntime.awrap(sleep(500));
+          return regeneratorRuntime.awrap(glowtreepostorder(start.getright));
 
         case 8:
           _context3.next = 10;
-          return regeneratorRuntime.awrap(glowtreepostorder(start.getright));
+          return regeneratorRuntime.awrap(sleep(document.getElementById('waittime').value));
 
         case 10:
-          _context3.next = 12;
-          return regeneratorRuntime.awrap(sleep(500));
-
-        case 12:
           try {
             nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
           } catch (error) {} //enableplay();
 
 
-        case 13:
+        case 11:
         case "end":
           return _context3.stop();
       }
     }
   });
+}
+
+function openscreen() {
+  var el = document.getElementById("screen");
+  el.style.display = "block";
+  el.style.opacity = 0.4;
+  var res = document.getElementById("res");
+  res.style.opacity = 0.4;
+  stayingup = true;
+}
+
+function closescreen() {
+  console.log("called to close");
+  var el = document.getElementById("screen");
+  el.style.display = "none";
+  el.style.opacity = 0;
+  var res = document.getElementById("res");
+  res.style.opacity = 1;
+  stayingup = false;
 } // rules
 
 
