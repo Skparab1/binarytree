@@ -71,14 +71,36 @@
     </div>
 
     <div class="wrong" id="wr">
-      <h1 >Wrong!</h1>
-      <h5 id="explanation" style="color: var(--contrast);">Explanation</h5>
+      <h1>Wrong!</h1>
+      <h5 id="explanation" style="color: rgb(242, 0, 0); font-size: 15px; font-weight: bolder; background-color: var(--bg); border-radius: 25px;">Explanation</h5>
+
+      <h3 class="smalltext" id="bstdisp1"></h3>
+      <div class="myProgress">
+        <div class="myBar" id="bstcorrect1"></div>
+      </div>
+
+      <h3 class="smalltext" id="notbstdisp1"></h3>
+      <div class="myProgress">
+        <div class="myBar" id="notbstcorrect1"></div>
+      </div>
+
       <div class="close" onclick="closeel('wr');">Close</div>
     </div>
 
     <div class="wrong" id="corr">
-      <h1 >Correct!</h1>
-      <h3 >Good job!</h3>
+      <h1>Correct!</h1>
+      <h3>Good job!</h3>
+
+      <h3 class="smalltext" id="bstdisp2"></h3>
+      <div class="myProgress">
+        <div class="myBar" id="bstcorrect2"></div>
+      </div>
+
+      <h3 class="smalltext" id="notbstdisp2"></h3>
+      <div class="myProgress">
+        <div class="myBar" id="notbstcorrect2"></div>
+      </div>
+
       <div class="close" onclick="closeel('corr');">Close</div>
       <div class="close" onclick="location.reload();">Next</div>
 

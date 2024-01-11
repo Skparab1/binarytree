@@ -64,6 +64,8 @@ let resl = true;
 let badid = '';
 let type = 'alpha';
 
+let updatedstatsthistime = false;
+
 let onsomeselector = false;
 
 function drawnode(node,x,y){
@@ -382,6 +384,8 @@ if (bt1 == null){
     // document.getElementById('instructions').style.left = '25%';
 }
 
+let kindofmistake = "";
+
 let theme = localStorage.getItem('bttheme');
 let angle = localStorage.getItem('btangle');
 
@@ -509,6 +513,8 @@ function adderror(root){
 
     let changednode = null;
 
+    kindofmistake = "None";
+
     if (rand < 5){
         // yup were putting error
         // what kind of error
@@ -516,6 +522,9 @@ function adderror(root){
         let rand2 = Math.floor(Math.random()*10);
         if (rand2 == 0){
             // head is too low
+
+            kindofmistake = "Root value incorrect";
+
             let newhead;
             if (type != "alpha"){
                 newhead = thetree.getleft.getvalue-(Math.floor(Math.random()*5)+1);
@@ -538,6 +547,9 @@ function adderror(root){
 
         } else if (rand2 == 1){
             // head is too high
+
+            kindofmistake = "Root value incorrect"
+
             let newhead;
             if (type != "alpha"){
                 newhead = thetree.getright.getvalue+(Math.floor(Math.random()*5)+1);
@@ -561,6 +573,8 @@ function adderror(root){
             // the second level left is too high
             // make it higher than the head
 
+            kindofmistake = "Second level left child higher than parent";
+
             let newhead;
             if (type != "alpha"){
                 newhead = thetree.getvalue+(Math.floor(Math.random()*5)+1);
@@ -581,6 +595,9 @@ function adderror(root){
         } else if (rand2 == 3){
             // the second level right is too low
             // make it lower than the head
+
+            kindofmistake = "Second level right child higher than parent";
+
             let newhead;
             if (type != "alpha"){
                 newhead = thetree.getvalue-(Math.floor(Math.random()*5)+1);
@@ -665,12 +682,124 @@ function adderror(root){
     return thetree;
 }
 
+function incrementcount(id){
+
+    if (updatedstatsthistime){
+        return;
+    }
+
+    updatedstatsthistime = true;
+
+    let gotten = localStorage.getItem(id);
+    if (gotten == null){
+        gotten = 0;
+    } else {
+        gotten = parseInt(gotten);
+    }
+    
+    gotten += 1;
+
+    localStorage.setItem(id,gotten);
+}
+
+function ornull(val){
+    if (val == null){
+        return 0;
+    }
+    return parseInt(val);
+}
+
+
+function initializeprogressbars(){
+
+    let gottencorrectcorrect = ornull(localStorage.getItem("real correct, correct"));
+    let gottenwrongcorrect = ornull(localStorage.getItem("real correct, wrong"));
+    let gottencorrectwrong = ornull(localStorage.getItem("real wrong, correct"));
+    let gottenwrongwrong = ornull(localStorage.getItem("real wrong, wrong"));
+    
+    let bstpercentage;
+    
+    if (gottencorrectcorrect == 0 && gottenwrongcorrect == 0){
+        bstpercentage = 0;
+    } else {
+        bstpercentage = Math.round(100*gottencorrectcorrect/(gottencorrectcorrect+gottenwrongcorrect));
+    }
+
+
+    document.getElementById("bstcorrect1").style.width = bstpercentage+"%";
+    document.getElementById("bstcorrect2").style.width = bstpercentage+"%";
+
+    let notbstpercentage;
+    
+    if (gottencorrectwrong == 0 && gottenwrongwrong == 0){
+        notbstpercentage = 0;
+    } else {
+        notbstpercentage = Math.round(100*gottencorrectwrong/(gottencorrectwrong+gottenwrongwrong));
+    }
+
+    document.getElementById("notbstcorrect1").style.width = notbstpercentage+"%";
+    document.getElementById("notbstcorrect2").style.width = notbstpercentage+"%";
+}
+
+function showstats(){
+    let gottencorrectcorrect = ornull(localStorage.getItem("real correct, correct"));
+    let gottenwrongcorrect = ornull(localStorage.getItem("real correct, wrong"));
+    let gottencorrectwrong = ornull(localStorage.getItem("real wrong, correct"));
+    let gottenwrongwrong = ornull(localStorage.getItem("real wrong, wrong"));
+
+    // alert(`
+    //     BST: ${gottencorrectcorrect}/${gottencorrectcorrect+gottenwrongcorrect}\n
+    //     Not BST: ${gottencorrectwrong}/${gottencorrectwrong+gottenwrongwrong}
+    // `);
+
+    let bstpercentage;
+    
+    if (gottencorrectcorrect == 0 && gottenwrongcorrect == 0){
+        bstpercentage = 0;
+    } else {
+        bstpercentage = Math.round(100*gottencorrectcorrect/(gottencorrectcorrect+gottenwrongcorrect));
+    }
+
+
+    document.getElementById("bstcorrect1").style.width = bstpercentage+"%";
+    document.getElementById("bstcorrect2").style.width = bstpercentage+"%";
+
+    let notbstpercentage;
+    
+    if (gottencorrectwrong == 0 && gottenwrongwrong == 0){
+        notbstpercentage = 0;
+    } else {
+        notbstpercentage = Math.round(100*gottencorrectwrong/(gottencorrectwrong+gottenwrongwrong));
+    }
+
+    document.getElementById("bstcorrect1").innerHTML = bstpercentage+"%";
+    document.getElementById("bstcorrect1").style.width = bstpercentage+"%";
+    document.getElementById("bstcorrect2").innerHTML = bstpercentage+"%";
+    document.getElementById("bstcorrect2").style.width = bstpercentage+"%";
+
+    document.getElementById("bstdisp1").innerHTML = "BST accuracy: "+gottencorrectcorrect+"/"+(gottencorrectcorrect+gottenwrongcorrect);
+    document.getElementById("bstdisp2").innerHTML = "BST accuracy: "+gottencorrectcorrect+"/"+(gottencorrectcorrect+gottenwrongcorrect);
+
+
+
+    document.getElementById("notbstcorrect1").innerHTML = notbstpercentage+"%";
+    document.getElementById("notbstcorrect1").style.width = notbstpercentage+"%";
+    document.getElementById("notbstcorrect2").innerHTML = notbstpercentage+"%";
+    document.getElementById("notbstcorrect2").style.width = notbstpercentage+"%";
+
+    document.getElementById("notbstdisp1").innerHTML = "BST accuracy: "+gottencorrectwrong+"/"+(gottencorrectwrong+gottenwrongwrong);
+    document.getElementById("notbstdisp2").innerHTML = "Not BST accuracy: "+gottencorrectwrong+"/"+(gottencorrectwrong+gottenwrongwrong);
+}
+
 function iscorrect(){
     if (badnode == null){
         // correct
         document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
         document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
         openel('corr');
+
+        //real correct, correct
+        incrementcount("real correct, correct");
     
     } else {
         // has an error
@@ -681,12 +810,16 @@ function iscorrect(){
 
         document.getElementById('explanation').innerHTML = explanation;
 
+        //real wrong, wrong
+        incrementcount("real wrong, wrong");
+
         openel('wr');
     }
 
+    showstats();
+
     //document.getElementById('wrong').style.left = '50%';
     //document.getElementById('explanation').textContent = 'Explanation: '+explanation;
-
 }
 
 
@@ -700,6 +833,10 @@ async function iswrong(){
         document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
         
         document.getElementById('explanation').innerHTML = explanation;
+
+        //real correct, wrong
+        incrementcount("real correct, wrong");
+
         openel('wr');
     } else {
         // has an error
@@ -709,7 +846,12 @@ async function iswrong(){
         document.getElementById('badone').style.border = '3px solid red';
     
         openel('corr');
+
+        //real wrong, correct
+        incrementcount("real wrong, correct");
     }
+
+    showstats();
 }
 
 function countnodes(root){
@@ -972,6 +1114,7 @@ if (thl == null){
 }
 
 initnums();
+initializeprogressbars();
 
 // let actualtree = runtree();
 

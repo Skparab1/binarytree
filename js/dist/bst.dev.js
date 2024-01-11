@@ -84,6 +84,7 @@ var explanation = "";
 var resl = true;
 var badid = '';
 var type = 'alpha';
+var updatedstatsthistime = false;
 var onsomeselector = false;
 
 function drawnode(node, x, y) {
@@ -361,6 +362,7 @@ if (bt1 == null) {
   // document.getElementById('instructions').style.left = '25%';
 }
 
+var kindofmistake = "";
 var theme = localStorage.getItem('bttheme');
 var angle = localStorage.getItem('btangle');
 var lasttoggle = new Date();
@@ -468,6 +470,7 @@ function adderror(root) {
   thetree = root;
   var rand = Math.floor(Math.random() * 10);
   var changednode = null;
+  kindofmistake = "None";
 
   if (rand < 5) {
     // yup were putting error
@@ -476,6 +479,7 @@ function adderror(root) {
 
     if (rand2 == 0) {
       // head is too low
+      kindofmistake = "Root value incorrect";
       var newhead;
 
       if (type != "alpha") {
@@ -496,6 +500,8 @@ function adderror(root) {
       explanation = "The root valued " + newhead + " is too low, making the left child's value (" + thetree.getleft.getvalue + ") larger than it.";
     } else if (rand2 == 1) {
       // head is too high
+      kindofmistake = "Root value incorrect";
+
       var _newhead;
 
       if (type != "alpha") {
@@ -518,6 +524,8 @@ function adderror(root) {
     } else if (rand2 == 2) {
       // the second level left is too high
       // make it higher than the head
+      kindofmistake = "Second level left child higher than parent";
+
       var _newhead2;
 
       if (type != "alpha") {
@@ -539,6 +547,8 @@ function adderror(root) {
     } else if (rand2 == 3) {
       // the second level right is too low
       // make it lower than the head
+      kindofmistake = "Second level right child higher than parent";
+
       var _newhead3;
 
       if (type != "alpha") {
@@ -626,23 +636,122 @@ function adderror(root) {
   return thetree;
 }
 
+function incrementcount(id) {
+  if (updatedstatsthistime) {
+    return;
+  }
+
+  updatedstatsthistime = true;
+  var gotten = localStorage.getItem(id);
+
+  if (gotten == null) {
+    gotten = 0;
+  } else {
+    gotten = parseInt(gotten);
+  }
+
+  gotten += 1;
+  localStorage.setItem(id, gotten);
+}
+
+function ornull(val) {
+  if (val == null) {
+    return 0;
+  }
+
+  return parseInt(val);
+}
+
+function initializeprogressbars() {
+  var gottencorrectcorrect = ornull(localStorage.getItem("real correct, correct"));
+  var gottenwrongcorrect = ornull(localStorage.getItem("real correct, wrong"));
+  var gottencorrectwrong = ornull(localStorage.getItem("real wrong, correct"));
+  var gottenwrongwrong = ornull(localStorage.getItem("real wrong, wrong"));
+  var bstpercentage;
+
+  if (gottencorrectcorrect == 0 && gottenwrongcorrect == 0) {
+    bstpercentage = 0;
+  } else {
+    bstpercentage = Math.round(100 * gottencorrectcorrect / (gottencorrectcorrect + gottenwrongcorrect));
+  }
+
+  document.getElementById("bstcorrect1").style.width = bstpercentage + "%";
+  document.getElementById("bstcorrect2").style.width = bstpercentage + "%";
+  var notbstpercentage;
+
+  if (gottencorrectwrong == 0 && gottenwrongwrong == 0) {
+    notbstpercentage = 0;
+  } else {
+    notbstpercentage = Math.round(100 * gottencorrectwrong / (gottencorrectwrong + gottenwrongwrong));
+  }
+
+  document.getElementById("notbstcorrect1").style.width = notbstpercentage + "%";
+  document.getElementById("notbstcorrect2").style.width = notbstpercentage + "%";
+}
+
+function showstats() {
+  var gottencorrectcorrect = ornull(localStorage.getItem("real correct, correct"));
+  var gottenwrongcorrect = ornull(localStorage.getItem("real correct, wrong"));
+  var gottencorrectwrong = ornull(localStorage.getItem("real wrong, correct"));
+  var gottenwrongwrong = ornull(localStorage.getItem("real wrong, wrong")); // alert(`
+  //     BST: ${gottencorrectcorrect}/${gottencorrectcorrect+gottenwrongcorrect}\n
+  //     Not BST: ${gottencorrectwrong}/${gottencorrectwrong+gottenwrongwrong}
+  // `);
+
+  var bstpercentage;
+
+  if (gottencorrectcorrect == 0 && gottenwrongcorrect == 0) {
+    bstpercentage = 0;
+  } else {
+    bstpercentage = Math.round(100 * gottencorrectcorrect / (gottencorrectcorrect + gottenwrongcorrect));
+  }
+
+  document.getElementById("bstcorrect1").style.width = bstpercentage + "%";
+  document.getElementById("bstcorrect2").style.width = bstpercentage + "%";
+  var notbstpercentage;
+
+  if (gottencorrectwrong == 0 && gottenwrongwrong == 0) {
+    notbstpercentage = 0;
+  } else {
+    notbstpercentage = Math.round(100 * gottencorrectwrong / (gottencorrectwrong + gottenwrongwrong));
+  }
+
+  document.getElementById("bstcorrect1").innerHTML = bstpercentage + "%";
+  document.getElementById("bstcorrect1").style.width = bstpercentage + "%";
+  document.getElementById("bstcorrect2").innerHTML = bstpercentage + "%";
+  document.getElementById("bstcorrect2").style.width = bstpercentage + "%";
+  document.getElementById("bstdisp1").innerHTML = "BST accuracy: " + gottencorrectcorrect + "/" + (gottencorrectcorrect + gottenwrongcorrect);
+  document.getElementById("bstdisp2").innerHTML = "BST accuracy: " + gottencorrectcorrect + "/" + (gottencorrectcorrect + gottenwrongcorrect);
+  document.getElementById("notbstcorrect1").innerHTML = notbstpercentage + "%";
+  document.getElementById("notbstcorrect1").style.width = notbstpercentage + "%";
+  document.getElementById("notbstcorrect2").innerHTML = notbstpercentage + "%";
+  document.getElementById("notbstcorrect2").style.width = notbstpercentage + "%";
+  document.getElementById("notbstdisp1").innerHTML = "BST accuracy: " + gottencorrectwrong + "/" + (gottencorrectwrong + gottenwrongwrong);
+  document.getElementById("notbstdisp2").innerHTML = "Not BST accuracy: " + gottencorrectwrong + "/" + (gottencorrectwrong + gottenwrongwrong);
+}
+
 function iscorrect() {
   if (badnode == null) {
     // correct
     document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
     document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
-    openel('corr');
+    openel('corr'); //real correct, correct
+
+    incrementcount("real correct, correct");
   } else {
     // has an error
     document.getElementById('correct').style.border = '3px solid rgb(255,0,0)';
     document.getElementById('wrong').style.border = '3px solid rgb(0,255,0)';
     resl = true;
     document.getElementById('badone').style.border = '3px solid red';
-    document.getElementById('explanation').innerHTML = explanation;
-    openel('wr');
-  } //document.getElementById('wrong').style.left = '50%';
-  //document.getElementById('explanation').textContent = 'Explanation: '+explanation;
+    document.getElementById('explanation').innerHTML = explanation; //real wrong, wrong
 
+    incrementcount("real wrong, wrong");
+    openel('wr');
+  }
+
+  showstats(); //document.getElementById('wrong').style.left = '50%';
+  //document.getElementById('explanation').textContent = 'Explanation: '+explanation;
 }
 
 function iswrong() {
@@ -654,7 +763,9 @@ function iswrong() {
             // doesnt have an error
             document.getElementById('wrong').style.border = '3px solid rgb(255,0,0)';
             document.getElementById('correct').style.border = '3px solid rgb(0,255,0)';
-            document.getElementById('explanation').innerHTML = explanation;
+            document.getElementById('explanation').innerHTML = explanation; //real correct, wrong
+
+            incrementcount("real correct, wrong");
             openel('wr');
           } else {
             // has an error
@@ -662,10 +773,14 @@ function iswrong() {
             document.getElementById('correct').style.border = '3px solid rgb(255,0,0)';
             resl = true;
             document.getElementById('badone').style.border = '3px solid red';
-            openel('corr');
+            openel('corr'); //real wrong, correct
+
+            incrementcount("real wrong, correct");
           }
 
-        case 1:
+          showstats();
+
+        case 2:
         case "end":
           return _context.stop();
       }
@@ -902,7 +1017,8 @@ if (thl == null) {
   document.getElementById('numnodes').value = parseInt(thl);
 }
 
-initnums(); // let actualtree = runtree();
+initnums();
+initializeprogressbars(); // let actualtree = runtree();
 
 var theroot = getrandtree();
 var ncount = countnodes(theroot); // now gen an arr with those many nums

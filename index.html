@@ -55,7 +55,7 @@
         <h3>In order <span id='playin' onclick="  if (!disabled){(async () => { disableplay(); redrawtree(); await glowtreeinorder(root); enableplay(); })();}" style="color: rgb(255, 51, 0); cursor: pointer; font-size: 15px;"> (Light-up animation)</span></h3>
         <input class="guess" id="inorder">
         <div class="check" onclick="checkall();">Check All</div>
-        <div class="check" onclick="showsolutions(); openscreen();">Solutions</div>
+        <div class="check" onclick="showsolutions();">Solutions</div>
       </div>
       <div class="guesstile">
         <h3>Pre order <span id='playpre' onclick="  if (!disabled){(async () => { disableplay(); redrawtree(); await glowtreepreorder(root); enableplay(); })();}" style="color: rgb(255, 51, 0); cursor: pointer; font-size: 15px;"> (Light-up animation)</span></h3>
@@ -90,7 +90,7 @@
 
       <h3 style="font-size: 15px; margin-bottom: 0px; margin-top: 0px;" id="animwait">Light-up animation delay time: 500ms</h3>
       <div class="slide2container" style="margin-top: -20px;">
-        <input type="range" min="100" max="2000" value="500" step="10" class="slider2" name="waittime" id="waittime" onchange="document.getElementById('animwait').textContent = 'Light-up animation delay time: '+document.getElementById('waittime').value+'ms';">
+        <input type="range" min="100" max="2000" value="500" step="10" class="slider2" name="waittime" id="waittime" onchange="document.getElementById('animwait').textContent = 'Light-up animation delay time: '+document.getElementById('waittime').value+'ms'; localStorage.setItem('btspeed',document.getElementById('waittime').value);">
       </div>
 
       <div class="close" onclick="closeprefs(); closescreen();">Close</div>

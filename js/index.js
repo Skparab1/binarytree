@@ -1,16 +1,17 @@
-// binary tree shot
+// binary tree builder and visualizer
 
-// ive neevr made a class before lmfao
-
-// this is a treenode
-
+// class for a treenode that makes up the tree
 class treenode {
+
+    // basic constructor with value, left, and right
     constructor(value, left, right) {
       this.value = value;
       this.left = left;
       this.right = right;
     }
 
+
+    // getter functions
     get getvalue() {
         return this.value;
     }
@@ -23,6 +24,8 @@ class treenode {
         return this.right;
     }
 
+
+    // setter functions
     setvalue(val){
         this.value = val;
     }
@@ -36,67 +39,69 @@ class treenode {
     }
 }
 
+// get the div that holds the tree
 let treeholder = document.getElementById('treeholder');
-
 let nodesadded = 0;
 
+// draw a specific node at the coordinates x,y (by creating an element for it)
 function drawnode(node,x,y){
-    const div = document.createElement('div');
-    
-    if (!nodearr.includes(node)){
-        // add a new one
-        // nodearr[nodesadded] = node;
-        // console.log('pushed in '+node.getvalue+' with '+nodearr.length +' and '+ nodesadded);
-        // addedone = true;
-    }
 
+    // create element
+    const div = document.createElement('div');
+
+    // get the value that should be in the node
     let thisnum = nodearr.indexOf(node);
       
+    // put the value into the element
     div.innerHTML = `
     <input id='val${thisnum}' type='text' class='nodeval' value='${node.getvalue}' onchange="modvalue(${thisnum});">
     `;
 
+    // put in the left adder button, if there isnt already a left child
     let theleft = node.getleft;
-
     if (theleft == null || theleft.getvalue == 'deleted'){
         div.innerHTML += ` <button id='leftadder${thisnum}' class='nodeadderleft' onclick='addleft(${thisnum});'>left</button>`
     } else {
         div.innerHTML += ` <button id='leftadder${thisnum}' class='nodeadderleft' style='opacity: 0;'>left</button>`
     }
 
+    // put in the right adder button, if there isnt already a right child
     let theright = node.getright;
-
     if (theright == null || theright.getvalue == 'deleted'){
         div.innerHTML += `<button id='rightadder${thisnum}' class='nodeadderright' onclick='addright(${thisnum});'>right</button>`;
     } else {
         div.innerHTML += `<button id='rightadder${thisnum}' class='nodeadderright' style='opacity: 0;'>right</button>`;
     }
 
+    // put in the delete button, if the node has no children
     if ((theright == null || theright.getvalue == 'deleted') && (theleft == null || theleft.getvalue == 'deleted') && node != root){
         div.innerHTML += ` <button id='deletenode${thisnum}' onclick='delnode(${thisnum});' class='deletenode'>del</button>`
     } else {
         div.innerHTML += ` <button id='deletenode${thisnum}' class='deletenode' style='opacity: 0;'>del</button>`
     }
 
+    // position the element
+    div.style.position = 'absolute';
     div.style.marginLeft = x+'%';
     div.style.marginTop = y+'px';
-    div.style.position = 'absolute';
 
+    // set the id and classname
     div.id = 'thenode'+String(thisnum);
-
-    div.onclick = function() {document.getElementById(div.id).style.zIndex = rnzindex; rnzindex += 1;};
-
-    rnzindex += 1;
-
     div.className = 'node';
 
-    // if (addedone){
-    //     nodesadded += 1;
-    // }
 
+    // if a node is clicked then bring it to the brong
+    div.onclick = function() {document.getElementById(div.id).style.zIndex = rnzindex; rnzindex += 1;};
+
+    // rnzindex is the z index
+    // this should be the highest for the most recently clicked elements
+    rnzindex += 1;
+
+    // put the element in
     treeholder.appendChild(div);
 }
 
+// if the value is edited, then modify the array and store the tree
 function modvalue(n){
     let el = document.getElementById('val'+n);
     nodearr[n].setvalue(el.value);
@@ -104,13 +109,16 @@ function modvalue(n){
     storetree();
 }
 
+// deleting a node
 function delnode(n){
-    console.log(nodearr,n,nodearr[n].getvalue);
+    //console.log(nodearr,n,nodearr[n].getvalue);
     //nodearr[n].setvalue('deleted');
 
+    // set the value
     let thing = nodearr[n];
     thing.setvalue('deleted');
 
+    //and remove it
     nodearr[n] = null;
     nodearr.splice(n,1);
     //nodearr[n] = null;
@@ -119,13 +127,16 @@ function delnode(n){
     // console.log(findnode(root,nodearr[n]));
 
     //delnodes.push(n);
-    console.log(root.getleft);
+    // console.log(root.getleft);
 
+    // update
     nodesadded -= 1;
 
+    // redraw
     redrawtree();
 }
 
+// store the tree in localstorage so that it can be fetched upon reload
 function storetree(){
     // store the tree in localstorage
     let tostore = preorderwithnullpointers(root);
@@ -133,51 +144,76 @@ function storetree(){
     localStorage.setItem("binarytreestorage",tostore);
 }
 
+// erase and draw tree
 function redrawtree(){
-    console.log(nodearr);
+    //console.log(nodearr);
+
+    // erase
     treeholder.innerHTML = "";
     connectors.innerHTML = "";
 
+    // store
     storetree();
     
+    // draw
     drawtree(root, 50, 0, 50);
 }
 
+// add a left child node to whatever node
 function addleft(num){
-    console.log('addleft on '+num+' with '+nodearr);
+    //console.log('addleft on '+num+' with '+nodearr);
+
+    // create a new node
     let newnode = new treenode(0,null,null);
     nodearr[num].setleft(newnode);
 
+    // update
     nodesadded += 1;
-    // add a new one
-    nodearr[nodesadded] = newnode;
-    console.log(nodearr);
 
+
+    // add to the array
+    nodearr[nodesadded] = newnode;
+    //console.log(nodearr);
+
+    // redraw
     redrawtree();
 
     return nodesadded;
 }
 
+// add a right child to the node
 function addright(num){
+
+    // create the node
     let newnode = new treenode(0,null,null);
     nodearr[num].setright(newnode);
 
+    // update
     nodesadded += 1;
-    // add a new one
+    
+    // add to array
     nodearr[nodesadded] = newnode;
 
+    // draw again
     redrawtree();
 }
 
-// draw the tree recursive
+// draw the tree recursively
 function drawtree(root, x, y, prevx){
 
+    // if current node has been deleted, treat it like its a null (dont draw it or anything)
     if (root.getvalue == 'deleted'){
         root = null;
     }
+
+    // if its not null or deleted do this
+    // root.getvalue != 'deleted' shouldnt be needed idk why its there but not gonna change it
     if (root != null && root.getvalue != 'deleted'){
+        
+        // draw the current node
         drawnode(root,x,y);
 
+        //figure out the x and y coordinates at which the child nodes should be located
         let newy = y + 75;
         let leftx;
         let rightx;
@@ -188,14 +224,15 @@ function drawtree(root, x, y, prevx){
             // distance from middle Math.abs(50-x)
             leftx = x-Math.abs(prevx-x)/2;
             rightx = x+Math.abs(prevx-x)/2;
-            console.log(leftx);
+            // console.log(leftx);
         }
 
         // leftx = leftx-(5000/window.innerWidth);
         // rightx = rightx-(5000/window.innerWidth);
 
+
+        // create the connector line for the left side
         const div = document.createElement('div');
-    
         let wid = Math.abs(leftx-x);
         div.className = 'connector';
         div.style.width = wid+'%';
@@ -204,9 +241,8 @@ function drawtree(root, x, y, prevx){
         div.style.top = (y+150)+'px';
         div.style.zIndex = -1;
 
-        // line for right   
+        // create the connector line for the right side 
         const div1 = document.createElement('div');
-
         div1.className = 'connector';
         div1.style.borderRight = '7px solid var(--contrast)';
         div1.style.borderLeft = '0px solid white';
@@ -216,13 +252,13 @@ function drawtree(root, x, y, prevx){
         div1.style.top = (y+150)+'px';
         div1.style.zIndex = -1;
 
-
-
+        // as long as the left child isnt null or deleted, draw it
         if (root.getleft != null && root.getleft.getvalue != 'deleted'){
             document.getElementById('connectors').appendChild(div);
             drawtree(root.getleft,leftx,newy, x);
         }
 
+        // as long as the right child isnt null or deleted, draw it
         if (root.getright != null && root.getright.getvalue != 'deleted'){
             document.getElementById('connectors').appendChild(div1);
             drawtree(root.getright,rightx,newy, x);
@@ -230,6 +266,7 @@ function drawtree(root, x, y, prevx){
     }
 }
 
+// the output when traversing the tree using preorder
 function traversepreorder(node){
     if (node == null){
         return "";
@@ -242,6 +279,7 @@ function traversepreorder(node){
     return st;
 }
 
+// the output when traversing the tree using inorder
 function traverseinorder(node){
     if (node == null){
         return "";
@@ -254,6 +292,7 @@ function traverseinorder(node){
     return st;
 }
 
+// the output when traversing the tree using postorder
 function traversepostorder(node){
     if (node == null){
         return "";
@@ -265,12 +304,14 @@ function traversepostorder(node){
     return st;
 }
 
+// check all the solutions
 function checkall(){
-    // first run each
+    // get the correct solutions
     let preorder = traversepreorder(root).replaceAll('deleted','');
     let inorder = traverseinorder(root).replaceAll('deleted','');
     let postorder = traversepostorder(root).replaceAll('deleted','');
 
+    // fill the solutions display with the solutions
     let sols = document.getElementById('solutions');
     sols.innerHTML = `
     <h1 style='font-size: 25px'>Solutions</h1>
@@ -280,25 +321,21 @@ function checkall(){
     <div class="close" onclick="closesolutions(); closescreen();">Close</div>
     `
 
+    // format them so that they can be compared to the user responses
     preorder = preorder.replaceAll(' ','');
     inorder = inorder.replaceAll(' ','');
     postorder = postorder.replaceAll(' ','');
 
-
+    // check preorder answers
     let userpreorder = document.getElementById('preorder').value;
     userpreorder = userpreorder.replaceAll(' ','').replaceAll(',','');
-    
-    let porder = document.getElementById('preorder');
-    let res = document.getElementById('res');
     if (userpreorder.toUpperCase() == preorder.toUpperCase()){
         document.getElementById('preorder').style.border = '3px solid rgba(0,245,0)';
     } else {
-        porder.style.border = '3px solid rgba(245,0,0)';
-        // let thex = document.getElementById('x1');
-        // thex.style.left = porder.offsetLeft+'px';
-        // thex.style.top = porder.offsetTop+res.offsetTop+'px';
+        document.getElementById('preorder').style.border = '3px solid rgba(245,0,0)';
     }
 
+    // check inorder answers
     let userinorder = document.getElementById('inorder').value;
     userinorder = userinorder.replaceAll(' ','').replaceAll(',','');
     if (userinorder.toUpperCase() == inorder.toUpperCase()){
@@ -307,6 +344,7 @@ function checkall(){
         document.getElementById('inorder').style.border = '3px solid rgba(245,0,0)';
     }
 
+    // check postorder answers
     let userpostorder = document.getElementById('postorder').value;
     userpostorder = userpostorder.replaceAll(' ','').replaceAll(',','');
     if (userpostorder.toUpperCase() == postorder.toUpperCase()){
@@ -316,6 +354,7 @@ function checkall(){
     }
 }
 
+// show the solutions dialog
 function showsolutions(){
     checkall();
     document.getElementById('solutions').style.display = 'block';
@@ -323,30 +362,36 @@ function showsolutions(){
     document.getElementById('solutions').style.top = '25%';
 }
 
+// show the preferences dialog
 function openprefs(){
     document.getElementById('preferences').style.display = 'block';
     document.getElementById('preferences').style.opacity = 1;
     document.getElementById('preferences').style.top = '25%';
 }
 
+// open whatever dialog
 function openel(el){
     document.getElementById(el).style.display = 'block';
     document.getElementById(el).style.opacity = 1;
     document.getElementById(el).style.top = '25%';
 }
 
+// change the theme from dark to light or override for setting it to whatever the saved theme is
 function toggletheme(override){
     var r = document.querySelector(':root');
 
+    // get elapsed time since last time a toggle was clicked
     let endtime = new Date();
     var timediff = endtime - lasttoggle; 
     lasttoggle = endtime;
 
+    // if we are not changing to the saved theme and the user just pressed the theme change then dont change
+    // this is there because something toggle theme used to get called two times in a row and cancel itself out
     if (timediff < 333 && !override){
         return;
     }
 
-    console.log('changeing from  '+theme);
+    // console.log('changeing from  '+theme);
     if (theme == 'dark'){
         // make light
         theme = 'light';
@@ -368,6 +413,7 @@ function toggletheme(override){
     }
 }
 
+// force the theme to change to dark, if thats the saved theme
 function forcedark(){
     theme = 'dark';
     localStorage.setItem('bttheme','dark');
@@ -378,29 +424,31 @@ function forcedark(){
     r.style.setProperty('--contrast', 'white');
     r.style.setProperty('--main', '#0d6efd');
     r.style.setProperty('--slight', 'rgb(40, 40, 40)');
-
 }
 
+// toggle the angle of the connectors
 function toggleangle(override){
     var r = document.querySelector(':root');
 
+    // see the elapsed time since toggle was last clicked
     let endtime = new Date();
     var timediff = endtime - lasttoggle; 
     lasttoggle = endtime;
 
+    // prevent a double click of this
     if (timediff < 333 && !override){
-        console.log('returned');
+        // console.log('returned');
         return;
     }
 
     if (angle == 'cornered'){
-        // make light
+        // make curved
         angle = 'curved';
         localStorage.setItem('btangle','curved');
         document.getElementById('lines').textContent = "Lines: (Curved)";
         r.style.setProperty('--br', '25px');
     } else {
-        // make dark
+        // make cornered
         angle = 'cornered';
         localStorage.setItem('btangle','cornered');
         document.getElementById('lines').textContent = "Lines: (Cornered)";
@@ -408,18 +456,21 @@ function toggleangle(override){
     }
 }
 
+// close preferences dialog
 function closeprefs(){
     //document.getElementById('solutions').style.display = 'none';
     document.getElementById('preferences').style.opacity = 0;
     document.getElementById('preferences').style.top = '100%';
 }
 
+// close preferences dialog
 function closeel(el){
     //document.getElementById('solutions').style.display = 'none';
     document.getElementById(el).style.opacity = 0;
     document.getElementById(el).style.top = '100%';
 }
 
+// make the results panel visible
 function raiseresults(){
     if (stayingup){
         return;
@@ -428,6 +479,7 @@ function raiseresults(){
     res.style.top = (1-(res.offsetHeight/window.innerHeight))*100+"%"
 }
 
+// lower the results panel to hide it
 function lowerresults(){
     if (stayingup){
         return;
@@ -436,17 +488,21 @@ function lowerresults(){
     res.style.top = "90%"
 }
 
+// close the solutions dialog
 function closesolutions(){
     //document.getElementById('solutions').style.display = 'none';
     document.getElementById('solutions').style.opacity = 0;
     document.getElementById('solutions').style.top = '100%';
 }
 
+// close the instructions dialog
 function closeinstructions(){
     document.getElementById('instructions').style.top = '100%';
     document.getElementById('instructions').style.opacity = 0;
 }
 
+// light up animation for preorder
+// all this does is basically do the traversal but highlight each node when its visited, and wait a bit before doing that at each node
 async function glowtreepreorder(start){
     if (start == null){
         return;
@@ -471,6 +527,7 @@ async function glowtreepreorder(start){
     //enableplay();
 }
 
+// light up animation for inorder
 async function glowtreeinorder(start){
     if (start == null){
         return;
@@ -494,48 +551,73 @@ async function glowtreeinorder(start){
     //enableplay();
 }
 
-
-
-function getlevel(level, node, currentlevel, gotnodes){
-    if (node == null){
-        gotnodes.push(null);
-        return gotnodes;
+// light up animation for postorder
+async function glowtreepostorder(start){
+    if (start == null){
+        return;
     }
-    if (currentlevel == level){
-        gotnodes.push(node);
-        return gotnodes;
+
+    let idx = nodearr.indexOf(start);
+    let nd = document.getElementById('thenode'+String(idx));
+
+    await glowtreepostorder(start.getleft);
+
+    await glowtreepostorder(start.getright);
+
+    await sleep(document.getElementById('waittime').value);
+
+    try {
+        nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
+    } catch (error) {
+        
     }
+
+    //enableplay();
+
+}
+
+// not used functions
+// function getlevel(level, node, currentlevel, gotnodes){
+//     if (node == null){
+//         gotnodes.push(null);
+//         return gotnodes;
+//     }
+//     if (currentlevel == level){
+//         gotnodes.push(node);
+//         return gotnodes;
+//     }
     
-    gotnodes = getlevel(level, node.getleft, currentlevel+1,gotnodes);
-    gotnodes = getlevel(level, node.getright, currentlevel+1,gotnodes);
+//     gotnodes = getlevel(level, node.getleft, currentlevel+1,gotnodes);
+//     gotnodes = getlevel(level, node.getright, currentlevel+1,gotnodes);
 
-    return gotnodes;
-}
+//     return gotnodes;
+// }
 
 
-function getlevelorder(){
-    let res = [0];
-    let final = [];
-    let lev = 0;
-    while (res.length != 0){
-        res = getlevel(lev, root, 0, []);
+// function getlevelorder(){
+//     let res = [0];
+//     let final = [];
+//     let lev = 0;
+//     while (res.length != 0){
+//         res = getlevel(lev, root, 0, []);
         
-        if (res.length == 0){
-            break;
-        }
+//         if (res.length == 0){
+//             break;
+//         }
         
-        for(i of res){
-            final.push(i);
-        }
+//         for(i of res){
+//             final.push(i);
+//         }
 
-        lev += 1;
+//         lev += 1;
 
-    }
+//     }
 
-    return final;
-}
+//     return final;
+// }
 
 
+// format the tree in a way in which it can be saved
 function preorderwithnullpointers(node){
     if (node == null){
         return "NULL";
@@ -550,7 +632,7 @@ function preorderwithnullpointers(node){
     //recreatetree("a b NULL c NULL NULL   NULL ");
 }
 
-
+// put all the tree data into the url
 function createshareURL(){
     let query = preorderwithnullpointers(root);
 
@@ -559,11 +641,10 @@ function createshareURL(){
     document.getElementById("shareurldisp").textContent = location.href+"/share?data="+query;
 }
 
-
-
-
+// this is there so that when you recreate it you know what node you are on
 let universalrecreator = 0;
 
+// based on the stored data, create a node
 function recreatenode(sequence, num){
     if (num > sequence.length){
         return null;
@@ -594,7 +675,7 @@ function recreatenode(sequence, num){
     return newnode;
 }
 
-
+// purge the read stored data for blank elements
 function purgesequence(sequence){
     let newsequence = [];
     for(i of sequence){
@@ -605,6 +686,7 @@ function purgesequence(sequence){
     return newsequence;
 }
 
+// recreate a tree based on stored data
 function recreatetree(sequence){
     sequence = sequence.replaceAll("%20"," ");
     sequence = sequence.replaceAll("  "," ");
@@ -634,9 +716,9 @@ function recreatetree(sequence){
     } else {
         universalrecreator += 1;
     }
-
 }
 
+// disable light up animation buttons until the current animation ends
 function disableplay(){
     let post = document.getElementById('playpost');
     let ino = document.getElementById('playin');
@@ -652,6 +734,7 @@ function disableplay(){
     disabled = true;
 }
 
+// eanable light up animation buttons after the animations end
 function enableplay(){
 
     let post = document.getElementById('playpost');
@@ -668,31 +751,7 @@ function enableplay(){
     disabled = false;
 }
 
-async function glowtreepostorder(start){
-    if (start == null){
-        return;
-    }
-
-    let idx = nodearr.indexOf(start);
-    let nd = document.getElementById('thenode'+String(idx));
-
-    await glowtreepostorder(start.getleft);
-
-    await glowtreepostorder(start.getright);
-
-    await sleep(document.getElementById('waittime').value);
-
-    try {
-        nd.style.boxShadow = '7px 7px 5px rgba(255, 0, 0, 0.7)';
-    } catch (error) {
-        
-    }
-
-    //enableplay();
-
-}
-
-
+// open the background backdrop when a dialog is opened
 function openscreen(){
     let el = document.getElementById("screen");
     el.style.display = "block";
@@ -703,6 +762,7 @@ function openscreen(){
     stayingup = true;
 }
 
+// close the background backdrop
 function closescreen(){
     console.log("called to close");
     let el = document.getElementById("screen");
@@ -714,8 +774,7 @@ function closescreen(){
     stayingup = false;
 }
 
-
-// rules
+// open the "how to use" if its the first time this user has opened this
 let bt1 = localStorage.getItem('binarytree');
 if (bt1 == null){
     localStorage.setItem('binarytree','opened');
@@ -724,8 +783,10 @@ if (bt1 == null){
     document.getElementById('instructions').style.left = '25%';
 }
 
+// load the settings from localstorage
 let theme = localStorage.getItem('bttheme');
 let angle = localStorage.getItem('btangle');
+let demospeed = localStorage.getItem('btspeed');
 
 let lasttoggle = new Date();
 
@@ -742,6 +803,14 @@ if (angle == null){
     angle = 'cornered';
     toggleangle(true);
 }
+
+if (demospeed == null){
+    localStorage.setItem("btspeed",500);
+    demospeed = 500;
+}
+document.getElementById("waittime").value = demospeed;
+document.getElementById('animwait').textContent = 'Light-up animation delay time: '+demospeed+'ms';
+
 
 function getrandtree(){
     // let mnode = new treenode('root', null, null);
@@ -820,21 +889,20 @@ function genlist(n){
     return ttrs; // yes bring it back pls audi
 }
 
-// abcdefghijklmnop
+// generate a list with only characters
 function genlistabc(n){
-    // lets try smth
     let abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
-    let lucidair = []; // yes the audi
+    let u = [];
 
-    while (lucidair.length < n){
-        lucidair.push(abc[Math.floor(Math.random()*26)]);
+    while (u.length < n){
+        u.push(abc[Math.floor(Math.random()*26)]);
     }
 
-    return lucidair; //hehe
+    return u;
 }
 
-// just put in the facking nums
+// just put in the values into the tree
 function putnums(root,arr){
 
     if (arr.length == 0){
@@ -914,7 +982,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 let leftbuttons = [];
 let delnodes = [];
-let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+// i know having a set capacity generally isnt good but im confident this will be more than enough
+// could be increased but may impact performance if there are a bunch of not used really
+let nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 let disabled = false;
 
@@ -935,7 +1006,7 @@ redrawtree();
 
 //glowtree(root);
 
-// update the coubnt without interfereing with the stuff
+// update the count without interfereing with the stuff
 (async () => {
     fetch((`https://skparabapi-1-x8164494.deta.app/increment?key=binarytree`))
       .then(response => {
