@@ -1,8 +1,4 @@
-// binary tree shot
-
-// ive neevr made a class before lmfao
-
-// this is a treenode
+// binary tree classification
 
 class treenode {
     constructor(value, left, right, par, xc) {
@@ -1187,4 +1183,29 @@ drawtree(theroot, x, y, 50);
           console.log(data);
       })
   })();
+
+
+
+// keypress processing
+(async () => {
+    window.addEventListener("keydown", function(event) {
+        if (event.defaultPrevented) {
+            return;
+        }
+        
+        let actkey = event.code.replace('Key','')
+
+        if (actkey == "W"){
+            iscorrect();
+        } else if (actkey == "S"){
+            iswrong();
+        } else if (actkey == "A"){
+            closeel('corr');
+            closeel('wr');
+        } else if (actkey == "D"){
+            location.reload();
+        }
+
+    }, true);
+})();
   

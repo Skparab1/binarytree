@@ -6,9 +6,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// binary tree shot
-// ive neevr made a class before lmfao
-// this is a treenode
+// binary tree classification
 var treenode =
 /*#__PURE__*/
 function () {
@@ -1086,6 +1084,39 @@ drawtree(theroot, x, y, 50); // now put att the things into the tree
         case 1:
         case "end":
           return _context2.stop();
+      }
+    }
+  });
+})(); // keypress processing
+
+
+(function _callee2() {
+  return regeneratorRuntime.async(function _callee2$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          window.addEventListener("keydown", function (event) {
+            if (event.defaultPrevented) {
+              return;
+            }
+
+            var actkey = event.code.replace('Key', '');
+
+            if (actkey == "W") {
+              iscorrect();
+            } else if (actkey == "S") {
+              iswrong();
+            } else if (actkey == "A") {
+              closeel('corr');
+              closeel('wr');
+            } else if (actkey == "D") {
+              location.reload();
+            }
+          }, true);
+
+        case 1:
+        case "end":
+          return _context3.stop();
       }
     }
   });
