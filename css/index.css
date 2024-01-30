@@ -167,6 +167,7 @@ button {
   opacity: 0;
   left: -100%;
   transition: opacity 0.25s;
+  z-index: 10000;
 }
 
 .connector{
@@ -528,4 +529,57 @@ input:checked + .slider:before {
   background-color: green;
   padding-top: 5px;
   transition: width 0.5s;
+}
+
+.exercisetab{
+  position: fixed;
+  bottom: 0%;
+  height: min-content;
+  width: 100%;
+  text-align: center;
+  background-color: var(--slight);
+  border: 0px solid var(--main);
+  transition: bottom 0.2s, top 0.2s;
+  padding-bottom: 20px;
+  padding-top: 0px;
+  z-index: 1000;
+}
+
+.exerciseprompt {
+  color: var(--main);
+  font-weight: bold;
+}
+
+.buttonbucket {
+  width: 100%;
+}
+
+.checkexercise {
+  float: left;
+  color: var(--contrast);
+  background-color: var(--bg);
+  border: 3px solid var(--main);
+  width: 10%;
+  margin: 0px;
+  padding: 0px;
+  margin-left: 30%;
+  cursor: pointer;
+}
+
+.feedbackspacer {
+  width: 100%;
+  margin-top: -45px;
+  background-color: var(--bg);
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.spacebox {
+  width: 2%;
+  aspect-ratio: 1/1.15;
+  border-bottom: 3px solid var(--contrast);
+  margin: 0.5%;
+  margin-bottom: 10px;
+  font-size: 150%;
+  float: left;
 }

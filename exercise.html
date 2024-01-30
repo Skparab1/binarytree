@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <meta name='og:viewport' content='width=device-width,initial-scale=1'>
     <meta name="og:description" content="Binary tree builder">
-    <title>Binary tree builder</title>
+    <title>Binary tree exercises</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,14 +14,13 @@
   <body>
     <nav id="nav1">
       <ul class="nav-items navleft">
-        <li class="headername">Binary Tree Builder</li>
+        <li class="headername">Binary Tree Exercises</li>
       </ul>
       <ul class="nav-items navcenter" id="nav">
-        <li><a class="larget" onclick="openel('randomtree'); openscreen();">Random Tree</a></li>
         <li><a class="larget" onclick="localStorage.removeItem('binarytreestorage'); location.reload();">Reset Tree</a></li>
-        <li><a class="larget" onclick="openel('sharetree'); createshareURL(); openscreen();">Share Tree</a></li>
+        <!-- <li><a class="larget" onclick="openel('sharetree'); createshareURL(); openscreen();">Share Tree</a></li> -->
+        <li><a class="larget"  href="./index.html">Binary Tree Builder</a></li>
         <li><a class="larget" id='header2' href="./bst.html">BST Classification</a></li>
-        <li><a class="larget" id='header2' href="./exercise.html">Exercises</a></li>
       </ul> 
       <ul class="nav-items navright">
         <li title="Settings"><a onclick="openprefs(); openscreen();"><img src="assets/settings.png" height="30px" class="logo"></a></li>
@@ -42,6 +41,24 @@
 
     </div>
 
+    <div class="exercisetab">
+      <div class="feedbackspacer" id="feedbackspacer">
+      </div>
+
+      <br>
+      <br>
+
+
+      <h2 class="exerciseprompt" id="exerciseprompt">Exercise: </h2>
+
+      <div clas="buttonbucket">
+        <div class="checkexercise" onclick="lightup();">Light-up Animation</div>
+        <div class="checkexercise" style="margin-left: 5%;" onclick="verifyexercise();">Check</div>
+        <div class="checkexercise" style="margin-left: 5%;" onclick="localStorage.removeItem('binarytreestorage'); location.reload();">New Exercise</div>  
+      </div>
+    </div>
+
+<!-- 
     <div id='res' class="results" onmouseenter="raiseresults();" onmouseleave="lowerresults();">
       <button class="exit-modal" onclick="if (!stayingup){ raiseresults(); stayingup = true; document.getElementById('sb').textContent = 'Unlock movement';} else {stayingup = false; document.getElementById('sb').textContent = 'Lock movement';}"><p id='sb'>Lock movement</p></button>
       <button class="exit-modal" style='left: 15px;' onclick="openprefs(); openscreen();"><p id='prefs'>Preferences</p></button>
@@ -62,7 +79,7 @@
         <h3>Pre order <span id='playpre' onclick="  if (!disabled){(async () => { disableplay(); redrawtree(); await glowtreepreorder(root); enableplay(); })();}" style="color: rgb(255, 51, 0); cursor: pointer; font-size: 15px;"> (Light-up animation)</span></h3>
         <input class="guess" id="preorder">
       </div>
-    </div>
+    </div> -->
 
     <div id="screen" class="screen"></div>
 
@@ -95,6 +112,24 @@
       </div>
 
       <div class="close" onclick="closeprefs(); closescreen();">Close</div>
+    </div>
+
+
+    <div class="wrong" id="wr">
+      <h1>Incorrect!</h1>
+      <h5 id="explanation" style="color: black; font-size: 25px; font-weight: bolder; border-radius: 25px; background-color: var(--bg);">Explanation</h5>
+
+      <div class="close" onclick="closeel('wr'); lightup()">Light up Animation</div>
+      <div class="close" onclick="closeel('wr');">Close</div>
+    </div>
+
+    <div class="wrong" id="corr">
+      <h1>Correct!</h1>
+      <h3>Good job!</h3>
+
+      <div class="close" onclick="closeel('corr');">Close</div>
+      <div class="close" onclick="localStorage.removeItem('binarytreestorage'); location.reload();">New Exercise</div>
+
     </div>
 
 
@@ -148,7 +183,7 @@
     <img class="standaloneicon" id="check1" src="assets/greencheck.png" height="75px" alt="green check">
     <img class="standaloneicon" id="check2" src="assets/greencheck.png" height="75px" alt="green check">
     <img class="standaloneicon" id="check3" src="assets/greencheck.png" height="75px" alt="green check"> -->
-    <script src="js/index.js"></script>
+    <script src="js/exercise.js"></script>
 
   </body>
 </html>
