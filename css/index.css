@@ -569,7 +569,7 @@ input:checked + .slider:before {
 .feedbackspacer {
   width: 100%;
   margin-top: -45px;
-  background-color: var(--bg);
+  background-color: rgba(0,0,0,0);
   text-align: center;
   padding-bottom: 10px;
 }
@@ -581,5 +581,7 @@ input:checked + .slider:before {
   margin: 0.5%;
   margin-bottom: 10px;
   font-size: 150%;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
   float: left;
 }

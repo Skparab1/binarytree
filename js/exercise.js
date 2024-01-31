@@ -402,6 +402,7 @@ function toggletheme(override){
         r.style.setProperty('--contrast', 'black');
         r.style.setProperty('--main', '#0d6efd');
         r.style.setProperty('--slight', 'rgb(220,220,220)');
+        r.style.setProperty('--bgslight', 'rgba(255,255,255,0.6);');
     } else {
         // make dark
         theme = 'dark';
@@ -411,6 +412,7 @@ function toggletheme(override){
         r.style.setProperty('--contrast', 'white');
         r.style.setProperty('--main', '#0d6efd');
         r.style.setProperty('--slight', 'rgb(40, 40, 40)');
+        r.style.setProperty('--bgslight', 'rgba(0,0,0,0.6);');
     }
 }
 
@@ -510,7 +512,9 @@ function drawspaces(leftmargin,arr){
 
     thedisp.innerHTML = ""; // reset
 
-    if (0 < setarray.length && arr[0].toUpperCase() == setarray[0]){
+    if (spaceon <= 0){
+        clr = "var(--bg)";
+    } else if (0 < setarray.length && String(arr[0]).toUpperCase() == setarray[0]){
         clr = "rgb(0,255,0)";
     } else {
         clr = "red";
@@ -523,7 +527,7 @@ function drawspaces(leftmargin,arr){
         let clr;
         if (spaceon <= i){
             clr = "var(--bg)";
-        } else if (i < setarray.length && arr[i].toUpperCase() == setarray[i]){
+        } else if (i < setarray.length && String(arr[i]).toUpperCase() == setarray[i]){
             clr = "rgb(0,255,0)";
         } else {
             clr = "red";
@@ -837,9 +841,7 @@ function openscreen(){
     let el = document.getElementById("screen");
     el.style.display = "block";
     el.style.opacity = 0.4;
-
-    let res = document.getElementById("res");
-    res.style.opacity = 0.4;
+    
     stayingup = true;
 }
 
@@ -1152,6 +1154,32 @@ function verifyexercise(){
     }
 }
 
+function resettree(){
+    localStorage.removeItem('binarytreestorage');
+    root = new treenode('root',null,null);
+
+
+    leftbuttons = [];
+    delnodes = [];
+
+    // i know having a set capacity generally isnt good but im confident this will be more than enough
+    // could be increased but may impact performance if there are a bunch of not used really
+    nodearr = [root,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+    disabled = false;
+
+    // intialx
+    x = 50;
+    y = 0;
+
+    rnzindex = 10;
+    stayingup = false;
+
+
+
+    redrawtree();
+}
+
 
 
 
@@ -1215,7 +1243,7 @@ redrawtree();
 
 // update the count without interfereing with the stuff
 (async () => {
-    fetch((`https://skparabapi-1-x8164494.deta.app/increment?key=binarytree`))
+    fetch((`https://skparabapi-1-x8164494.deta.app/increment?key=exercise`))
       .then(response => {
           return response.json();
       })

@@ -841,7 +841,7 @@ function getrandtree(){
 
 function addlevel75(root, level){
 
-    if (level >= document.getElementById('numnodes').value-1){
+    if (level >= document.getElementById('numnodes').value-2){
         return;
     }
     let newnode;

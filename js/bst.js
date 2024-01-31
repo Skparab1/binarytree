@@ -475,7 +475,7 @@ function reversearr(arr){
 function genbst(){
     // suppose u have an arr
     //let arr = [1,7,9,15,20,23,32,45,55,62,64,75,88,99];
-    let arr = genlist(document.getElementById('numnodes').value);
+    let arr = genlist(document.getElementById('numnodes').value-1);
 
     console.log('arr before ',arr);
     // arr = reversearr(arr);
@@ -876,7 +876,7 @@ function getrandtree(){
 
 function addlevel75(root, level){
 
-    if (level >= document.getElementById('numnodes').value-1){
+    if (level >= document.getElementById('numnodes').value-2){
         return;
     }
     let newnode;
@@ -979,33 +979,35 @@ function forcedark(){
 
 }
 
+// toggle the angle of the connectors
 function toggleangle(override){
     var r = document.querySelector(':root');
 
+    // see the elapsed time since toggle was last clicked
     let endtime = new Date();
     var timediff = endtime - lasttoggle; 
     lasttoggle = endtime;
 
+    // prevent a double click of this
     if (timediff < 333 && !override){
-        console.log('returned');
+        // console.log('returned');
         return;
     }
 
     if (angle == 'cornered'){
-        // make light
+        // make curved
         angle = 'curved';
         localStorage.setItem('btangle','curved');
         document.getElementById('lines').textContent = "Lines: (Curved)";
         r.style.setProperty('--br', '25px');
     } else {
-        // make dark
+        // make cornered
         angle = 'cornered';
         localStorage.setItem('btangle','cornered');
         document.getElementById('lines').textContent = "Lines: (Cornered)";
         r.style.setProperty('--br', '0px');
     }
 }
-
 
 
 function preorderwithnullpointers(node){
