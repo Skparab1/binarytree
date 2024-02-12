@@ -146,6 +146,7 @@ button {
   text-align: center;
   float: right;
   background: var(--bg);
+  transition: background-color 0.25s, color 0.25s;
   cursor: pointer;
 }
 
