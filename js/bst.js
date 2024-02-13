@@ -1026,6 +1026,8 @@ function preorderwithnullpointers(node){
 
 
 function createshareURL(){
+    document.getElementById("copysharelink").textContent = "Copy link";
+
     let query = preorderwithnullpointers(theroot);
 
     query = query.replaceAll(" ","%20"); 
@@ -1033,6 +1035,20 @@ function createshareURL(){
     document.getElementById("shareurldisp").textContent = location.href.replace("/bst.html","")+"/share?data="+query;
 }
 
+
+// get the share data 
+function copyshare(){
+    let query = preorderwithnullpointers(root);
+
+    query = query.replaceAll(" ","%20"); 
+
+    let shareurl = location.href.replace("/index.html","")+"/share?data="+query;
+
+    // copy
+    navigator.clipboard.writeText(shareurl);
+
+    document.getElementById("copysharelink").textContent = "Copied!";
+}
 
 
 // let left = new treenode('left',new treenode('leftleft',new treenode('leftleftleft',null,null),null),new treenode('leftright',new treenode('leftrightleft',null,null),null));

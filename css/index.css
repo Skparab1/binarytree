@@ -586,3 +586,20 @@ input:checked + .slider:before {
   border-top-left-radius: 5px;
   float: left;
 }
+
+.coolbutton {
+  background-color: var(--main);
+  border-radius: 25px;
+  width: 30%;
+  margin-left: 35%;
+  height: 40px;
+  color: var(--bg);
+  font-size: 30px;
+  border: 2px solid var(--main);
+  cursor: pointer;
+  transition: border-radius 0.25s;
+}
+
+.coolbutton:hover {
+  border-radius: 0px;
+}

@@ -719,11 +719,29 @@ function preorderwithnullpointers(node){
 
 // put all the tree data into the url
 function createshareURL(){
+    document.getElementById("copysharelink").textContent = "Copy link";
+
     let query = preorderwithnullpointers(root);
 
     query = query.replaceAll(" ","%20"); 
 
     document.getElementById("shareurldisp").textContent = location.href.replace("/exercise.html","")+"/share?data="+query;
+}
+
+
+// get the share data 
+function copyshare(){
+    let query = preorderwithnullpointers(root);
+
+    query = query.replaceAll(" ","%20"); 
+
+    let shareurl = location.href.replace("/index.html","")+"/share?data="+query;
+
+    // copy
+    navigator.clipboard.writeText(shareurl);
+
+
+    document.getElementById("copysharelink").textContent = "Copied!";
 }
 
 // this is there so that when you recreate it you know what node you are on
