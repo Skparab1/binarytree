@@ -1038,7 +1038,7 @@ function createshareURL(){
 
 // get the share data 
 function copyshare(){
-    let query = preorderwithnullpointers(root);
+    let query = preorderwithnullpointers(theroot);
 
     query = query.replaceAll(" ","%20"); 
 
