@@ -735,7 +735,7 @@ function copyshare(){
 
     query = query.replaceAll(" ","%20"); 
 
-    let shareurl = location.href.replace("/index.html","")+"/share?data="+query;
+    let shareurl = location.href.replace("/exercise.html","")+"/share?data="+query;
 
     // copy
     navigator.clipboard.writeText(shareurl);
