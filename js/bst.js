@@ -1181,6 +1181,12 @@ if (tp == 'alpha'){
 
 
 
+if (localStorage.getItem("skpbinarytreebt") == null){
+    openel('instructions');
+    localStorage.setItem("skpbinarytreebt", "opened");
+}
+
+
 theroot = putnums(theroot, genedarr);
 
 theroot = adderror(theroot);

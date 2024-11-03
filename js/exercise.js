@@ -1247,6 +1247,12 @@ let leftmargin = 0;
 
 let exercise = generateexercise();
 
+
+if (localStorage.getItem("skpbinarytreeex") == null){
+    openel('instructions'); openscreen();
+    localStorage.setItem("skpbinarytreeex", "opened");
+}
+
 document.getElementById("exerciseprompt").innerHTML = "Exercise: "+exercise;
 
 

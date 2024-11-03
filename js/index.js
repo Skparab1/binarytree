@@ -1015,6 +1015,12 @@ let rnzindex = 10;
 let stayingup = false;
 
 
+if (localStorage.getItem("skpbinarytreeft") == null){
+    openel('instructions'); openscreen();
+    localStorage.setItem("skpbinarytreeft", "opened");
+}
+
+
 if (localStorage.getItem("binarytreestorage") != null){
     console.log('used made tree', localStorage.getItem("binarytreestorage"));
     recreatetree(localStorage.getItem("binarytreestorage"));
